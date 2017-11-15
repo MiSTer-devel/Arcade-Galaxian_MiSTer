@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------------
+-- 
+-- Arcade: Galaxian port to MiSTer by Sorgelig
+-- 15 November 2017
+-- 
+---------------------------------------------------------------------------------
+-- A simulation model of Galaxian hardware
+-- Copyright(c) 2004 Katsumi Degawa
+---------------------------------------------------------------------------------
+-- 
+-- Support screen and controls rotation on HDMI output.
+-- Only controls are rotated on VGA output.
+-- 
+-- 
+-- Keyboard inputs :
+--
+--   F2         : Coin + Start 2 players
+--   F1         : Coin + Start 1 player
+--   SPACE,CTRL : Fire
+--   LEFT,RIGHT : Movements
+--
+-- Joystick support.
+-- 
+---------------------------------------------------------------------------------
