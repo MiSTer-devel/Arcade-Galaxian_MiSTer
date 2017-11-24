@@ -33,6 +33,10 @@ entity galaxian is
 		P2_CSJUDLR : in  std_logic_vector(6 downto 0);
 		I_RESET    : in  std_logic;
 
+		dn_addr    : in  std_logic_vector(15 downto 0);
+		dn_data    : in  std_logic_vector(7 downto 0);
+		dn_wr      : in  std_logic;
+
 		W_R        : out std_logic_vector(2 downto 0);
 		W_G        : out std_logic_vector(2 downto 0);
 		W_B        : out std_logic_vector(2 downto 0);
@@ -143,9 +147,17 @@ architecture RTL of galaxian is
 	signal W_WAV_D2           : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_DAC              : std_logic_vector( 3 downto 0) := (others => '0');
 
+	signal rom_cs             : std_logic;
+
 begin
+	rom_cs <= '1' when dn_addr(15 downto 14) = "00" else '0';
+
 	mc_vid : entity work.MC_VIDEO
 	port map(
+		dn_addr       => dn_addr,
+		dn_data       => dn_data,
+		dn_wr         => dn_wr,
+
 		I_CLK_18M     => W_CLK_18M,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
@@ -336,11 +348,17 @@ begin
 	);
 
 --------- ROM           -------------------------------------------------------
-	mc_roms : entity work.ROM_PGM_0
-	port map (
-		CLK  => W_CLK_12M,
-		ADDR => W_A(13 downto 0),
-		DATA => W_CPU_ROM_DO
+	mc_roms : work.dpram generic map (14,8)
+	port map
+	(
+		clock_a   => W_CLK_12M,
+		wren_a    => dn_wr and rom_cs,
+		address_a => dn_addr(13 downto 0),
+		data_a    => dn_data,
+
+		clock_b   => W_CLK_12M,
+		address_b => W_A(13 downto 0),
+		q_b       => W_CPU_ROM_DO
 	);
 
 -------- VIDEO  -----------------------------

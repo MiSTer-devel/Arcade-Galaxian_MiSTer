@@ -31,6 +31,10 @@ library ieee;
 
 entity MC_VIDEO is
 	port(
+		dn_addr       : in  std_logic_vector(15 downto 0);
+		dn_data       : in  std_logic_vector(7 downto 0);
+		dn_wr         : in  std_logic;
+
 		I_CLK_18M     : in  std_logic;
 		I_CLK_12M     : in  std_logic;
 		I_CLK_6M      : in  std_logic;
@@ -147,7 +151,13 @@ architecture RTL of MC_VIDEO is
 	signal W_VID_RAM_CS   : std_logic := '0';
 	signal W_CLK_6Mn      : std_logic := '0';
 
+	signal gfx1_cs,gfx2_cs: std_logic;
+
 begin
+
+	gfx1_cs  <= '1' when dn_addr(15 downto 12) = X"4" else '0';
+	gfx2_cs  <= '1' when dn_addr(15 downto 12) = X"5" else '0';
+
 	ld_pls : entity work.MC_LD_PLS
 	port map(
 		I_CLK_6M    => I_CLK_6M,
@@ -220,19 +230,31 @@ begin
 	);
 
 	-- 1K VID-Rom
-	k_rom : entity work.GALAXIAN_1K 
-	port map (
-		CLK  => I_CLK_12M,
-		ADDR => W_O_OBJ_ROM_A,
-		DATA => W_1K_D
+	k_rom : work.dpram generic map (12,8)
+	port map
+	(
+		clock_a   => I_CLK_12M,
+		wren_a    => dn_wr and gfx2_cs,
+		address_a => dn_addr(11 downto 0),
+		data_a    => dn_data,
+
+		clock_b   => I_CLK_12M,
+		address_b => '0' & W_O_OBJ_ROM_A,
+		q_b       => W_1K_D
 	);
 
 	-- 1H VID-Rom
-	h_rom : entity work.GALAXIAN_1H
-	port map(
-		CLK  => I_CLK_12M,
-		ADDR => W_O_OBJ_ROM_A,
-		DATA => W_1H_D
+	h_rom : work.dpram generic map (12,8)
+	port map
+	(
+		clock_a   => I_CLK_12M,
+		wren_a    => dn_wr and gfx1_cs,
+		address_a => dn_addr(11 downto 0),
+		data_a    => dn_data,
+
+		clock_b   => I_CLK_12M,
+		address_b => '0' & W_O_OBJ_ROM_A,
+		q_b       => W_1H_D
 	);
 
 -----------------------------------------------------------------------------------

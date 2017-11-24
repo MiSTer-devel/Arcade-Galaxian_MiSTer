@@ -356,12 +356,9 @@ set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:sys/build_id.tcl"
 set_global_assignment -name CDF_FILE jtag_lite.cdf
 set_global_assignment -name QIP_FILE sys/sys.qip
 set_global_assignment -name QIP_FILE sys/sysmem.qip
-set_global_assignment -name VHDL_FILE ROM/ROM_PGM_0.vhd
-set_global_assignment -name VHDL_FILE ROM/GALAXIAN_6L.vhd
-set_global_assignment -name VHDL_FILE ROM/GALAXIAN_1K.vhd
-set_global_assignment -name VHDL_FILE ROM/GALAXIAN_1H.vhd
-set_global_assignment -name VHDL_FILE ROM/GAL_HIT.vhd
-set_global_assignment -name VHDL_FILE ROM/GAL_FIR.vhd
+set_global_assignment -name VHDL_FILE ROM/HIT.vhd
+set_global_assignment -name VHDL_FILE ROM/FIR.vhd
+set_global_assignment -name VHDL_FILE ROM/CLUT.vhd
 set_global_assignment -name VHDL_FILE cpu/T80sed.vhd
 set_global_assignment -name VHDL_FILE cpu/T80as.vhd
 set_global_assignment -name VHDL_FILE cpu/T80_Reg.vhd

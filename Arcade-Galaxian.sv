@@ -113,7 +113,7 @@ assign {DDRAM_CLK, DDRAM_BURSTCNT, DDRAM_ADDR, DDRAM_DIN, DDRAM_BE, DDRAM_RD, DD
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
 assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
-assign LED_USER  = 0;
+assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
 assign LED_POWER = 0;
 
@@ -129,7 +129,7 @@ localparam CONF_STR = {
 	"-;",
 	"T6,Reset;",
 	"J,Fire,Start 1P,Start 2P;",
-	"V,v1.00.",`BUILD_DATE
+	"V,v2.00.",`BUILD_DATE
 };
 
 ////////////////////   CLOCKS   ///////////////////
@@ -152,6 +152,11 @@ pll pll
 wire [31:0] status;
 wire  [1:0] buttons;
 
+wire        ioctl_download;
+wire        ioctl_wr;
+wire [24:0] ioctl_addr;
+wire  [7:0] ioctl_dout;
+
 wire [64:0] ps2_key;
 
 wire [15:0] joystick_0,joystick_1;
@@ -166,6 +171,11 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 
 	.buttons(buttons),
 	.status(status),
+
+	.ioctl_download(ioctl_download),
+	.ioctl_wr(ioctl_wr),
+	.ioctl_addr(ioctl_addr),
+	.ioctl_dout(ioctl_dout),
 
 	.joystick_0(joystick_0),
 	.joystick_1(joystick_1),
@@ -276,6 +286,10 @@ galaxian galaxian
 	.W_V_SYNC(vs),
 	.HBLANK(hblank),
 	.VBLANK(vblank),
+
+	.dn_addr(ioctl_addr[15:0]),
+	.dn_data(ioctl_dout),
+	.dn_wr(ioctl_wr),
 
 	.W_SDAT_A(audio_a),
 	.W_SDAT_B(audio_b)

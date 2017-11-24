@@ -23,7 +23,7 @@
 // The output is supposed to be send to VIP scaler input.
 //
 
-module screen_rotate #(parameter WIDTH=320, HEIGHT=240, DEPTH=8, CCW=0)
+module screen_rotate #(parameter WIDTH=320, HEIGHT=240, DEPTH=8, MARGIN=8, CCW=0)
 (
 	input              clk_in,
 	input              ce_in,
@@ -125,9 +125,13 @@ always @(posedge clk_out) begin
 
 	if(~vsync) begin
 
-		vout <= out;
 		hs <= (xpos >= HEIGHT);
-		if(xpos < HEIGHT) addr_out <= addr_out + 1'd1;
+		if((ypos<MARGIN) || (ypos>=WIDTH+MARGIN)) begin
+			vout <= 0;
+		end else begin
+			vout <= out;
+			if(xpos < HEIGHT) addr_out <= addr_out + 1'd1;
+		end
 
 		xpos <= xpos + 1;
 
@@ -135,7 +139,7 @@ always @(posedge clk_out) begin
 			xpos  <= 0;
 			ypos  <= ypos + 1;
 			
-			if(ypos >= (WIDTH-1)) vsync <= 1;
+			if(ypos >= (WIDTH+MARGIN+MARGIN-1)) vsync <= 1;
 		end
 	end
 end

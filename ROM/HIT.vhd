@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all,ieee.numeric_std.all;
 
-entity GAL_HIT is
+entity HIT is
 port (
 	clk  : in  std_logic;
 	addr : in  std_logic_vector(12 downto 0);
@@ -9,7 +9,7 @@ port (
 );
 end entity;
 
-architecture prom of GAL_HIT is
+architecture prom of HIT is
 	type rom is array(0 to  8191) of std_logic_vector(7 downto 0);
 	signal rom_data: rom := (
 		X"65",X"75",X"88",X"90",X"93",X"9B",X"A3",X"A3",X"A3",X"A6",X"9E",X"9B",X"9B",X"A3",X"AB",X"B6",

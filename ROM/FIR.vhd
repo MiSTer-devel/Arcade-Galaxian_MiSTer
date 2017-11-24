@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all,ieee.numeric_std.all;
 
-entity GAL_FIR is
+entity FIR is
 port (
 	clk  : in  std_logic;
 	addr : in  std_logic_vector(12 downto 0);
@@ -9,7 +9,7 @@ port (
 );
 end entity;
 
-architecture prom of GAL_FIR is
+architecture prom of FIR is
 	type rom is array(0 to  8191) of std_logic_vector(7 downto 0);
 	signal rom_data: rom := (
 		X"AC",X"68",X"72",X"C7",X"93",X"3F",X"80",X"C8",X"5C",X"A1",X"22",X"90",X"B9",X"8A",X"41",X"62",

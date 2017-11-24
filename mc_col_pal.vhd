@@ -60,10 +60,7 @@ begin
 		end if;
 	end process;
 
-	---    COL ROM     --------------------------------------------------------
---wire   W_COL_ROM_OEn = W_6M_DO[1];
-
-	galaxian_6l : entity work.GALAXIAN_6L
+	clut : entity work.CLUT
 	port map (
 		CLK  => I_CLK_12M,
 		ADDR => W_6M_DO(6 downto 2),

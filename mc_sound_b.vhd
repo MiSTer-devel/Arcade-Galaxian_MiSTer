@@ -89,7 +89,7 @@ begin
 	end process;
 
 -------------  FIRE SOUND ------------------------------------------
-	mc_roms_fire : entity work.GAL_FIR
+	mc_roms_fire : entity work.FIR
 	port map (
 		CLK  => I_CLK1,
 		ADDR => fire_addr(12 downto 0),
@@ -128,7 +128,7 @@ begin
 	end process;
 
 -------------  HIT SOUND ------------------------------------------
-	mc_roms_hit : entity work.GAL_HIT
+	mc_roms_hit : entity work.HIT
 	port map (
 		CLK  => I_CLK1,
 		ADDR => hit_addr(12 downto 0),
