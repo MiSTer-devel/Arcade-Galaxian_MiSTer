@@ -31,7 +31,11 @@ entity galaxian is
 
 		P1_CSJUDLR : in  std_logic_vector(6 downto 0);
 		P2_CSJUDLR : in  std_logic_vector(6 downto 0);
+		DIP        : in  std_logic_vector(7 downto 0);
 		I_RESET    : in  std_logic;
+      I_TABLE    : in  std_logic;
+      I_TEST     : in  std_logic;
+      I_SERVICE  : in  std_logic;
 
 		dn_addr    : in  std_logic_vector(15 downto 0);
 		dn_data    : in  std_logic_vector(7 downto 0);
@@ -274,6 +278,10 @@ begin
 		I_2P_RI       => P2_CSJUDLR(0),
 		I_SW0_OE      => W_SW0_OE,
 		I_SW1_OE      => W_SW1_OE,
+		I_DIP			  => DIP,
+		I_TABLE       => I_TABLE,
+		I_SERVICE     => I_SERVICE,
+		I_TEST        => I_TEST,
 		I_DIP_OE      => W_DIP_OE,
 		O_D           => W_SW_DO
 	);
