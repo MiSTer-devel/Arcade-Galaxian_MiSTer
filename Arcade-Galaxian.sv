@@ -99,7 +99,7 @@ localparam CONF_STR = {
 	"OD,Service,Off,On;",
 	"-;",
 	"R0,Reset;",
-	"J,Fire,Start 1P,Start 2P;",
+	"J1,Fire,Start 1P,Start 2P;",
 	"V,v",`BUILD_DATE
 };
 
