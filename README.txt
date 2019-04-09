@@ -19,6 +19,15 @@
 --   SPACE,CTRL : Fire
 --   LEFT,RIGHT : Movements
 --
+-- MAME/IPAC/JPAC Style Keyboard inputs:
+--   5           : Coin 1
+--   6           : Coin 2
+--   1           : Start 1 Player
+--   2           : Start 2 Players
+--   D,G         : Player 2 Movements
+--   A           : Player 2 Jump
+--
+--
 -- Joystick support.
 -- 
 ---------------------------------------------------------------------------------
