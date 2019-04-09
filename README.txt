@@ -25,7 +25,7 @@
 --   1           : Start 1 Player
 --   2           : Start 2 Players
 --   D,G         : Player 2 Movements
---   A           : Player 2 Jump
+--   A           : Player 2 Fire
 --
 --
 -- Joystick support.
