@@ -129,7 +129,7 @@ pll pll
 	.outclk_0(clk_18),
 	.outclk_1(clk_sys),
 	.outclk_2(clk_6),
-	.outclk_3(clk_hdmi),
+	.outclk_3(clk_hdmi), // 24
 	.outclk_4(clk_48),
 	.locked(pll_locked)
 );
@@ -251,7 +251,7 @@ wire [2:0] r,g;
 wire [2:0] b;
 
 reg ce_pix;
-always @(posedge clk_48) begin
+always @(posedge clk_hdmi) begin
 	reg old_clk;
 	
 	old_clk <= clk_sys;
@@ -262,7 +262,7 @@ arcade_rotate_fx #(514,223,9) arcade_video
 (
         .*,
 
-        .clk_video(clk_48),
+        .clk_video(clk_hdmi),
         //.ce_pix(ce_vid),
 
         .RGB_in({r,g,b}),
