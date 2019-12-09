@@ -251,7 +251,7 @@ wire [2:0] r,g;
 wire [2:0] b;
 
 reg ce_pix;
-always @(posedge clk_hdmi) begin
+always @(posedge clk_48) begin
 	reg old_clk;
 	
 	old_clk <= clk_sys;
@@ -262,7 +262,7 @@ arcade_rotate_fx #(514,223,9) arcade_video
 (
         .*,
 
-        .clk_video(clk_hdmi),
+        .clk_video(clk_48),
         //.ce_pix(ce_vid),
 
         .RGB_in({r,g,b}),
@@ -323,7 +323,7 @@ galaxian galaxian
 	.P2_CSJUDLR({btn_coin_2, m_start2|btn_start_2,m_fire_2,m_up_2,m_down_2,m_left_2,m_right_2}),
 
 	.DIP(m_dip),
-   .I_TABLE(status[12]),
+	.I_TABLE(status[12]),
 	.I_TEST(status[13]),
 	.I_SERVICE(btn_test),
 
