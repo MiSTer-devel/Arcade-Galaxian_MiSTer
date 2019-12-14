@@ -29,7 +29,7 @@ module emu
 	input         RESET,
 
 	//Must be passed to hps_io module
-	inout  [44:0] HPS_BUS,
+	inout  [45:0] HPS_BUS,
 
 	//Base video clock. Usually equals to CLK_SYS.
 	output        VGA_CLK,
@@ -44,6 +44,7 @@ module emu
 	output        VGA_HS,
 	output        VGA_VS,
 	output        VGA_DE,    // = ~(VBlank | HBlank)
+	output        VGA_F1,
 
 	//Base video clock. Usually equals to CLK_SYS.
 	output        HDMI_CLK,
@@ -74,9 +75,21 @@ module emu
 
 	output [15:0] AUDIO_L,
 	output [15:0] AUDIO_R,
-	output        AUDIO_S    // 1 - signed audio samples, 0 - unsigned
+	output        AUDIO_S,   // 1 - signed audio samples, 0 - unsigned
+	
+	// Open-drain User port.
+	// 0 - D+/RX
+	// 1 - D-/TX
+	// 2..6 - USR2..USR6
+	// Set USER_OUT to 1 to read from USER_IN.
+	input   [6:0] USER_IN,
+	output  [6:0] USER_OUT
+	
+	
 );
 
+assign VGA_F1    = 0;
+assign USER_OUT  = '1;
 assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
 assign LED_POWER = 0;
@@ -87,8 +100,6 @@ assign HDMI_ARY = status[1] ? 8'd9  : status[2] ? 8'd3 : 8'd4;
 `include "build_id.v" 
 localparam CONF_STR = {
 	"A.GALAXN;;",
-	"F,rom;", // allow loading of alternate ROMs
-	"-;",
 	"O1,Aspect Ratio,Original,Wide;",
 	"O2,Orientation,Vert,Horz;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
@@ -114,9 +125,9 @@ pll pll
 	.refclk(CLK_50M),
 	.rst(0),
 	.outclk_0(clk_18),
-	.outclk_1(clk_sys),
+	.outclk_1(clk_sys), // 12
 	.outclk_2(clk_6),
-	.outclk_3(clk_hdmi),
+	.outclk_3(clk_hdmi), // 24
 	.outclk_4(clk_48),
 	.locked(pll_locked)
 );
@@ -137,6 +148,9 @@ wire [10:0] ps2_key;
 wire [15:0] joystick_0,joystick_1;
 wire [15:0] joy = joystick_0 | joystick_1;
 
+wire [21:0] gamma_bus;
+
+
 hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 (
 	.clk_sys(clk_sys),
@@ -147,6 +161,7 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 	.buttons(buttons),
 	.status(status),
 	.forced_scandoubler(forced_scandoubler),
+	.gamma_bus(gamma_bus),
 
 	.ioctl_download(ioctl_download),
 	.ioctl_wr(ioctl_wr),
@@ -233,6 +248,7 @@ wire hs, vs;
 wire [2:0] r,g;
 wire [2:0] b;
 
+/*
 reg ce_pix;
 always @(posedge clk_48) begin
 	reg old_clk;
@@ -240,6 +256,16 @@ always @(posedge clk_48) begin
 	old_clk <= clk_sys;
 	ce_pix <= old_clk & ~clk_sys;
 end
+*/
+
+reg ce_pix;
+always @(posedge clk_48) begin
+        reg [1:0] div;
+
+        div <= div + 1'd1;
+        ce_pix <= !div;
+end
+
 
 arcade_rotate_fx #(514,223,9) arcade_video
 (
@@ -306,7 +332,7 @@ galaxian galaxian
 	.P2_CSJUDLR({btn_coin_2, m_start2|btn_start_2,m_fire_2,m_up_2,m_down_2,m_left_2,m_right_2}),
 
 	.DIP(m_dip),
-   .I_TABLE(status[12]),
+	.I_TABLE(status[12]),
 	.I_TEST(status[13]),
 	.I_SERVICE(btn_test),
 
