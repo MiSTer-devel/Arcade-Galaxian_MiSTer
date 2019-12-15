@@ -150,32 +150,29 @@ library ieee;
 --  mc_video.v use
 entity MC_LRAM is
 	port (
-		I_CLK   : in  std_logic;
+		I_WCLK  : in  std_logic;
+		I_RCLK  : in  std_logic;
 		I_ADDR  : in  std_logic_vector(7 downto 0);
 		I_D     : in  std_logic_vector(4 downto 0);
-		I_WE    : in  std_logic;
 		O_Dn    : out std_logic_vector(4 downto 0)
 	);
 end;
 
 architecture RTL of MC_LRAM is
-	signal W_D  : std_logic_vector(4 downto 0) := (others => '0');
 begin
-
-	O_Dn <= not W_D;
 
 	ram_inst : work.dpram generic map(8,5)
 	port map
 	(
-		clock_a		=> I_CLK,
+		clock_a		=> I_WCLK,
 		address_a	=> I_ADDR,
-		data_a		=> I_D,
-		wren_a		=> not I_WE,
+		data_a		=> not I_D,
+		wren_a		=> '1',
 
-		clock_b		=> not I_CLK,
+		clock_b		=> not I_RCLK,
 		address_b	=> I_ADDR,
 		data_b		=> (others => '0'),
-		q_b			=> W_D,
+		q_b			=> O_Dn,
 		enable_b    => '1',
 		wren_b		=> '0'
 	);

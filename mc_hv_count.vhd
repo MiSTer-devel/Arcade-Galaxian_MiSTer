@@ -35,6 +35,7 @@ entity MC_HV_COUNT is
 		O_H_CNT  : out std_logic_vector(8 downto 0);
 		O_H_SYNC : out std_logic;
 		O_H_BL   : out std_logic;
+		O_H_BLn  : out std_logic;
 		O_V_BL2n : out std_logic;
 		O_V_CNT  : out std_logic_vector(7 downto 0);
 		O_V_SYNC : out std_logic;
@@ -141,5 +142,6 @@ begin
 	O_V_BL2n <= V_BL2n;
 -------   C_BLn     ------------------------------------------
 	O_C_BLn  <= V_BLn and (not H_CNT(8));
+	O_H_BLn  <= not H_CNT(8);
 
 end;

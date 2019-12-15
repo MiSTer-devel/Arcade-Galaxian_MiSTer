@@ -25,4 +25,5 @@ set_global_assignment -name VHDL_FILE mc_col_pal.vhd
 set_global_assignment -name VHDL_FILE mc_bram.vhd
 set_global_assignment -name VHDL_FILE mc_adec.vhd
 set_global_assignment -name VHDL_FILE galaxian.vhd
+set_global_assignment -name SDC_FILE galaxian.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-Galaxian.sv"

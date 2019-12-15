@@ -25,7 +25,6 @@ library ieee;
 
 entity galaxian is
 	port(
-		W_CLK_18M  : in  std_logic;
 		W_CLK_12M  : in  std_logic;
 		W_CLK_6M   : in  std_logic;
 
@@ -70,6 +69,9 @@ architecture RTL of galaxian is
 	-------- H and V COUNTER -------------------------
 	signal W_C_BLn            : std_logic := '0';
 	signal W_C_BLnX           : std_logic := '0';
+	signal W_H_BLn            : std_logic := '0';
+	signal W_H_BLnX           : std_logic := '0';
+	signal W_H_BLXn           : std_logic := '0';
 	signal W_C_BLXn           : std_logic := '0';
 	signal W_H_BL             : std_logic := '0';
 	signal W_H_SYNC_int       : std_logic := '0';
@@ -162,7 +164,6 @@ begin
 		dn_data       => dn_data,
 		dn_wr         => dn_wr,
 
-		I_CLK_18M     => W_CLK_18M,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_H_CNT       => W_H_CNT,
@@ -171,6 +172,7 @@ begin
 		I_V_FLIP      => W_V_FLIP,
 		I_V_BLn       => W_V_BLn,
 		I_C_BLn       => W_C_BLn,
+		I_H_BLn       => W_H_BLn,
 		I_A           => W_A(9 downto 0),
 		I_OBJ_SUB_A   => "000",
 		I_BD          => W_BDI,
@@ -181,6 +183,7 @@ begin
 		I_VID_RAM_WR  => W_VID_RAM_WR,
 		I_DRIVER_WR   => W_DRIVER_WE,
 		O_C_BLnX      => W_C_BLnX,
+		O_H_BLnX      => W_H_BLnX,
 		O_8HF         => W_8HF,
 		O_256HnX      => W_256HnX,
 		O_1VF         => W_1VF,
@@ -293,6 +296,7 @@ begin
 		O_H_CNT       => W_H_CNT,
 		O_H_SYNC      => W_H_SYNC_int,
 		O_H_BL        => W_H_BL,
+		O_H_BLn       => W_H_BLn,
 		O_V_CNT       => W_V_CNT,
 		O_V_SYNC      => W_V_SYNC_int,
 		O_V_BL2n      => W_V_BL2n,
@@ -307,7 +311,9 @@ begin
 		I_VID         => W_VID,
 		I_COL         => W_COL,
 		I_C_BLnX      => W_C_BLnX,
+		I_H_BLnX      => W_H_BLnX,
 		O_C_BLXn      => W_C_BLXn,
+		O_H_BLXn      => W_H_BLXn,
 		O_STARS_OFFn  => W_STARS_OFFn,
 		O_R           => W_VIDEO_R,
 		O_G           => W_VIDEO_G,
@@ -316,7 +322,7 @@ begin
 
 	mc_stars : entity work.MC_STARS
 	port map (
-		I_CLK_18M     => W_CLK_18M,
+		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_H_FLIP      => W_H_FLIP,
 		I_V_SYNC      => W_V_SYNC_int,
@@ -389,7 +395,7 @@ begin
 	process(W_CLK_6M)
 	begin
 		if rising_edge(W_CLK_6M) then
-			HBLANK   <= not W_C_BLXn;
+			HBLANK   <= not W_H_BLXn;
 			VBLANK   <= not W_V_BL2n;
 		end if;
 	end process;

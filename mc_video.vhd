@@ -35,7 +35,6 @@ entity MC_VIDEO is
 		dn_data       : in  std_logic_vector(7 downto 0);
 		dn_wr         : in  std_logic;
 
-		I_CLK_18M     : in  std_logic;
 		I_CLK_12M     : in  std_logic;
 		I_CLK_6M      : in  std_logic;
 		I_H_CNT       : in  std_logic_vector(8 downto 0);
@@ -44,6 +43,7 @@ entity MC_VIDEO is
 		I_V_FLIP      : in  std_logic;
 		I_V_BLn       : in  std_logic;
 		I_C_BLn       : in  std_logic;
+		I_H_BLn       : in  std_logic;
 
 		I_A           : in  std_logic_vector(9 downto 0);
 		I_BD          : in  std_logic_vector(7 downto 0);
@@ -56,6 +56,7 @@ entity MC_VIDEO is
 		I_DRIVER_WR   : in  std_logic;
 
 		O_C_BLnX      : out std_logic;
+		O_H_BLnX      : out std_logic;
 		O_8HF         : out std_logic;
 		O_256HnX      : out std_logic;
 		O_1VF         : out std_logic;
@@ -149,7 +150,6 @@ architecture RTL of MC_VIDEO is
 	signal W_SRCLK        : std_logic := '0';
 	signal W_SRLD         : std_logic := '0';
 	signal W_VID_RAM_CS   : std_logic := '0';
-	signal W_CLK_6Mn      : std_logic := '0';
 
 	signal gfx1_cs,gfx2_cs: std_logic;
 
@@ -193,16 +193,15 @@ begin
 
 	lram : entity work.MC_LRAM
 	port map(
-		I_CLK  => I_CLK_18M,
+		I_WCLK => I_CLK_6M,
+		I_RCLK => I_CLK_12M,
 		I_ADDR => W_LRAM_A,
-		I_WE   => W_CLK_6Mn,
 		I_D    => W_LRAM_DI,
 		O_Dn   => W_LRAM_DO
 	);
 
 	missile : entity work.MC_MISSILE
 	port map(
-		I_CLK_18M  => I_CLK_18M,
 		I_CLK_6M   => I_CLK_6M,
 		I_C_BLn_X  => W_C_BLnX,
 		I_MLDn     => W_MLDn,
@@ -272,8 +271,6 @@ begin
 			W_SLDn      <= WB_SLDn;
 		end if;
 	end process;
-
-	W_CLK_6Mn <= not I_CLK_6M;
 
 	W_6J_DA <= I_H_FLIP & W_HF_CNT(7) & W_HF_CNT(3) & I_H_CNT(2);
 	W_6J_DB <= W_OBJ_D(6) & ( W_HF_CNT(3) and I_H_CNT(1) ) & I_H_CNT(2) & I_H_CNT(1);
@@ -396,8 +393,7 @@ begin
 		if rising_edge(I_CLK_6M) then
 			if (W_LDn = '0') then
 				W_6P_Q <= W_H_FLIP2 & W_H_FLIP1 & I_C_BLn & (not I_H_CNT(8)) & W_6K_Q(2 downto 0);
-			else
-				W_6P_Q <= W_6P_Q;
+				O_H_BLnX <= I_H_BLn;
 			end if;
 		end if;
 	end process;

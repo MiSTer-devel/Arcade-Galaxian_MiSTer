@@ -116,19 +116,16 @@ localparam CONF_STR = {
 
 ////////////////////   CLOCKS   ///////////////////
 
-wire clk_48, clk_sys, clk_18, clk_6;
+wire clk_48, clk_sys, clk_6;
 wire pll_locked;
 
-wire clk_hdmi;
 pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
-	.outclk_0(clk_18),
+	.outclk_0(clk_48),
 	.outclk_1(clk_sys), // 12
 	.outclk_2(clk_6),
-	.outclk_3(clk_hdmi), // 24
-	.outclk_4(clk_48),
 	.locked(pll_locked)
 );
 
@@ -243,20 +240,9 @@ wire m_right_2  = status[2] ? btn_up_2    | joy[3] : btn_right_2 | joy[0];
 wire m_fire_2  = btn_fire_2;
 
 wire hblank, vblank;
-wire ce_vid = clk_6;
 wire hs, vs;
 wire [2:0] r,g;
 wire [2:0] b;
-
-/*
-reg ce_pix;
-always @(posedge clk_48) begin
-	reg old_clk;
-	
-	old_clk <= clk_sys;
-	ce_pix <= old_clk & ~clk_sys;
-end
-*/
 
 reg ce_pix;
 always @(posedge clk_48) begin
@@ -272,7 +258,6 @@ arcade_rotate_fx #(514,223,9) arcade_video
         .*,
 
         .clk_video(clk_48),
-        //.ce_pix(ce_vid),
 
         .RGB_in({r,g,b}),
         .HBlank(hblank),
@@ -322,7 +307,6 @@ wire [7:0]m_dip = {1'b0,1'b0 ,2'b00,1'b0,~status[8],status[11:10]};
 
 galaxian galaxian
 (
-	.W_CLK_18M(clk_18),
 	.W_CLK_12M(clk_sys),
 	.W_CLK_6M(clk_6),
 	.I_RESET(RESET | status[0] | buttons[1] | ioctl_download),
