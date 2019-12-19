@@ -1,0 +1,23 @@
+<misterromdescription>
+	<name>Galaxian (Namco set 1)</name>
+	<mameversion>0216</mameversion>
+	<mratimestamp>201911270000</mratimestamp>
+	<year>1979</year>
+	<manufacturer>Namco</manufacturer>
+	<category>Space / Galaxian</category>
+	<rbf>galaxian</rbf>
+	<rom index="0" zip="galaxian.zip" md5="d871350748c1cde3f45b8f33a3da7759" type="merged|nonmerged">
+		<part name="galmidw.u"/>
+		<part name="galmidw.v"/>
+		<part name="galmidw.w"/>
+		<part name="galmidw.y"/>
+		<part name="7l"/>
+		<part name="7l"/>
+		<part name="7l"/>
+		<part name="7l"/>
+		<part name="1h.bin"/>
+		<part name="1h.bin"/>
+		<part name="1k.bin"/>
+		<part name="1k.bin"/>
+	</rom>
+</misterromdescription>
