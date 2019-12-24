@@ -216,10 +216,10 @@ reg btn_fire  = 0;
 reg btn_one_player  = 0;
 reg btn_two_players = 0;
 
-wire m_up     = status[2] ? btn_left  | joy[1] : btn_up    | joy[3];
-wire m_down   = status[2] ? btn_right | joy[0] : btn_down  | joy[2];
-wire m_left   = status[2] ? btn_down  | joy[2] : btn_left  | joy[1];
-wire m_right  = status[2] ? btn_up    | joy[3] : btn_right | joy[0];
+wire m_up     = no_rotate ? btn_left  | joy[1] : btn_up    | joy[3];
+wire m_down   = no_rotate ? btn_right | joy[0] : btn_down  | joy[2];
+wire m_left   = no_rotate ? btn_down  | joy[2] : btn_left  | joy[1];
+wire m_right  = no_rotate ? btn_up    | joy[3] : btn_right | joy[0];
 wire m_fire   = btn_fire | joy[4];
 
 reg btn_start_1=0;
