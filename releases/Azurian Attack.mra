@@ -15,7 +15,7 @@
 	<rom index="1">
 		<part>02</part>
 	</rom>  
-	<rom index="0" zip="azurian.zip" md5="15a3833969f0334f2e440b31868ce44f" type="merged|nonmerged">
+	<rom index="0" zip="azurian.zip" md5="ac001e48386008c63a602fe73c7121ba" type="merged|nonmerged">
 		<part name="pgm.1"/>
 		<part name="pgm.2"/>
 		<part name="pgm.3"/>
@@ -24,5 +24,6 @@
 		<part name="gfx.1"/>
 		<part name="gfx.2"/>
 		<part name="gfx.2"/>
+		<part name="l06_prom.bin"/>
 	</rom>
 </misterromdescription>

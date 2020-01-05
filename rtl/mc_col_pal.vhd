@@ -23,6 +23,10 @@ library ieee;
 
 entity MC_COL_PAL is
 port (
+	dn_addr       : in  std_logic_vector(15 downto 0);
+	dn_data       : in  std_logic_vector(7 downto 0);
+	dn_wr         : in  std_logic;
+
 	I_CLK_12M    : in  std_logic;
 	I_CLK_6M     : in  std_logic;
 	I_VID        : in  std_logic_vector(1 downto 0);
@@ -47,6 +51,7 @@ architecture RTL of MC_COL_PAL is
 	signal W_6M_CLR     : std_logic := '0';
 	signal W_6M_HBL     : std_logic := '0';
 	signal W_6M_HBLCLR  : std_logic := '0';
+        signal clut_cs	    : std_logic;
 
 begin
 	W_6M_DI      <= I_COL(2 downto 0) & I_VID(1 downto 0) & not (I_VID(0) or I_VID(1)) & I_C_BLnX;
@@ -76,12 +81,29 @@ begin
 		end if;
 	end process;
 
-	clut : entity work.CLUT
-	port map (
-		CLK  => I_CLK_12M,
-		ADDR => W_6M_DO(6 downto 2),
-		DATA => W_COL_ROM_DO
-	);
+--	clut : entity work.CLUT
+--	port map (
+--		CLK  => I_CLK_12M,
+--		ADDR => W_6M_DO(6 downto 2),
+--		DATA => W_COL_ROM_DO
+--	);
+
+        clut_cs  <= '1' when dn_addr(15 downto 12) = X"6" else '0';
+
+
+        clut : work.dpram generic map (5,8)
+        port map
+        (
+                clock_a   => I_CLK_12M,
+                wren_a    => dn_wr and clut_cs,
+                address_a => dn_addr(4 downto 0),
+                data_a    => dn_data,
+
+                clock_b   => I_CLK_12M,
+                address_b => W_6M_DO(6 downto 2),
+                q_b       => W_COL_ROM_DO 
+        );
+
 
 	---    VID OUT     --------------------------------------------------------
 	O_R <= W_COL_ROM_DO(2 downto 0);

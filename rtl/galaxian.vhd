@@ -309,6 +309,9 @@ begin
 
 	mc_col_pal : entity work.MC_COL_PAL
 	port map(
+		dn_addr       => dn_addr,
+		dn_data       => dn_data,
+		dn_wr         => dn_wr,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_VID         => W_VID,
