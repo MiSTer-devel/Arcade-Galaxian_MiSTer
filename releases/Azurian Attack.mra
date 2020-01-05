@@ -1,0 +1,28 @@
+<misterromdescription>
+	<name>Azurian Attack</name>
+	<mameversion>0216</mameversion>
+	<mratimestamp>201911270000</mratimestamp>
+	<year>1982</year>
+	<manufacturer>Rait Electronics Ltd</manufacturer>
+	<category>Space / Fighter</category>
+	<rbf>galaxian</rbf>
+        <switches default="7F,BF,04">
+                <dip bits="15" name="Lives" ids="3,5" />
+                <dip bits="16" name="Coin" ids="1c/1cr,2c/1cr"/>
+                <dip bits="17" name="Bonus Life After" ids="5000,7000"/>
+                <dip bits="19"    name="Cabinet" ids="Upright,Cocktail"/>
+        </switches>
+	<rom index="1">
+		<part>02</part>
+	</rom>  
+	<rom index="0" zip="azurian.zip" md5="15a3833969f0334f2e440b31868ce44f" type="merged|nonmerged">
+		<part name="pgm.1"/>
+		<part name="pgm.2"/>
+		<part name="pgm.3"/>
+		<part name="pgm.3"/>
+		<part name="gfx.1"/>
+		<part name="gfx.1"/>
+		<part name="gfx.2"/>
+		<part name="gfx.2"/>
+	</rom>
+</misterromdescription>

@@ -28,17 +28,21 @@ entity galaxian is
 		W_CLK_12M  : in  std_logic;
 		W_CLK_6M   : in  std_logic;
 
-		P1_CSJUDLR : in  std_logic_vector(6 downto 0);
-		P2_CSJUDLR : in  std_logic_vector(6 downto 0);
-		DIP        : in  std_logic_vector(7 downto 0);
+		W_SW0_DI   : in std_logic_vector(7 downto 0);
+		W_SW1_DI   : in std_logic_vector(7 downto 0);
+		W_DIP_DI   : in std_logic_vector(7 downto 0);
 		I_RESET    : in  std_logic;
-      I_TABLE    : in  std_logic;
-      I_TEST     : in  std_logic;
-      I_SERVICE  : in  std_logic;
 
 		dn_addr    : in  std_logic_vector(15 downto 0);
 		dn_data    : in  std_logic_vector(7 downto 0);
 		dn_wr      : in  std_logic;
+		--
+		mod_mooncr   : in  std_logic;
+		mod_devilfsh : in  std_logic;
+		mod_pisces   : in  std_logic;
+		mod_uniwars  : in  std_logic;
+		mod_kingbal  : in  std_logic;
+		--
 
 		W_R        : out std_logic_vector(2 downto 0);
 		W_G        : out std_logic_vector(2 downto 0);
@@ -66,6 +70,8 @@ architecture RTL of galaxian is
 	signal W_CPU_WRn          : std_logic := '0';
 	signal W_CPU_WR           : std_logic := '0';
 	signal W_RESETn           : std_logic := '0';
+        signal CPU_INT_n          : std_logic;
+        signal CPU_NMI_n          : std_logic;
 	-------- H and V COUNTER -------------------------
 	signal W_C_BLn            : std_logic := '0';
 	signal W_C_BLnX           : std_logic := '0';
@@ -97,6 +103,7 @@ architecture RTL of galaxian is
 	signal W_PITCH            : std_logic := '0';
 	signal W_SOUND_WE         : std_logic := '0';
 	signal W_STARS_ON         : std_logic := '0';
+        signal W_STARS_ON_ADJ     : std_logic := '0';
 	signal W_STARS_OFFn       : std_logic := '0';
 	signal W_SW0_OE           : std_logic := '0';
 	signal W_SW1_OE           : std_logic := '0';
@@ -163,7 +170,10 @@ begin
 		dn_addr       => dn_addr,
 		dn_data       => dn_data,
 		dn_wr         => dn_wr,
-
+                mod_mooncr    => mod_mooncr,
+                mod_devilfsh  => mod_devilfsh,
+                mod_pisces    => mod_pisces,
+                mod_uniwars   => mod_uniwars,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_H_CNT       => W_H_CNT,
@@ -194,13 +204,17 @@ begin
 		O_COL         => W_COL
 	);
 
+
+        CPU_INT_n <= W_CPU_NMIn when mod_devilfsh = '1' else '1';
+        CPU_NMI_n <= '1' when mod_devilfsh = '1' else W_CPU_NMIn;
+
 	cpu : entity work.T80as
 	port map (
 		RESET_n       => W_RESETn,
 		CLK_n         => W_CPU_CLK,
 		WAIT_n        => W_CPU_WAITn,
-		INT_n         => '1',
-		NMI_n         => W_CPU_NMIn,
+		INT_n         => CPU_INT_n,
+		NMI_n         => CPU_NMI_n,
 		BUSRQ_n       => '1',
 		MREQ_n        => W_CPU_MREQn,
 		RD_n          => W_CPU_RDn,
@@ -269,22 +283,11 @@ begin
 	-- active high buttons
 	mc_inport : entity work.MC_INPORT
 	port map (
-		I_COIN1       => P1_CSJUDLR(6),
-		I_COIN2       => P2_CSJUDLR(6),
-		I_1P_START    => P1_CSJUDLR(5),
-		I_2P_START    => P2_CSJUDLR(5),
-		I_1P_SH       => P1_CSJUDLR(4),
-		I_2P_SH       => P2_CSJUDLR(4),
-		I_1P_LE       => P1_CSJUDLR(1),
-		I_2P_LE       => P2_CSJUDLR(1),
-		I_1P_RI       => P1_CSJUDLR(0),
-		I_2P_RI       => P2_CSJUDLR(0),
+		W_SW0_DI   => W_SW0_DI,
+		W_SW1_DI   => W_SW1_DI,
+		W_DIP_DI   => W_DIP_DI,
 		I_SW0_OE      => W_SW0_OE,
 		I_SW1_OE      => W_SW1_OE,
-		I_DIP			  => DIP,
-		I_TABLE       => I_TABLE,
-		I_SERVICE     => I_SERVICE,
-		I_TEST        => I_TEST,
 		I_DIP_OE      => W_DIP_OE,
 		O_D           => W_SW_DO
 	);
@@ -330,7 +333,7 @@ begin
 		I_256HnX      => W_256HnX,
 		I_1VF         => W_1VF,
 		I_2V          => W_V_CNT(1),
-		I_STARS_ON    => W_STARS_ON,
+		I_STARS_ON    => W_STARS_ON_ADJ,
 		I_STARS_OFFn  => W_STARS_OFFn,
 		O_R           => W_STARS_R,
 		O_G           => W_STARS_G,
@@ -475,4 +478,21 @@ begin
 	end process;
 
 -------------------------------------------------------------------------------
+
+W_STARS_ON_ADJ <= '0' when mod_kingbal='1' else W_STARS_ON;
+
+-------------------------------------------------------------------------------
+-- King & Balloon speech board
+
+--        speech : entity work.kb_synth
+--       port map(
+--                reset_n       => W_RESETn,
+--                clk           => W_CLK_12M,
+--                in0           => W_SPEECH_IN(0),
+--                in1           => W_SPEECH_IN(1),
+--                in2           => '0', -- GND
+--                in3           => '0', -- GND
+--                speech_out    => W_SDAT_C
+--        );
+
 end RTL;

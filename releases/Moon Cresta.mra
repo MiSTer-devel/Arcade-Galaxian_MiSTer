@@ -1,0 +1,48 @@
+<misterromdescription>
+	<name>Moon Cresta (Galaxian hardware)</name>
+	<mameversion>0216</mameversion>
+	<setname>mooncrgx</setname>
+	<mratimestamp>201911270000</mratimestamp>
+	<year>1980</year>
+	<manufacturer>bootleg</manufacturer>
+	<category>Space / Shooter</category>
+	<rbf>galaxian</rbf>
+        <switches default="1F,1F,04">
+                <dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
+                <dip bits="14" name="Bonus Life After" ids="30000,50000"/>
+                <dip bits="15" name="Language" ids="English,Japanese"/>
+                <dip bits="16,17" name="Coin A" ids="1c/1cr,2c/1cr,3c/1cr,4c/1cr"/>
+                <dip bits="18,19" name="Coin B" ids="1c/1cr,2c/1cr,3c/1cr,4c/1cr"/>
+        </switches>
+	<rom index="1">
+		<part>01</part>
+	</rom>  
+	<rom index="0" zip="mooncrst.zip" md5="2c57b86d5d30ef379e93be30038eb51d" type="nonmerged">
+		<part name="mc1"/>
+		<part name="mc2"/>
+		<part name="mc3"/>
+		<part name="mc4"/>
+		<part name="mc5.7r"/>
+		<part name="mc6.8d"/>
+		<part name="mc7.8e"/>
+		<part name="mc8"/>
+		<part name="mcs_b"/>
+		<part name="mcs_d"/>
+		<part name="mcs_a"/>
+		<part name="mcs_c"/>
+	</rom>
+	<rom index="0" zip="BROKENmooncrst.zip" md5="e5c031ea5ceed5764d54aeb43890a796" type="merged">
+		<part name="mooncrgx/1"/>
+		<part name="mooncrgx/2"/>
+		<part name="mooncrgx/3"/>
+		<part name="mooncrgx/4"/>
+		<part name="mooncrgx/5"/>
+		<part name="mooncrgx/6"/>
+		<part name="mooncrgx/7"/>
+		<part name="mooncrgx/8"/>
+		<part name="fantazia/1h_1_10.bin"/>
+		<part name="mooncptc/mc14.bin"/>
+		<part name="mooncrgx/9.chr"/>
+		<part name="mooncptc/mc13.bin"/>
+	</rom>
+</misterromdescription>
