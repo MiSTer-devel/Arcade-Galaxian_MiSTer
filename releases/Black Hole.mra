@@ -16,7 +16,7 @@
 	<rom index="1">
 		<part>03</part>
 	</rom>  
-	<rom index="0" zip="blkhole.zip" md5="d976f7cbbed53dd8f6d8c3b014c8a404" type="merged|nonmerged">
+	<rom index="0" zip="blkhole.zip" md5="c4a5705706f6ff4fbf6e921b26ce78e4" type="merged|nonmerged">
 		<part name="bh1"/>
 		<part name="bh2"/>
 		<part name="bh3"/>
@@ -29,5 +29,6 @@
 		<part name="bh7"/>
 		<part name="bh8"/>
 		<part name="bh8"/>
+		<part name="6l.bpr"/>
 	</rom>
 </misterromdescription>

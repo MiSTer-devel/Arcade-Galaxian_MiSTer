@@ -8,30 +8,30 @@
 	<category>Space / Shooter</category>
 	<rbf>galaxian</rbf>
         <switches default="1F,1F,04">
-                <dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
-                <dip bits="14" name="Bonus Life After" ids="30000,50000"/>
-                <dip bits="15" name="Language" ids="English,Japanese"/>
-                <dip bits="16,17" name="Coin A" ids="1c/1cr,2c/1cr,3c/1cr,4c/1cr"/>
-                <dip bits="18,19" name="Coin B" ids="1c/1cr,2c/1cr,3c/1cr,4c/1cr"/>
+                <dip bits="14" name="Coin A" ids="2c/1cr,1c/1cr"/>
+                <dip bits="15" name="Coin B" ids="1c/5cr,1c/3cr"/>
+                <dip bits="16" name="Bonus Life After" ids="30000,50000"/>
+                <dip bits="19"    name="Cabinet" ids="Upright,Cocktail"/>
         </switches>
 	<rom index="1">
 		<part>01</part>
 	</rom>  
-	<rom index="0" zip="mooncrst.zip" md5="2c57b86d5d30ef379e93be30038eb51d" type="nonmerged">
-		<part name="mc1"/>
-		<part name="mc2"/>
-		<part name="mc3"/>
-		<part name="mc4"/>
-		<part name="mc5.7r"/>
-		<part name="mc6.8d"/>
-		<part name="mc7.8e"/>
-		<part name="mc8"/>
-		<part name="mcs_b"/>
-		<part name="mcs_d"/>
-		<part name="mcs_a"/>
-		<part name="mcs_c"/>
+	<rom index="0" zip="mooncrgx.zip" md5="abd1d6477749713797d44d6425642e58" type="nonmerged">
+		<part name="1"/>
+		<part name="2"/>
+		<part name="3"/>
+		<part name="4"/>
+		<part name="5"/>
+		<part name="6"/>
+		<part name="7"/>
+		<part name="8"/>
+		<part name="1h_1_10.bin"/>
+		<part name="12.chr"/>
+		<part name="9.chr"/>
+		<part name="11.chr"/>
+                <part name="l06_prom.bin"/>
 	</rom>
-	<rom index="0" zip="BROKENmooncrst.zip" md5="e5c031ea5ceed5764d54aeb43890a796" type="merged">
+	<rom index="0" zip="mooncrst.zip" md5="abd1d6477749713797d44d6425642e58" type="merged">
 		<part name="mooncrgx/1"/>
 		<part name="mooncrgx/2"/>
 		<part name="mooncrgx/3"/>
@@ -44,5 +44,6 @@
 		<part name="mooncptc/mc14.bin"/>
 		<part name="mooncrgx/9.chr"/>
 		<part name="mooncptc/mc13.bin"/>
+                <part name="mmi6331.6l"/>
 	</rom>
 </misterromdescription>
