@@ -1,0 +1,32 @@
+<misterromdescription>
+	<name>Catacomb</name>
+	<mameversion>0216</mameversion>
+	<mratimestamp>201911270000</mratimestamp>
+	<year>1982</year>
+	<manufacturer>MTM Games</manufacturer>
+	<category>Space / Force</category>
+	<rbf>galaxian</rbf>
+	<switches default="FF,1F,04">
+                <dip bits="14" name="Coin A" ids="2c/1cr,1c/1cr"/>
+                <dip bits="15" name="Coin B" ids="1c/5cr,1c/3cr"/>
+		<dip bits="18" name="Lives" ids="5,3"/>
+	</switches>
+        <rom index="1">
+                <part>04</part>
+        </rom>
+	<rom index="0" zip="catacomb.zip" md5="a9c00095b4ccb5183445aa9e67c873af" type="merged|nonmerged">
+		<part name="catacomb.u"/>
+		<part name="catacomb.v"/>
+		<part name="catacomb.w"/>
+		<part name="catacomb.w"/>
+		<part name="catacomb.y"/>
+		<part name="catacomb.y"/>
+		<part name="catacomb.y"/>
+		<part name="catacomb.y"/>
+		<part name="cat-gfx1"/>
+		<part name="cat-gfx1"/>
+		<part name="cat-gfx2"/>
+		<part name="cat-gfx2"/>
+		<part name="mmi6331.6l"/>
+	</rom>
+</misterromdescription>
