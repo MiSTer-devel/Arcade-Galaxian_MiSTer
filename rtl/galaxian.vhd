@@ -60,6 +60,8 @@ end;
 architecture RTL of galaxian is
 	--    CPU ADDRESS BUS
 	signal W_A                : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_R                : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_N                : std_logic_vector(15 downto 0) := (others => '0');
 	--    CPU IF
 	signal W_CPU_CLK          : std_logic := '0';
 	signal W_CPU_MREQn        : std_logic := '0';
@@ -111,6 +113,7 @@ architecture RTL of galaxian is
 	signal W_VID_RAM_RD       : std_logic := '0';
 	signal W_VID_RAM_WR       : std_logic := '0';
 	signal W_WDR_OE           : std_logic := '0';
+	signal W_CPU_M1n          : std_logic := '0';
 	--------- INPORT -----------------------------
 	signal W_SW_DO            : std_logic_vector( 7 downto 0) := (others => '0');
 	--------- VIDEO  -----------------------------
@@ -223,11 +226,11 @@ begin
 		A             => W_A,
 		DI            => W_BDO,
 		DO            => W_BDI,
-		M1_n          => open,
+		M1_n          => W_CPU_M1n,
 		IORQ_n        => open,
 		HALT_n        => open,
-		BUSAK_n       => open,
-		DOE           => open
+		BUSAK_n       => open--,
+--		DOE           => open
 	);
 
 	mc_cpu_ram : entity work.MC_CPU_RAM
@@ -368,6 +371,8 @@ begin
 	);
 
 --------- ROM           -------------------------------------------------------
+        W_A_N <= W_A_R when mod_devilfsh = '1' else W_A;
+
 	mc_roms : work.dpram generic map (14,8)
 	port map
 	(
@@ -377,7 +382,7 @@ begin
 		data_a    => dn_data,
 
 		clock_b   => W_CLK_12M,
-		address_b => W_A(13 downto 0),
+		address_b => W_A_N(13 downto 0),
 		q_b       => W_CPU_ROM_DO
 	);
 
@@ -479,6 +484,22 @@ begin
 			end if;
 		end if;
 	end process;
+
+        --- remap CPU address to rom address
+        process(W_A)
+        begin
+                W_A_R(10 downto 0) <= W_A(10 downto 0);
+                case(W_A(13 downto 11)) is
+                                when "000" => W_A_R(13 downto 11) <= "001";
+                                when "001" => W_A_R(13 downto 11) <= "011";
+                                when "010" => W_A_R(13 downto 11) <= "101";
+                                when "011" => W_A_R(13 downto 11) <= "111";
+                                when "100" => W_A_R(13 downto 11) <= "000";
+                                when "101" => W_A_R(13 downto 11) <= "010";
+                                when "110" => W_A_R(13 downto 11) <= "100";
+                                when "111" => W_A_R(13 downto 11) <= "110";
+                end case;
+        end process;
 
 -------------------------------------------------------------------------------
 
