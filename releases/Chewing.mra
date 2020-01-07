@@ -1,0 +1,25 @@
+<misterromdescription>
+	<name>Chewing</name>
+	<rbf>galaxian</rbf>
+	<switches default="FF,1F,04">
+                <dip bits="14" name="Coin A" ids="2c/1cr,1c/1cr"/>
+                <dip bits="15" name="Coin B" ids="1c/5cr,1c/3cr"/>
+		<dip bits="18" name="Lives" ids="5,3"/>
+	</switches>
+        <rom index="1">
+                <part>05</part>
+        </rom>
+	<rom index="0" zip="chewing.zip" md5="656bbf78e46f3de6908947c4caa53430" type="merged|nonmerged">
+		<part name="1.bin"/>
+		<part name="1.bin"/>
+		<part name="7l.bin"/>
+		<part name="7l.bin"/>
+		<part name="7l.bin"/>
+		<part name="7l.bin"/>
+		<part name="2.bin"/>
+		<part name="2.bin"/>
+		<part name="3.bin"/>
+		<part name="3.bin"/>
+		<part name="74s288.ch"/>
+	</rom>
+</misterromdescription>
