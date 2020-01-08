@@ -89,6 +89,7 @@ entity MC_ADEC is
 		O_PITCH       : out std_logic;
 		O_H_FLIP      : out std_logic;
 		O_V_FLIP      : out std_logic;
+		O_SPEECH      : out std_logic_vector(1 downto 0); -- kingballoon
 		O_BD_G        : out std_logic;
 		O_STARS_ON    : out std_logic
 	);
@@ -247,5 +248,6 @@ begin
 	O_STARS_ON <= W_9N_Q(4);
 	O_H_FLIP   <= W_9N_Q(6);
 	O_V_FLIP   <= W_9N_Q(7);
+	O_SPEECH   <= W_9N_Q(2)&W_9N_Q(0); -- King & Balloon
 
 end RTL;

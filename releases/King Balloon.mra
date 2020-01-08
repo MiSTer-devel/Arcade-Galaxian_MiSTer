@@ -1,10 +1,7 @@
 <misterromdescription>
-	<name>Galaxian (Namco set 1)</name>
+	<name>King Balloon</name>
 	<mameversion>0216</mameversion>
 	<mratimestamp>201911270000</mratimestamp>
-	<year>1979</year>
-	<manufacturer>Namco</manufacturer>
-	<category>Space / Galaxian</category>
 	<rbf>galaxian</rbf>
 	<switches default="FF,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>
@@ -14,19 +11,20 @@
 		<dip bits="16,17" name="Bonus Life After" ids="7000,10000,12000,20000"/>
 		<dip bits="18" name="Lives" ids="2,3"/>
 	</switches>
-	<rom index="0" zip="galaxian.zip" md5="434c546b09dbb7559e7fde9354c27d19" type="merged|nonmerged">
-		<part name="galmidw.u"/>
-		<part name="galmidw.v"/>
-		<part name="galmidw.w"/>
-		<part name="galmidw.y"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="1h.bin"/>
-		<part name="1h.bin"/>
-		<part name="1k.bin"/>
-		<part name="1k.bin"/>
-		<part name="6l.bpr"/>
+        <rom index="1">
+                <part>07</part>
+        </rom>
+	<rom index="0" zip="kingball.zip" amd5="d871350748c1cde3f45b8f33a3da7759" type="merged|nonmerged">
+		<part name="prg1.7f"/>
+		<part name="prg2.7j"/>
+		<part name="prg3.7l"/>
+		<part repeat="2048" >FF</part>
+		<part repeat="2048" >00</part>
+		<part repeat="2048" >00</part>
+		<part name="chg1.1h"/>
+		<part name="chg1.1h"/>
+		<part name="chg2.1k"/>
+		<part name="chg2.1k"/>
+		<part name="kb2-1"/>
 	</rom>
 </misterromdescription>

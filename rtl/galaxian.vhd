@@ -42,6 +42,7 @@ entity galaxian is
 		mod_pisces   : in  std_logic;
 		mod_uniwars  : in  std_logic;
 		mod_kingbal  : in  std_logic;
+		mod_orbitron : in  std_logic;
 		--
 
 		W_R        : out std_logic_vector(2 downto 0);
@@ -51,8 +52,9 @@ entity galaxian is
 		VBLANK     : out std_logic;
 		W_H_SYNC   : out std_logic;
 		W_V_SYNC   : out std_logic;
-		W_SDAT_A   : out std_logic_vector( 7 downto 0);
-		W_SDAT_B   : out std_logic_vector( 7 downto 0);
+		W_SDAT_A   : out std_logic_vector( 7 downto 0) := (others => '0');
+		W_SDAT_B   : out std_logic_vector( 7 downto 0) := (others => '0');
+		W_SDAT_C   : out std_logic_vector( 7 downto 0) := (others => '0');
 		O_CMPBL    : out std_logic
 	);
 end;
@@ -60,8 +62,9 @@ end;
 architecture RTL of galaxian is
 	--    CPU ADDRESS BUS
 	signal W_A                : std_logic_vector(15 downto 0) := (others => '0');
-	signal W_A_R                : std_logic_vector(15 downto 0) := (others => '0');
-	signal W_A_N                : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_R              : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_C              : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_ORBITRON       : std_logic_vector(15 downto 0) := (others => '0');
 	--    CPU IF
 	signal W_CPU_CLK          : std_logic := '0';
 	signal W_CPU_MREQn        : std_logic := '0';
@@ -104,6 +107,7 @@ architecture RTL of galaxian is
 	signal W_OBJ_RAM_WR       : std_logic := '0';
 	signal W_PITCH            : std_logic := '0';
 	signal W_SOUND_WE         : std_logic := '0';
+	signal W_SPEECH_IN        : std_logic_vector(1 downto 0);
 	signal W_STARS_ON         : std_logic := '0';
         signal W_STARS_ON_ADJ     : std_logic := '0';
 	signal W_STARS_OFFn       : std_logic := '0';
@@ -279,6 +283,7 @@ begin
 		O_PITCH       => W_PITCH,
 		O_H_FLIP      => W_H_FLIP,
 		O_V_FLIP      => W_V_FLIP,
+		O_SPEECH      => W_SPEECH_IN,
 		O_BD_G        => W_BD_G,
 		O_STARS_ON    => W_STARS_ON
 	);
@@ -371,7 +376,12 @@ begin
 	);
 
 --------- ROM           -------------------------------------------------------
-        W_A_N <= W_A_R when mod_devilfsh = '1' else W_A;
+	W_A_C <= W_A_R when mod_devilfsh = '1' else W_A_ORBITRON when mod_orbitron = '1' else W_A;
+	--mc_roms : entity work.kb_prog
+	--	port map (
+	--			 clk => W_CLK_12M, 
+	--			 addr => W_A_C(13 downto 0), 
+	--			 data => W_CPU_ROM_DO);
 
 	mc_roms : work.dpram generic map (14,8)
 	port map
@@ -382,7 +392,7 @@ begin
 		data_a    => dn_data,
 
 		clock_b   => W_CLK_12M,
-		address_b => W_A_N(13 downto 0),
+		address_b => W_A_C(13 downto 0),
 		q_b       => W_CPU_ROM_DO
 	);
 
@@ -485,6 +495,8 @@ begin
 		end if;
 	end process;
 
+	W_A_ORBITRON(13 downto 0) <= W_A(13 downto 11) & (W_A(10) xor (not W_A(13))) & (W_A(9) xor (not W_A(13))) & W_A(8 downto 0);
+
         --- remap CPU address to rom address
         process(W_A)
         begin
@@ -508,15 +520,15 @@ W_STARS_ON_ADJ <= '0' when mod_kingbal='1' else W_STARS_ON;
 -------------------------------------------------------------------------------
 -- King & Balloon speech board
 
---        speech : entity work.kb_synth
---       port map(
---                reset_n       => W_RESETn,
---                clk           => W_CLK_12M,
---                in0           => W_SPEECH_IN(0),
---                in1           => W_SPEECH_IN(1),
---                in2           => '0', -- GND
---                in3           => '0', -- GND
---                speech_out    => W_SDAT_C
---        );
+        speech : entity work.kb_synth
+       port map(
+                reset_n       => W_RESETn,
+                clk           => W_CLK_12M,
+                in0           => W_SPEECH_IN(0),
+                in1           => W_SPEECH_IN(1),
+                in2           => '0', -- GND
+                in3           => '0', -- GND
+                speech_out    => W_SDAT_C
+        );
 
 end RTL;

@@ -8,7 +8,7 @@
                 <dip bits="18" name="Difficulty" ids="Easy,Hard"/>
         </switches>
         <rom index="1">
-                <part>11</part>
+                <part>0B</part>
         </rom>
   <rom index="0" zip="pisces.zip" md5="41f6f556ea5dd7cc27d2ca64feea8b9f">
         <part name="p1.bin"/>

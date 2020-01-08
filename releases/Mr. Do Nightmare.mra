@@ -1,0 +1,36 @@
+<misterromdescription>
+	<name>Mr. Do Nightmare</name>
+	<mameversion>0216</mameversion>
+	<setname></setname>
+	<mratimestamp>201911270000</mratimestamp>
+	<year>2004</year>
+	<manufacturer>Crazy Ivan</manufacturer>
+	<category>Maze / Digging</category>
+	<rbf>galaxian</rbf>
+        <switches default="FF,1F,04">
+                <dip bits="7"    name="Service" ids="Off,On"/>
+                <dip bits="6"    name="Test" ids="Off,On"/>
+                <dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
+
+                <dip bits="14,15" name="Coin" ids="1C/1Cr,Free Play"/>
+        </switches>
+        <rom index="1">
+                <part>08</part>
+        </rom>
+        <rom index="0" zip="mrdonm.zip" md5="58c6153b90652577329cc2691450c764" type="nonmerged">
+                <part name="mrdonm.u"/>
+                <part name="mrdonm.v"/>
+                <part name="mrdonm.w"/>
+                <part name="mrdonm.y"/>
+                <part name="mrdonm.z"/>
+                <part name="mrdonm.z"/>
+                <part name="mrdonm.z"/>
+                <part name="mrdonm.z"/>
+                <part name="mrdonm.1h"/>
+                <part name="mrdonm.1h"/>
+                <part name="mrdonm.1k"/>
+                <part name="mrdonm.1k"/>
+                <part name="mrdonm.6l"/>
+        </rom>
+
+</misterromdescription>

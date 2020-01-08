@@ -16,7 +16,7 @@
                 <dip bits="18" name="Lives" ids="3,5"/>
         </switches>
         <rom index="1">
-                <part>12</part>
+                <part>0C</part>
         </rom>
 	<rom index="0" zip="uniwars.zip" md5="b270e45e9d2ca2e73b081fed66d9f3db" type="merged|nonmerged">
 		<part name="f07_1a.bin"/>

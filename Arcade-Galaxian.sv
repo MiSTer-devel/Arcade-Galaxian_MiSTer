@@ -322,8 +322,9 @@ arcade_rotate_fx #(514,223,9) arcade_video
 );
 
 
-wire [7:0] audio_a, audio_b;
-wire [10:0] audio = {1'b0, audio_b, 2'b0} + {3'b0, audio_a};
+wire [7:0] audio_a, audio_b,audio_c;
+wire [10:0] audio = {1'b0, audio_b, 2'b0} + {3'b0, audio_a} + {2'b00, audio_c, 1'b0};
+
 assign AUDIO_L = {audio, 5'd0};
 assign AUDIO_R = {audio, 5'd0};
 assign AUDIO_S = 0;
@@ -370,9 +371,11 @@ wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_st
 wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin|btn_coin_1,btn_coin_2 };
 wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2|btn_start_2,m_start1|btn_start_1};
 
-wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, m_coin|btn_coin_1,btn_coin_2};
+wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin|btn_coin_1};
 wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2|btn_start_2,m_start1|btn_start_1};
 
+
+wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory) ? 1 : 0;
 
 // zigzag??
 
@@ -381,7 +384,7 @@ wire mod_dev_trip = mod_devilfsh | mod_tripledr;
 
 wire [7:0]m_dip = sw[2] ;
 wire [7:0] sw0 = mod_azurian ? sw0_azurian : mod_orb_vic_war ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
-wire [7:0] sw1 = mod_azurian ? sw1_azurian : mod_orb_vic_war ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw1_galaxian;
+wire [7:0] sw1 = mod_azurian ? sw1_azurian : mod_orb_vic_war ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
 
 galaxian galaxian
 (
@@ -420,9 +423,11 @@ galaxian galaxian
 	.mod_pisces(mod_pisces),
 	.mod_uniwars(mod_uniwars),
 	.mod_kingbal(mod_kingbal),
+	.mod_orbitron(mod_orbitron),
 
 	.W_SDAT_A(audio_a),
-	.W_SDAT_B(audio_b)
+	.W_SDAT_B(audio_b),
+	.W_SDAT_C(audio_c)
 );
 
 endmodule
