@@ -6,7 +6,7 @@
 	<manufacturer>Rait Electronics Ltd</manufacturer>
 	<category>Space / Fighter</category>
 	<rbf>galaxian</rbf>
-        <switches default="7F,BF,04">
+        <switches default="7F,1F,04">
                 <dip bits="15" name="Lives" ids="3,5" />
                 <dip bits="16" name="Coin" ids="1c/1cr,2c/1cr"/>
                 <dip bits="17" name="Bonus Life After" ids="5000,7000"/>
