@@ -520,15 +520,15 @@ W_STARS_ON_ADJ <= '0' when mod_kingbal='1' else W_STARS_ON;
 -------------------------------------------------------------------------------
 -- King & Balloon speech board
 
-        speech : entity work.kb_synth
-       port map(
-                reset_n       => W_RESETn,
-                clk           => W_CLK_12M,
-                in0           => W_SPEECH_IN(0),
-                in1           => W_SPEECH_IN(1),
-                in2           => '0', -- GND
-                in3           => '0', -- GND
-                speech_out    => W_SDAT_C
-        );
+--        speech : entity work.kb_synth
+--       port map(
+--                reset_n       => W_RESETn,
+--                clk           => W_CLK_12M,
+--                in0           => W_SPEECH_IN(0),
+--                in1           => W_SPEECH_IN(1),
+--                in2           => '0', -- GND
+--                in3           => '0', -- GND
+--                speech_out    => W_SDAT_C
+--        );
 
 end RTL;

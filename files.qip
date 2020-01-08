@@ -26,10 +26,6 @@ set_global_assignment -name VHDL_FILE rtl/mc_hv_count.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_col_pal.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_bram.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_adec.vhd
-set_global_assignment -name VHDL_FILE rtl/kb_synth.vhd
-set_global_assignment -name VHDL_FILE rtl/ttl_74138.vhd
-set_global_assignment -name VHDL_FILE rtl/ttl_74273.vhd
-set_global_assignment -name VHDL_FILE rtl/ttl_74367.vhd
 set_global_assignment -name VHDL_FILE rtl/galaxian.vhd
 set_global_assignment -name VHDL_FILE prog.vhd
 set_global_assignment -name SDC_FILE rtl/galaxian.sdc
