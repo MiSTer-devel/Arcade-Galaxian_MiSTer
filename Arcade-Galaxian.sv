@@ -385,7 +385,7 @@ wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|m
 // zigzag??
 
 wire mod_orb_vic_war = mod_orbitron | mod_victory | mod_warofbug;
-wire mod_dev_trip = mod_devilfsh | mod_tripledr;
+wire mod_dev_trip = mod_devilfsh | mod_tripledr | mod_lucktoday;
 
 wire [7:0]m_dip = sw[2] ;
 wire [7:0] sw0 = mod_azurian ? sw0_azurian : mod_orb_vic_war ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
