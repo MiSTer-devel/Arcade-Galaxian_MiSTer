@@ -8,8 +8,6 @@
 	<category>Maze / Digging</category>
 	<rbf>galaxian</rbf>
         <switches default="FF,1F,04">
-                <dip bits="7"    name="Service" ids="Off,On"/>
-                <dip bits="6"    name="Test" ids="Off,On"/>
                 <dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
 
                 <dip bits="14,15" name="Coin" ids="1C/1Cr,Free Play"/>
