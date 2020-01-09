@@ -1,6 +1,6 @@
 <misterromdescription>
         <rbf>galaxian</rbf>
-        <switches default="FF,1F,04">
+        <switches default="FF,1F,00">
                 <dip bits="14" name="Lives" ids="3,4"/>
                 <dip bits="15" name="Cabinet" ids="Upright,Cocktail"/>
                 <dip bits="16" name="Bonus Life After" ids="10000,20000"/>
