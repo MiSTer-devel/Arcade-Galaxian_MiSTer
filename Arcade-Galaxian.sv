@@ -193,6 +193,7 @@ reg mod_victory= 0;
 reg mod_warofbug= 0;
 reg mod_zigzag= 0;
 reg mod_tripledr= 0;
+reg mod_lucktoday= 0;
 
 always @(posedge clk_sys) begin
 	reg [7:0] mod = 0;
@@ -215,6 +216,7 @@ always @(posedge clk_sys) begin
 	mod_warofbug	<= (mod == 14);
 	mod_zigzag	<= (mod == 15);
 	mod_tripledr	<= (mod == 16);
+	mod_lucktoday   <= (mod == 17);
 end
 
 
@@ -374,8 +376,11 @@ wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_le
 wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin|btn_coin_1};
 wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2|btn_start_2,m_start1|btn_start_1};
 
+//wire [7:0] sw0_chewing = sw[0] & { btn_coin_2, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b1, m_coin|btn_coin_1};
+//wire [7:0] sw1_chewing = sw[1] & { 7'b1111111, m_start1|btn_start_1};
 
-wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory) ? 1 : 0;
+
+wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday) ? 1 : 0;
 
 // zigzag??
 
