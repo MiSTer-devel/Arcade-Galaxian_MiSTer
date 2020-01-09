@@ -16,7 +16,7 @@
         <rom index="1">
                 <part>06</part>
         </rom>
-	<rom index="0" zip="devilfsh.zip" amd5="3af9bea33dc72c07afb13e17e588289d" type="merged">
+	<rom index="0" zip="devilfsh.zip" md5="3af9bea33dc72c07afb13e17e588289d" type="merged">
 		<part name="devilfsg/dfish1.7f"/>
 		<part name="devilfsg/dfish2.7h"/>
 		<part name="devilfsg/dfish3.7k"/>

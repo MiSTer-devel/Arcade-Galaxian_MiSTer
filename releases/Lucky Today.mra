@@ -6,7 +6,7 @@
         <rom index="1">
                 <part>11</part>
         </rom>
-	<rom index="0" zip="luctoday.zip" amd5="656bbf78e46f3de6908947c4caa53430" type="merged|nonmerged">
+	<rom index="0" zip="luctoday.zip" md5="7dd164c166c9346132ed34ae75e9e496" type="merged|nonmerged">
 		<part crc="59c389b9" name="ltprog1.bin"/>
 		<part crc="ac3893b1" name="ltprog2.bin"/>
 		<part crc="ac3893b1" name="ltprog2.bin"/>
