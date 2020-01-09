@@ -107,7 +107,8 @@ localparam CONF_STR = {
 	"DIP;",
 	"-;",
 	"R0,Reset;",
-	"J1,Fire,Start 1P,Start 2P;",
+	"J1,Fire,Start 1P,Start 2P,Coin;",
+	"jn,A,Start,Select,R;",
 	"V,v",`BUILD_DATE
 };
 
@@ -286,7 +287,7 @@ wire no_rotate = status[2] & ~direct_video;
 
 wire m_start1 = btn_one_player  | joy[5];
 wire m_start2 = btn_two_players | joy[6];
-wire m_coin   = m_start1 | m_start2;
+wire m_coin   = m_start1 | m_start2 | joy[7];
 
 wire m_up_2     = no_rotate ? btn_left_2  | joy[1] : btn_up_2    | joy[3];
 wire m_down_2   = no_rotate ? btn_right_2 | joy[0] : btn_down_2  | joy[2];
@@ -301,14 +302,14 @@ wire [2:0] b;
 
 reg ce_pix;
 always @(posedge clk_48) begin
-        reg [1:0] div;
+        reg [2:0] div;
 
         div <= div + 1'd1;
         ce_pix <= !div;
 end
 
 
-arcade_rotate_fx #(514,223,9) arcade_video
+arcade_rotate_fx #(257,223,9) arcade_video
 (
         .*,
 
@@ -331,36 +332,7 @@ assign AUDIO_L = {audio, 5'd0};
 assign AUDIO_R = {audio, 5'd0};
 assign AUDIO_S = 0;
 
-/*
------------------------------------------------------------------
---    DIP SW        0     1     2     3     4     5
------------------------------------------------------------------
---  COIN CHUTE
--- 1 COIN/1 PLAY   1'b0  1'b0
--- 2 COIN/1 PLAY   1'b1  1'b0
--- 1 COIN/2 PLAY   1'b0  1'b1
--- FREE PLAY       1'b1  1'b1
---   BOUNS
---                             1'b0  1'b0
---                             1'b1  1'b01
---                             1'b0  1'b1
---                             1'b1  1'b1
---   LIVES
---     2                                   1'b0
---     3                                   1'b1
------------------------------------------------------------------
-
-*/
-
-// 7000, 3 lives:
-//wire [7:0]m_dip = {8'b00000100};
-// 2 lives:
-//wire [7:0]m_dip = {8'b10000000};
-// this seems to work:
-//wire [7:0]m_dip = {1'b0,1'b0 ,2'b00,1'b0,~status[8],status[11:10]};
-//wire [7:0]m_dip = {1'b1,1'b0 ,2'b00,1'b0,~status[8],status[11:10]};
-
-// fix dips for new mra method
+// dips for mra 
 wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2,m_coin|btn_coin_1};
 wire [7:0] sw1_galaxian = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2,m_start2|btn_start_2,btn_start_1|m_start1};
 
@@ -401,15 +373,6 @@ galaxian galaxian
         .W_SW0_DI(sw0),
         .W_SW1_DI(sw1),
         .W_DIP_DI(m_dip),
-
-
-	//.P1_CSJUDLR({m_coin|btn_coin_1,m_start1|btn_start_1,m_fire,m_up,m_down,m_left,m_right}),
-	//.P2_CSJUDLR({btn_coin_2, m_start2|btn_start_2,m_fire_2,m_up_2,m_down_2,m_left_2,m_right_2}),
-
-	//.DIP(m_dip),
-	//.I_TABLE(status[12]),
-	//.I_TEST(status[13]),
-	//.I_SERVICE(btn_test),
 
 	.W_R(r),
 	.W_G(g),
