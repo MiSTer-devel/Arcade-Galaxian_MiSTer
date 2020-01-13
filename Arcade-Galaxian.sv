@@ -241,8 +241,8 @@ always @(posedge clk_sys) begin
 			'h029: btn_fire        <= pressed; // space
 			'h014: btn_fire        <= pressed; // ctrl
 
-			'h005: btn_one_player  <= pressed; // F1
-			'h006: btn_two_players <= pressed; // F2
+			'h005: btn_start_1     <= pressed; // F1
+			'h006: btn_start_2     <= pressed; // F2
 			// JPAC/IPAC/MAME Style Codes
 			'h016: btn_start_1     <= pressed; // 1
 			'h01E: btn_start_2     <= pressed; // 2
@@ -285,15 +285,15 @@ reg btn_test=0;
 
 wire no_rotate = status[2] & ~direct_video;
 
-wire m_start1 = btn_one_player  | joy[5];
-wire m_start2 = btn_two_players | joy[6];
-wire m_coin   = m_start1 | m_start2 | joy[7];
+wire m_start1 = btn_start_1 | joy[5];
+wire m_start2 = btn_start_2 | joy[6];
+wire m_coin   = btn_coin_1  | joy[7];
 
-wire m_up_2     = no_rotate ? btn_left_2  | joy[1] : btn_up_2    | joy[3];
-wire m_down_2   = no_rotate ? btn_right_2 | joy[0] : btn_down_2  | joy[2];
-wire m_left_2   = no_rotate ? btn_down_2  | joy[2] : btn_left_2  | joy[1];
-wire m_right_2  = no_rotate ? btn_up_2    | joy[3] : btn_right_2 | joy[0];
-wire m_fire_2  = btn_fire_2;
+wire m_up_2     = btn_up_2    | joy[3];
+wire m_down_2   = btn_down_2  | joy[2];
+wire m_left_2   = btn_left_2  | joy[1];
+wire m_right_2  = btn_right_2 | joy[0];
+wire m_fire_2   = btn_fire_2  | joy[4];
 
 wire hblank, vblank;
 wire hs, vs;
@@ -309,7 +309,7 @@ always @(posedge clk_48) begin
 end
 
 
-arcade_rotate_fx #(257,223,9) arcade_video
+arcade_video #(257,223,9) arcade_video
 (
         .*,
 
@@ -321,6 +321,7 @@ arcade_rotate_fx #(257,223,9) arcade_video
         .HSync(hs),
         .VSync(vs),
 
+        .rotate_ccw(0),
         .fx(status[5:3]),
 );
 
@@ -332,24 +333,24 @@ assign AUDIO_L = {audio, 5'd0};
 assign AUDIO_R = {audio, 5'd0};
 assign AUDIO_S = 0;
 
-// dips for mra 
-wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2,m_coin|btn_coin_1};
-wire [7:0] sw1_galaxian = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2,m_start2|btn_start_2,btn_start_1|m_start1};
+// dips for mra
+wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw1_galaxian = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
-wire [7:0] sw0_azurian = sw[0] & { 1'b0 , m_fire_2, m_fire, m_coin|btn_coin_1, m_left,m_right,m_up,m_down};
-wire [7:0] sw1_azurian = sw[1] & { 2'b11, m_left_2,m_right_2,m_up_2,m_down_2,m_start2|btn_start_2,m_start1|btn_start_1};
+wire [7:0] sw0_azurian = sw[0] & { 1'b0 , m_fire_2, m_fire, m_coin, m_left,m_right,m_up,m_down};
+wire [7:0] sw1_azurian = sw[1] & { 2'b11, m_left_2,m_right_2,m_up_2,m_down_2,m_start2,m_start1};
 
-wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,m_coin|btn_coin_1,btn_coin_2 };
-wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_start2|btn_start_2,m_start1|btn_start_1};
+wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_start2,m_start1};
 
-wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin|btn_coin_1,btn_coin_2 };
-wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2|btn_start_2,m_start1|btn_start_1};
+wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2,m_start1};
 
-wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin|btn_coin_1};
-wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2|btn_start_2,m_start1|btn_start_1};
+wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2,m_start1};
 
-//wire [7:0] sw0_chewing = sw[0] & { btn_coin_2, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b1, m_coin|btn_coin_1};
-//wire [7:0] sw1_chewing = sw[1] & { 7'b1111111, m_start1|btn_start_1};
+//wire [7:0] sw0_chewing = sw[0] & { btn_coin_2, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b1, m_coin};
+//wire [7:0] sw1_chewing = sw[1] & { 7'b1111111, m_start1};
 
 
 wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday) ? 1 : 0;

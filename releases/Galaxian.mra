@@ -6,7 +6,7 @@
 	<manufacturer>Namco</manufacturer>
 	<category>Space / Galaxian</category>
 	<rbf>galaxian</rbf>
-	<switches default="0F,1F,04">
+	<switches default="1F,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>
 		<dip bits="6"    name="Test" ids="Off,On"/>
 		<dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
