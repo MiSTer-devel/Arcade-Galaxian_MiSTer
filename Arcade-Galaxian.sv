@@ -266,11 +266,11 @@ reg btn_fire  = 0;
 reg btn_one_player  = 0;
 reg btn_two_players = 0;
 
-wire m_up     = no_rotate ? btn_left  | joy[1] : btn_up    | joy[3];
-wire m_down   = no_rotate ? btn_right | joy[0] : btn_down  | joy[2];
-wire m_left   = no_rotate ? btn_down  | joy[2] : btn_left  | joy[1];
-wire m_right  = no_rotate ? btn_up    | joy[3] : btn_right | joy[0];
-wire m_fire   = btn_fire | joy[4];
+wire m_up     = btn_up    | joy[3];
+wire m_down   = btn_down  | joy[2];
+wire m_left   = btn_left  | joy[1];
+wire m_right  = btn_right | joy[0];
+wire m_fire   = btn_fire  | joy[4];
 
 reg btn_start_1=0;
 reg btn_start_2=0;
@@ -283,7 +283,7 @@ reg btn_right_2=0;
 reg btn_fire_2=0;
 reg btn_test=0;
 
-wire no_rotate = status[2] & ~direct_video;
+wire no_rotate = status[2] | direct_video;
 
 wire m_start1 = btn_start_1 | joy[5];
 wire m_start2 = btn_start_2 | joy[6];
