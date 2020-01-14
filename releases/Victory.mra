@@ -4,6 +4,7 @@
 	<mratimestamp>201911270000</mratimestamp>
 	<year>1982</year>
 	<manufacturer>bootleg</manufacturer>
+	<setname>victorycb</setname>
         <rbf>galaxian</rbf>
         <switches default="FF,1F,00">
                 <dip bits="13" name="Coin" ids="A 1C/1C  B 1C/6C,A 2C/1C  B 1C/3C"/>

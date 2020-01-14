@@ -5,6 +5,7 @@
 	<year>1982</year>
 	<manufacturer>Rait Electronics Ltd</manufacturer>
 	<category>Space / Fighter</category>
+	<setname>azurian</setname>
 	<rbf>galaxian</rbf>
         <switches default="7F,1F,04">
                 <dip bits="15" name="Lives" ids="3,5" />

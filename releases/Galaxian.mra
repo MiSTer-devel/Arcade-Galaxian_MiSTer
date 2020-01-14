@@ -5,6 +5,7 @@
 	<year>1979</year>
 	<manufacturer>Namco</manufacturer>
 	<category>Space / Galaxian</category>
+	<setname>galaxian</setname>
 	<rbf>galaxian</rbf>
 	<switches default="1F,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>

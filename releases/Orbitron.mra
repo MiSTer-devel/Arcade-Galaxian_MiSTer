@@ -5,6 +5,7 @@
 	<year>1982</year>
 	<manufacturer>Comsoft (Signatron USA license)</manufacturer>
 	<category>Space / Shooter</category>
+	<setname>orbitron</setname>
         <rbf>galaxian</rbf>
         <switches default="FF,5F,00">
                 <dip bits="14" name="Coin A" ids="2c/1cr,1c/1cr"/>

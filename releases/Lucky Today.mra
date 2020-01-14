@@ -1,5 +1,6 @@
 <misterromdescription>
 	<name>Luck Today</name>
+	<setname>luctoday</setname>
 	<rbf>galaxian</rbf>
 	<switches default="FF,1F,04">
 		<dip bits="16" name="Bonus Life After" ids="10000,15000"/>

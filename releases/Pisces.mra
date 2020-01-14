@@ -1,4 +1,5 @@
 <misterromdescription>
+	<setname>pisces</setname>
         <rbf>galaxian</rbf>
         <switches default="FF,1F,00">
                 <dip bits="14" name="Lives" ids="3,4"/>

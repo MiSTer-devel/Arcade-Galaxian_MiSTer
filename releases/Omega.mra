@@ -3,6 +3,7 @@
 	<mameversion>0216</mameversion>
 	<mratimestamp>201911270000</mratimestamp>
 	<year>19??</year>
+	<setname>omegab</setname>
 	<manufacturer>bootleg?</manufacturer>
         <rbf>galaxian</rbf>
         <switches default="FF,5F,00">

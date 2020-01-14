@@ -5,6 +5,7 @@
 	<year>1981</year>
 	<manufacturer>TDS & MINTS</manufacturer>
 	<category>Space / Shooter</category>
+	<setname>blkhole</setname>
 	<rbf>galaxian</rbf>
 	<switches default="FF,1F,02">
 		<dip bits="14,15" name="Coinage" ids="1c/1cr,1c/3cr,1c/2cr,2c/1cr" values="0,2,1,3"/>
