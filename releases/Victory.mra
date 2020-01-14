@@ -7,7 +7,7 @@
 	<setname>victorycb</setname>
         <rbf>galaxian</rbf>
         <switches default="FF,FF,F7">
-                <dip bits="14" name="Coin" ids="2c/1cr 1c/3cr,1c/1cr 1c/6cr"/>
+                <dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
                 <dip bits="18" name="Lives" ids="2,3"/>
                 <dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
         </switches>

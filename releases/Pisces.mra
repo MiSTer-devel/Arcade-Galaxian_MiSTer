@@ -5,7 +5,7 @@
                 <dip bits="14" name="Lives" ids="3,4"/>
                 <dip bits="15" name="Cabinet" ids="Upright,Cocktail"/>
                 <dip bits="16" name="Bonus Life After" ids="10000,20000"/>
-                <dip bits="17" name="Coin" ids="A 1C/1C  B 1C/6C,A 2C/1C  B 1C/3C"/>
+                <dip bits="17" name="Coinage" ids="1c/1cr,2c/1cr"/>
                 <dip bits="18" name="Difficulty" ids="Easy,Hard"/>
         </switches>
         <rom index="1">

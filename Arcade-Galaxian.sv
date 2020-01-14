@@ -253,7 +253,7 @@ always @(posedge clk_sys) begin
 			'h023: btn_left_2      <= pressed; // D
 			'h034: btn_right_2     <= pressed; // G
 			'h01C: btn_fire_2      <= pressed; // A
-			'h02C: btn_test           <= pressed; // T
+			'h02C: btn_test        <= pressed; // T
 		endcase
 	end
 end
@@ -287,7 +287,7 @@ wire no_rotate = status[2] | direct_video;
 
 wire m_start1 = btn_start_1 | joy[5];
 wire m_start2 = btn_start_2 | joy[6];
-wire m_coin   = btn_coin_1  | joy[7];
+wire m_coin   = btn_coin_1 | btn_coin_2 | joy[7];
 
 wire m_up_2     = btn_up_2    | joy[3];
 wire m_down_2   = btn_down_2  | joy[2];
@@ -333,19 +333,19 @@ assign AUDIO_R = {audio, 5'd0};
 assign AUDIO_S = 0;
 
 // dips for mra
-wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, mod_pisces & m_coin, ~mod_pisces & m_coin};
 wire [7:0] sw1_galaxian = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
 wire [7:0] sw0_azurian = sw[0] & { 1'b0 , m_fire_2, m_fire, m_coin, m_left,m_right,m_up,m_down};
 wire [7:0] sw1_azurian = sw[1] & { 2'b11, m_left_2,m_right_2,m_up_2,m_down_2,m_start2,m_start1};
 
-wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,1'b0,m_coin};
 wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_start2,m_start1};
 
-wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin, 1'b0 };
 wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2,m_start1};
 
-wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b0, m_coin};
 wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2,m_start1};
 
 //wire [7:0] sw0_chewing = sw[0] & { btn_coin_2, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b1, m_coin};
