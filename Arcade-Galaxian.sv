@@ -309,7 +309,7 @@ always @(posedge clk_48) begin
 end
 
 
-arcade_video #(257,223,9) arcade_video
+arcade_video #(257,224,9) arcade_video
 (
         .*,
 
@@ -342,7 +342,7 @@ wire [7:0] sw1_azurian = sw[1] & { 2'b11, m_left_2,m_right_2,m_up_2,m_down_2,m_s
 wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,1'b0,m_coin};
 wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_start2,m_start1};
 
-wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin, 1'b0 };
+wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,1'b0, m_coin};
 wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2,m_start1};
 
 wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b0, m_coin};

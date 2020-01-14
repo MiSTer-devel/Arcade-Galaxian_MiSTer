@@ -417,7 +417,7 @@ begin
 	begin
 		if rising_edge(W_CLK_6M) then
 			HBLANK   <= not W_H_BLXn;
-			VBLANK   <= not W_V_BL2n;
+			VBLANK   <= not W_V_BLn;
 		end if;
 	end process;
 
