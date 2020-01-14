@@ -321,8 +321,7 @@ arcade_video #(257,223,9) arcade_video
         .HSync(hs),
         .VSync(vs),
 
-        .rotate_ccw(0),
-        .fx(status[5:3]),
+        .fx(status[5:3])
 );
 
 
@@ -353,7 +352,7 @@ wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2,m_sta
 //wire [7:0] sw1_chewing = sw[1] & { 7'b1111111, m_start1};
 
 
-wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday) ? 1 : 0;
+wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday);
 
 // zigzag??
 
