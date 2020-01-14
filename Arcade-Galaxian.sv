@@ -354,16 +354,19 @@ wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2,m_sta
 wire [7:0] sw0_victory = sw[0] & { m_up, m_up_2 , m_down, m_fire, m_right, m_left, m_down_2, m_coin};
 wire [7:0] sw1_victory = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
+wire [7:0] sw0_warofbug = sw[0] & { m_up,  m_down, 1'b1, m_fire, m_right, m_left, m_up_2, m_coin};
+wire [7:0] sw1_warofbug = sw[1] & { 2'b11, m_down, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
+
 wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday);
 
 // zigzag??
 
-wire mod_orb_war  = mod_orbitron | mod_warofbug;
+wire mod_orb_war  = mod_orbitron;
 wire mod_dev_trip = mod_devilfsh | mod_tripledr | mod_lucktoday;
 
-wire [7:0]m_dip = sw[2] ;
-wire [7:0] sw0 = mod_victory ? sw0_victory : mod_azurian ? sw0_azurian : mod_orb_vic_war ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
-wire [7:0] sw1 = mod_victory ? sw1_victory : mod_azurian ? sw1_azurian : mod_orb_vic_war ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
+wire [7:0] m_dip = sw[2] ;
+wire [7:0] sw0 = mod_warofbug ? sw0_warofbug : mod_victory ? sw0_victory : mod_azurian ? sw0_azurian : mod_orbitron ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
+wire [7:0] sw1 = mod_warofbug ? sw1_warofbug : mod_victory ? sw1_victory : mod_azurian ? sw1_azurian : mod_orbitron ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
 
 galaxian galaxian
 (
