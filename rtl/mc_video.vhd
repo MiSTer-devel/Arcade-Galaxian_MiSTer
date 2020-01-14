@@ -34,6 +34,13 @@ entity MC_VIDEO is
 		dn_addr       : in  std_logic_vector(15 downto 0);
 		dn_data       : in  std_logic_vector(7 downto 0);
 		dn_wr         : in  std_logic;
+		--
+		mod_mooncr   : in  std_logic;
+		mod_devilfsh : in  std_logic;
+		mod_pisces : in  std_logic;
+		mod_uniwars : in  std_logic;
+		--
+
 
 		I_CLK_12M     : in  std_logic;
 		I_CLK_6M      : in  std_logic;
@@ -102,7 +109,12 @@ architecture RTL of MC_VIDEO is
 	signal W_RV         : std_logic_vector( 1 downto 0) := (others => '0');
 	signal W_RC         : std_logic_vector( 2 downto 0) := (others => '0');
 
-	signal W_O_OBJ_ROM_A  : std_logic_vector(10 downto 0) := (others => '0');
+	signal W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+	signal MOONCRE_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+	signal DEVILFSH_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+	signal UNIPI_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+	signal GAL_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+
 	signal W_VID_RAM_A    : std_logic_vector(11 downto 0) := (others => '0');
 	signal W_VID_RAM_AA   : std_logic_vector(11 downto 0) := (others => '0');
 	signal W_VID_RAM_AB   : std_logic_vector(11 downto 0) := (others => '0');
@@ -150,6 +162,10 @@ architecture RTL of MC_VIDEO is
 	signal W_SRCLK        : std_logic := '0';
 	signal W_SRLD         : std_logic := '0';
 	signal W_VID_RAM_CS   : std_logic := '0';
+
+        type bank_a is array(0 to 3) of std_logic_vector(7 downto 0);
+        signal bank     : bank_a;
+        signal pisces_gfxbank : std_logic;
 
 	signal gfx1_cs,gfx2_cs: std_logic;
 
@@ -238,7 +254,7 @@ begin
 		data_a    => dn_data,
 
 		clock_b   => I_CLK_12M,
-		address_b => '0' & W_O_OBJ_ROM_A,
+		address_b => W_O_OBJ_ROM_A,
 		q_b       => W_1K_D
 	);
 
@@ -252,7 +268,7 @@ begin
 		data_a    => dn_data,
 
 		clock_b   => I_CLK_12M,
-		address_b => '0' & W_O_OBJ_ROM_A,
+		address_b => W_O_OBJ_ROM_A,
 		q_b       => W_1H_D
 	);
 
@@ -318,6 +334,19 @@ begin
 			W_2M_Q <= W_45N_Q;
 		end if;
 	end process;
+
+        process(I_CLK_12M)
+        begin
+                if rising_edge(I_CLK_12M) then
+                        if I_DRIVER_WR = '1' and I_A(2) = '0' then
+                                bank(to_integer(unsigned(I_A(1 downto 0)))) <= I_BD;
+                        end if;
+                        if I_DRIVER_WR = '1' and I_A(2 downto 0) = "010" then
+                                pisces_gfxbank <= I_BD(0);
+                        end if;
+                end if;
+        end process;
+
 	
 	W_2N          <= I_H_CNT(8) and W_OBJ_D(7);
 	W_1M          <= W_2M_Q(3 downto 0) xor (W_2N & W_2N & W_2N & W_2N);
@@ -334,7 +363,22 @@ begin
 	W_SRLD        <= not (W_LDn or W_VID_RAM_A(11));
 	W_OBJ_ROM_AB  <= W_OBJ_D(5 downto 0) & W_1M(3) & (W_OBJ_D(6) xor I_H_CNT(3));
 	W_OBJ_ROM_A   <= W_OBJ_ROM_AB when I_H_CNT(8) = '1' else W_VID_RAM_DOB;
-	W_O_OBJ_ROM_A <= W_OBJ_ROM_A & W_1M(2 downto 0);
+	--W_O_OBJ_ROM_A <= W_OBJ_ROM_A & W_1M(2 downto 0);
+	-- AJS
+
+        MOONCRE_W_O_OBJ_ROM_A <= '1' & bank(0)(0) & bank(1)(0) & W_OBJ_ROM_A(5 downto 0) & W_1M(2 downto 0)
+                   when (bank(2) /= X"00" and W_OBJ_ROM_A(7 downto 6) = "10") else
+                   '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
+        DEVILFSH_W_O_OBJ_ROM_A <=  not I_H_CNT(8) & W_OBJ_ROM_A & W_1M(2 downto 0);
+        UNIPI_W_O_OBJ_ROM_A <=  pisces_gfxbank & W_OBJ_ROM_A & W_1M(2 downto 0);
+        GAL_W_O_OBJ_ROM_A <= '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
+
+
+	W_O_OBJ_ROM_A <=  MOONCRE_W_O_OBJ_ROM_A when (mod_mooncr ='1' ) else 
+                            DEVILFSH_W_O_OBJ_ROM_A when (mod_devilfsh='1') else  
+                            UNIPI_W_O_OBJ_ROM_A when (mod_pisces='1' or mod_uniwars='1') else  
+                            GAL_W_O_OBJ_ROM_A;
+	--W_O_OBJ_ROM_A <= '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
 
 -----------------------------------------------------------------------------------
 

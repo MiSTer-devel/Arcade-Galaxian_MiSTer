@@ -104,13 +104,11 @@ localparam CONF_STR = {
 	"H0O2,Orientation,Vert,Horz;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"-;",
-	"O8,Lives,3,2;",
-	"OAB,Bonus,7000,10000,12000,20000;",
-	"OC,Cabinet,Upright,Cocktail;",
-	"OD,Service,Off,On;",
+	"DIP;",
 	"-;",
 	"R0,Reset;",
-	"J1,Fire,Start 1P,Start 2P;",
+	"J1,Fire,Start 1P,Start 2P,Coin;",
+	"jn,A,Start,Select,R;",
 	"V,v",`BUILD_DATE
 };
 
@@ -141,6 +139,8 @@ wire        ioctl_download;
 wire        ioctl_wr;
 wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_dout;
+wire  [7:0] ioctl_index;
+
 
 wire [10:0] ps2_key;
 
@@ -169,11 +169,61 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 	.ioctl_wr(ioctl_wr),
 	.ioctl_addr(ioctl_addr),
 	.ioctl_dout(ioctl_dout),
+	.ioctl_index(ioctl_index),
+
 
 	.joystick_0(joystick_0),
 	.joystick_1(joystick_1),
 	.ps2_key(ps2_key)
 );
+
+reg mod_galaxian = 0;
+reg mod_mooncr = 0;
+reg mod_azurian = 0;
+reg mod_blackhole = 0;
+reg mod_catacomb = 0;
+reg mod_chewingg    = 0;
+reg mod_devilfsh = 0;
+reg mod_kingbal= 0;
+reg mod_mrdonigh= 0;
+reg mod_omega= 0;
+reg mod_orbitron= 0;
+reg mod_pisces= 0;
+reg mod_uniwars= 0;
+reg mod_victory= 0;
+reg mod_warofbug= 0;
+reg mod_zigzag= 0;
+reg mod_tripledr= 0;
+reg mod_lucktoday= 0;
+
+always @(posedge clk_sys) begin
+	reg [7:0] mod = 0;
+	if (ioctl_wr & (ioctl_index==1)) mod <= ioctl_dout;
+	
+	mod_galaxian	<= (mod == 0);
+	mod_mooncr	<= (mod == 1);
+	mod_azurian	<= (mod == 2);
+	mod_blackhole	<= (mod == 3);
+	mod_catacomb	<= (mod == 4);
+	mod_chewingg	<= (mod == 5);
+	mod_devilfsh	<= (mod == 6);
+	mod_kingbal	<= (mod == 7);
+	mod_mrdonigh	<= (mod == 8);
+	mod_omega	<= (mod == 9);
+	mod_orbitron	<= (mod == 10);
+	mod_pisces	<= (mod == 11);
+	mod_uniwars	<= (mod == 12);
+	mod_victory	<= (mod == 13);
+	mod_warofbug	<= (mod == 14);
+	mod_zigzag	<= (mod == 15);
+	mod_tripledr	<= (mod == 16);
+	mod_lucktoday   <= (mod == 17);
+end
+
+
+reg [7:0] sw[8];
+always @(posedge clk_sys) if (ioctl_wr && (ioctl_index==254) && !ioctl_addr[24:3]) sw[ioctl_addr[2:0]] <= ioctl_dout;
+
 
 wire       pressed = ps2_key[9];
 wire [8:0] code    = ps2_key[8:0];
@@ -191,8 +241,8 @@ always @(posedge clk_sys) begin
 			'h029: btn_fire        <= pressed; // space
 			'h014: btn_fire        <= pressed; // ctrl
 
-			'h005: btn_one_player  <= pressed; // F1
-			'h006: btn_two_players <= pressed; // F2
+			'h005: btn_start_1     <= pressed; // F1
+			'h006: btn_start_2     <= pressed; // F2
 			// JPAC/IPAC/MAME Style Codes
 			'h016: btn_start_1     <= pressed; // 1
 			'h01E: btn_start_2     <= pressed; // 2
@@ -216,11 +266,11 @@ reg btn_fire  = 0;
 reg btn_one_player  = 0;
 reg btn_two_players = 0;
 
-wire m_up     = no_rotate ? btn_left  | joy[1] : btn_up    | joy[3];
-wire m_down   = no_rotate ? btn_right | joy[0] : btn_down  | joy[2];
-wire m_left   = no_rotate ? btn_down  | joy[2] : btn_left  | joy[1];
-wire m_right  = no_rotate ? btn_up    | joy[3] : btn_right | joy[0];
-wire m_fire   = btn_fire | joy[4];
+wire m_up     = btn_up    | joy[3];
+wire m_down   = btn_down  | joy[2];
+wire m_left   = btn_left  | joy[1];
+wire m_right  = btn_right | joy[0];
+wire m_fire   = btn_fire  | joy[4];
 
 reg btn_start_1=0;
 reg btn_start_2=0;
@@ -233,17 +283,17 @@ reg btn_right_2=0;
 reg btn_fire_2=0;
 reg btn_test=0;
 
-wire no_rotate = status[2] & ~direct_video;
+wire no_rotate = status[2] | direct_video;
 
-wire m_start1 = btn_one_player  | joy[5];
-wire m_start2 = btn_two_players | joy[6];
-wire m_coin   = m_start1 | m_start2;
+wire m_start1 = btn_start_1 | joy[5];
+wire m_start2 = btn_start_2 | joy[6];
+wire m_coin   = btn_coin_1  | joy[7];
 
-wire m_up_2     = no_rotate ? btn_left_2  | joy[1] : btn_up_2    | joy[3];
-wire m_down_2   = no_rotate ? btn_right_2 | joy[0] : btn_down_2  | joy[2];
-wire m_left_2   = no_rotate ? btn_down_2  | joy[2] : btn_left_2  | joy[1];
-wire m_right_2  = no_rotate ? btn_up_2    | joy[3] : btn_right_2 | joy[0];
-wire m_fire_2  = btn_fire_2;
+wire m_up_2     = btn_up_2    | joy[3];
+wire m_down_2   = btn_down_2  | joy[2];
+wire m_left_2   = btn_left_2  | joy[1];
+wire m_right_2  = btn_right_2 | joy[0];
+wire m_fire_2   = btn_fire_2  | joy[4];
 
 wire hblank, vblank;
 wire hs, vs;
@@ -252,14 +302,14 @@ wire [2:0] b;
 
 reg ce_pix;
 always @(posedge clk_48) begin
-        reg [1:0] div;
+        reg [2:0] div;
 
         div <= div + 1'd1;
         ce_pix <= !div;
 end
 
 
-arcade_rotate_fx #(514,223,9) arcade_video
+arcade_video #(257,223,9) arcade_video
 (
         .*,
 
@@ -271,44 +321,48 @@ arcade_rotate_fx #(514,223,9) arcade_video
         .HSync(hs),
         .VSync(vs),
 
+        .rotate_ccw(0),
         .fx(status[5:3]),
 );
 
 
-wire [7:0] audio_a, audio_b;
-wire [10:0] audio = {1'b0, audio_b, 2'b0} + {3'b0, audio_a};
+wire [7:0] audio_a, audio_b,audio_c;
+wire [10:0] audio = {1'b0, audio_b, 2'b0} + {3'b0, audio_a} + {2'b00, audio_c, 1'b0};
+
 assign AUDIO_L = {audio, 5'd0};
 assign AUDIO_R = {audio, 5'd0};
 assign AUDIO_S = 0;
 
-/*
------------------------------------------------------------------
---    DIP SW        0     1     2     3     4     5
------------------------------------------------------------------
---  COIN CHUTE
--- 1 COIN/1 PLAY   1'b0  1'b0
--- 2 COIN/1 PLAY   1'b1  1'b0
--- 1 COIN/2 PLAY   1'b0  1'b1
--- FREE PLAY       1'b1  1'b1
---   BOUNS
---                             1'b0  1'b0
---                             1'b1  1'b01
---                             1'b0  1'b1
---                             1'b1  1'b1
---   LIVES
---     2                                   1'b0
---     3                                   1'b1
------------------------------------------------------------------
+// dips for mra
+wire [7:0] sw0_galaxian = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw1_galaxian = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
-*/
+wire [7:0] sw0_azurian = sw[0] & { 1'b0 , m_fire_2, m_fire, m_coin, m_left,m_right,m_up,m_down};
+wire [7:0] sw1_azurian = sw[1] & { 2'b11, m_left_2,m_right_2,m_up_2,m_down_2,m_start2,m_start1};
 
-// 7000, 3 lives:
-//wire [7:0]m_dip = {8'b00000100};
-// 2 lives:
-//wire [7:0]m_dip = {8'b10000000};
-// this seems to work:
-wire [7:0]m_dip = {1'b0,1'b0 ,2'b00,1'b0,~status[8],status[11:10]};
-//wire [7:0]m_dip = {1'b1,1'b0 ,2'b00,1'b0,~status[8],status[11:10]};
+wire [7:0] sw0_orbitron = sw[0] & { m_up, m_down, m_down_2,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw1_orbitron = sw[1] & { m_up_2, 2'b11, m_fire, m_right, m_left, m_start2,m_start1};
+
+wire [7:0] sw0_devilfsh = sw[0] & { m_up, m_up_2, m_down,m_fire,m_right,m_left,m_coin,btn_coin_2 };
+wire [7:0] sw1_devilfsh = sw[1] & { 2'b11,  m_down_2,  m_fire_2, m_right_2, m_left_2, m_start2,m_start1};
+
+wire [7:0] sw0_mrdonigh = sw[0] & { btn_test, 1'b1 , 1'b1, m_fire, m_right, m_left, btn_coin_2, m_coin};
+wire [7:0] sw1_mrdonigh = sw[1] & { 3'b111, m_fire, m_down, m_up, m_start2,m_start1};
+
+//wire [7:0] sw0_chewing = sw[0] & { btn_coin_2, 1'b1 , 1'b1, m_fire, m_right, m_left, 1'b1, m_coin};
+//wire [7:0] sw1_chewing = sw[1] & { 7'b1111111, m_start1};
+
+
+wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday) ? 1 : 0;
+
+// zigzag??
+
+wire mod_orb_vic_war = mod_orbitron | mod_victory | mod_warofbug;
+wire mod_dev_trip = mod_devilfsh | mod_tripledr | mod_lucktoday;
+
+wire [7:0]m_dip = sw[2] ;
+wire [7:0] sw0 = mod_azurian ? sw0_azurian : mod_orb_vic_war ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
+wire [7:0] sw1 = mod_azurian ? sw1_azurian : mod_orb_vic_war ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
 
 galaxian galaxian
 (
@@ -317,13 +371,9 @@ galaxian galaxian
 	.I_RESET(RESET | status[0] | buttons[1] | ioctl_download),
 
 	// NOTE: mame order matches order in mc_inport, mc_inport reorders these
-	.P1_CSJUDLR({m_coin|btn_coin_1,m_start1|btn_start_1,m_fire,m_up,m_down,m_left,m_right}),
-	.P2_CSJUDLR({btn_coin_2, m_start2|btn_start_2,m_fire_2,m_up_2,m_down_2,m_left_2,m_right_2}),
-
-	.DIP(m_dip),
-	.I_TABLE(status[12]),
-	.I_TEST(status[13]),
-	.I_SERVICE(btn_test),
+        .W_SW0_DI(sw0),
+        .W_SW1_DI(sw1),
+        .W_DIP_DI(m_dip),
 
 	.W_R(r),
 	.W_G(g),
@@ -335,10 +385,18 @@ galaxian galaxian
 
 	.dn_addr(ioctl_addr[15:0]),
 	.dn_data(ioctl_dout),
-	.dn_wr(ioctl_wr),
+	.dn_wr(ioctl_wr && !ioctl_index),
+
+	.mod_mooncr(mod_mooncr),
+	.mod_devilfsh(mod_devilfsh),
+	.mod_pisces(mod_pisces),
+	.mod_uniwars(mod_uniwars),
+	.mod_kingbal(mod_kingbal),
+	.mod_orbitron(mod_orbitron),
 
 	.W_SDAT_A(audio_a),
-	.W_SDAT_B(audio_b)
+	.W_SDAT_B(audio_b),
+	.W_SDAT_C(audio_c)
 );
 
 endmodule

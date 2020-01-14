@@ -6,7 +6,15 @@
 	<manufacturer>Namco</manufacturer>
 	<category>Space / Galaxian</category>
 	<rbf>galaxian</rbf>
-	<rom index="0" zip="galaxian.zip" md5="d871350748c1cde3f45b8f33a3da7759" type="merged|nonmerged">
+	<switches default="1F,1F,04">
+		<dip bits="7"    name="Service" ids="Off,On"/>
+		<dip bits="6"    name="Test" ids="Off,On"/>
+		<dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
+		<dip bits="14,15" name="Coinage" ids="1c/1cr,1c/2cr,2c/1cr,Free Play" values="0,2,1,3"/>
+		<dip bits="16,17" name="Bonus Life After" ids="7000,10000,12000,20000"/>
+		<dip bits="18" name="Lives" ids="2,3"/>
+	</switches>
+	<rom index="0" zip="galaxian.zip" md5="434c546b09dbb7559e7fde9354c27d19" type="merged|nonmerged">
 		<part name="galmidw.u"/>
 		<part name="galmidw.v"/>
 		<part name="galmidw.w"/>
@@ -19,5 +27,6 @@
 		<part name="1h.bin"/>
 		<part name="1k.bin"/>
 		<part name="1k.bin"/>
+		<part name="6l.bpr"/>
 	</rom>
 </misterromdescription>
