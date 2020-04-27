@@ -1,36 +1,36 @@
 <misterromdescription>
 	<name>UniWar S</name>
-	<mameversion>0216</mameversion>
+	<mameversion>0220</mameversion>
 	<setname>uniwars</setname>
-	<mratimestamp>201911270000</mratimestamp>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1980</year>
 	<manufacturer>Irem</manufacturer>
 	<category>Space / Galaxian</category>
-        <rbf>galaxian</rbf>
-        <switches default="1F,1F,00">
-                <dip bits="7"    name="Service" ids="Off,On"/>
-                <dip bits="6"    name="Test" ids="Off,On"/>
-                <dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
-                <dip bits="14,15" name="Coinage" ids="1c/1cr,1c/2cr,2c/1cr,Free Play" values="0,2,1,3"/>
-                <dip bits="16,17" name="Bonus Life After" ids="None,4000,5000,7000"/>
-                <dip bits="18" name="Lives" ids="3,5"/>
-        </switches>
-        <rom index="1">
-                <part>0C</part>
-        </rom>
-	<rom index="0" zip="uniwars.zip" md5="b270e45e9d2ca2e73b081fed66d9f3db" type="merged|nonmerged">
-		<part name="f07_1a.bin"/>
-		<part name="h07_2a.bin"/>
-		<part name="k07_3a.bin"/>
-		<part name="m07_4a.bin"/>
-		<part name="d08p_5a.bin"/>
-		<part name="gg6"/>
-		<part name="m08p_7a.bin"/>
-		<part name="n08p_8a.bin"/>
-		<part name="egg10"/>
-		<part name="h01_2.bin"/>
-		<part name="egg9"/>
-		<part name="k01_2.bin"/>
-		<part name="uniwars.clr"/>
+	<rbf>galaxian</rbf>
+	<switches default="1F,1F,00">
+		<dip bits="7"    name="Service" ids="Off,On"/>
+		<dip bits="6"    name="Test" ids="Off,On"/>
+		<dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
+		<dip bits="14,15" name="Coinage" ids="1c/1cr,1c/2cr,2c/1cr,Free Play" values="0,2,1,3"/>
+		<dip bits="16,17" name="Bonus Life After" ids="None,4000,5000,7000"/>
+		<dip bits="18" name="Lives" ids="3,5"/>
+	</switches>
+	<rom index="1">
+		<part>0C</part>
+	</rom>
+	<rom index="0" zip="uniwars.zip" md5="b270e45e9d2ca2e73b081fed66d9f3db">
+		<part crc="d975af10" name="f07_1a.bin"/>
+		<part crc="b2ed14c3" name="h07_2a.bin"/>
+		<part crc="945f4160" name="k07_3a.bin"/>
+		<part crc="ddc80bc5" name="m07_4a.bin"/>
+		<part crc="62354351" name="d08p_5a.bin"/>
+		<part crc="270a3f4d" name="gg6"/>
+		<part crc="c9245346" name="m08p_7a.bin"/>
+		<part crc="797d45c7" name="n08p_8a.bin"/>
+		<part crc="012941e0" name="egg10"/>
+		<part crc="c26132af" name="h01_2.bin"/>
+		<part crc="fc8b58fd" name="egg9"/>
+		<part crc="dcc2b33b" name="k01_2.bin"/>
+		<part crc="25c79518" name="uniwars.clr"/>
 	</rom>
 </misterromdescription>

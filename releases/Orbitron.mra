@@ -1,34 +1,34 @@
 <misterromdescription>
 	<name>Orbitron</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
+	<mameversion>0220</mameversion>
+	<setname>orbitron</setname>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1982</year>
 	<manufacturer>Comsoft (Signatron USA license)</manufacturer>
 	<category>Space / Shooter</category>
-	<setname>orbitron</setname>
-        <rbf>galaxian</rbf>
-        <switches default="FF,5F,00">
-                <dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
-                <dip bits="16" name="Bonus Life After" ids="10000,20000"/>
-                <dip bits="18" name="Lives" ids="3,5"/>
-                <dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
-        </switches>
-        <rom index="1">
-                <part>0A</part>
-        </rom>
-	<rom index="0" zip="orbitron.zip" md5="e2d3472c93bde5948f2ec6609e5d4ce4" type="merged|nonmerged">
-		<part name="orbitron.3"/>
-		<part name="orbitron.4"/>
-		<part name="orbitron.1"/>
-		<part name="orbitron.2"/>
-		<part name="orbitron.5"/>
-		<part name="orbitron.5"/>
-		<part name="orbitron.5"/>
-		<part name="orbitron.5"/>
-		<part name="orbitron.6"/>
-		<part name="orbitron.6"/>
-		<part name="orbitron.7"/>
-		<part name="orbitron.7"/>
-		<part name="l06_prom.bin"/>
+	<rbf>galaxian</rbf>
+	<switches default="FF,5F,00">
+		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
+		<dip bits="16" name="Bonus Life After" ids="10000,20000"/>
+		<dip bits="18" name="Lives" ids="3,5"/>
+		<dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
+	</switches>
+	<rom index="1">
+		<part>0A</part>
+	</rom>
+	<rom index="0" zip="orbitron.zip" md5="e2d3472c93bde5948f2ec6609e5d4ce4">
+		<part crc="419f9c9b" name="orbitron.3"/>
+		<part crc="44ad56ac" name="orbitron.4"/>
+		<part crc="da3f5168" name="orbitron.1"/>
+		<part crc="a3b813fc" name="orbitron.2"/>
+		<part crc="20cd8bb8" name="orbitron.5"/>
+		<part crc="20cd8bb8" name="orbitron.5"/>
+		<part crc="20cd8bb8" name="orbitron.5"/>
+		<part crc="20cd8bb8" name="orbitron.5"/>
+		<part crc="2c91b83f" name="orbitron.6"/>
+		<part crc="2c91b83f" name="orbitron.6"/>
+		<part crc="46f4cca4" name="orbitron.7"/>
+		<part crc="46f4cca4" name="orbitron.7"/>
+		<part crc="6a0c7d87" name="l06_prom.bin"/>
 	</rom>
 </misterromdescription>

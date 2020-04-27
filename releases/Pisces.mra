@@ -1,29 +1,35 @@
 <misterromdescription>
+	<name>Pisces</name>
+	<mameversion>0220</mameversion>
 	<setname>pisces</setname>
-        <rbf>galaxian</rbf>
-        <switches default="FF,1F,00">
-                <dip bits="14" name="Lives" ids="3,4"/>
-                <dip bits="15" name="Cabinet" ids="Upright,Cocktail"/>
-                <dip bits="16" name="Bonus Life After" ids="10000,20000"/>
-                <dip bits="17" name="Coinage" ids="1c/1cr,2c/1cr"/>
-                <dip bits="18" name="Difficulty" ids="Easy,Hard"/>
-        </switches>
-        <rom index="1">
-                <part>0B</part>
-        </rom>
-  <rom index="0" zip="pisces.zip" md5="41f6f556ea5dd7cc27d2ca64feea8b9f">
-        <part name="p1.bin"/>
-        <part name="p2.bin"/>
-        <part name="p3.bin"/>
-        <part name="p4.bin"/>
-        <part name="p5.bin"/>
-        <part name="p6.bin"/>
-        <part name="p6.bin"/>
-        <part name="p6.bin"/>
-        <part name="g09.bin"/>
-        <part name="g11.bin"/>
-        <part name="g10.bin"/>
-        <part name="g12.bin"/>
-        <part name="colour.bin"/>
-  </rom>
+	<mratimestamp>20200427161917</mratimestamp>
+	<year>19??</year>
+	<manufacturer>Subelectro</manufacturer>
+	<category>Space / Shooter</category>
+	<rbf>galaxian</rbf>
+	<switches default="FF,1F,00">
+		<dip bits="14" name="Lives" ids="3,4"/>
+		<dip bits="15" name="Cabinet" ids="Upright,Cocktail"/>
+		<dip bits="16" name="Bonus Life After" ids="10000,20000"/>
+		<dip bits="17" name="Coinage" ids="1c/1cr,2c/1cr"/>
+		<dip bits="18" name="Difficulty" ids="Easy,Hard"/>
+	</switches>
+	<rom index="1">
+		<part>0B</part>
+	</rom>
+	<rom index="0" zip="pisces.zip" md5="41f6f556ea5dd7cc27d2ca64feea8b9f">
+		<part crc="40c5b0e4" name="p1.bin"/>
+		<part crc="055f9762" name="p2.bin"/>
+		<part crc="3073dd04" name="p3.bin"/>
+		<part crc="44aaf525" name="p4.bin"/>
+		<part crc="fade512b" name="p5.bin"/>
+		<part crc="5ab2822f" name="p6.bin"/>
+		<part crc="5ab2822f" name="p6.bin"/>
+		<part crc="5ab2822f" name="p6.bin"/>
+		<part crc="9503a23a" name="g09.bin"/>
+		<part crc="0adfc3fe" name="g11.bin"/>
+		<part crc="3e61f849" name="g10.bin"/>
+		<part crc="7130e9eb" name="g12.bin"/>
+		<part crc="57a45057" name="colour.bin"/>
+	</rom>
 </misterromdescription>

@@ -1,11 +1,11 @@
 <misterromdescription>
 	<name>Galaxian (Namco set 1)</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
+	<mameversion>0220</mameversion>
+	<setname>galaxian</setname>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1979</year>
 	<manufacturer>Namco</manufacturer>
 	<category>Space / Galaxian</category>
-	<setname>galaxian</setname>
 	<rbf>galaxian</rbf>
 	<switches default="1F,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>
@@ -15,19 +15,19 @@
 		<dip bits="16,17" name="Bonus Life After" ids="7000,10000,12000,20000"/>
 		<dip bits="18" name="Lives" ids="2,3"/>
 	</switches>
-	<rom index="0" zip="galaxian.zip" md5="434c546b09dbb7559e7fde9354c27d19" type="merged|nonmerged">
-		<part name="galmidw.u"/>
-		<part name="galmidw.v"/>
-		<part name="galmidw.w"/>
-		<part name="galmidw.y"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="7l"/>
-		<part name="1h.bin"/>
-		<part name="1h.bin"/>
-		<part name="1k.bin"/>
-		<part name="1k.bin"/>
-		<part name="6l.bpr"/>
+	<rom index="0" zip="galaxian.zip" md5="434c546b09dbb7559e7fde9354c27d19">
+		<part crc="745e2d61" name="galmidw.u"/>
+		<part crc="9c999a40" name="galmidw.v"/>
+		<part crc="b5894925" name="galmidw.w"/>
+		<part crc="6b3ca10b" name="galmidw.y"/>
+		<part crc="1b933207" name="7l"/>
+		<part crc="1b933207" name="7l"/>
+		<part crc="1b933207" name="7l"/>
+		<part crc="1b933207" name="7l"/>
+		<part crc="39fb43a4" name="1h.bin"/>
+		<part crc="39fb43a4" name="1h.bin"/>
+		<part crc="7e3f56a2" name="1k.bin"/>
+		<part crc="7e3f56a2" name="1k.bin"/>
+		<part crc="c3ac9467" name="6l.bpr"/>
 	</rom>
 </misterromdescription>

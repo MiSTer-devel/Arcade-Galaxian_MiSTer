@@ -1,16 +1,21 @@
 <misterromdescription>
-	<name>Luck Today</name>
+	<name>Lucky Today</name>
+	<mameversion>0220</mameversion>
 	<setname>luctoday</setname>
+	<mratimestamp>20200427161917</mratimestamp>
+	<year>1980</year>
+	<manufacturer>Sigma</manufacturer>
+	<category>Games / Gambling</category>
 	<rbf>galaxian</rbf>
 	<switches default="FF,1F,04">
 		<dip bits="16" name="Bonus Life After" ids="10000,15000"/>
 		<dip bits="18" name="Lives" ids="4,5"/>
 		<dip bits="19"    name="Cabinet" ids="Upright,Cocktail"/>
 	</switches>
-        <rom index="1">
-                <part>11</part>
-        </rom>
-	<rom index="0" zip="luctoday.zip" md5="7dd164c166c9346132ed34ae75e9e496" type="merged|nonmerged">
+	<rom index="1">
+		<part>11</part>
+	</rom>
+	<rom index="0" zip="luctoday.zip" md5="7dd164c166c9346132ed34ae75e9e496">
 		<part crc="59c389b9" name="ltprog1.bin"/>
 		<part crc="ac3893b1" name="ltprog2.bin"/>
 		<part crc="ac3893b1" name="ltprog2.bin"/>
