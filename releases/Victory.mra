@@ -1,47 +1,32 @@
 <misterromdescription>
 	<name>Victory (Comsoft) (bootleg)</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
+	<mameversion>0220</mameversion>
+	<setname>victorycb</setname>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1982</year>
 	<manufacturer>bootleg</manufacturer>
-	<setname>victorycb</setname>
-        <rbf>galaxian</rbf>
-        <switches default="FF,FF,F7">
-                <dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
-                <dip bits="18" name="Lives" ids="2,3"/>
-                <dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
-        </switches>
-        <rom index="1">
-                <part>0D</part>
-        </rom>
-	<rom index="0" zip="victorycb.zip" md5="86deedc5164beb2252765df36e5a9ed6" type="nonmerged">
-		<part name="v1.bin"/>
-		<part name="v2.bin"/>
-		<part name="v3.bin"/>
-		<part name="v4.bin"/>
-		<part name="v5.bin"/>
-		<part name="v5.bin"/>
-		<part name="v5.bin"/>
-		<part name="v5.bin"/>
-		<part name="v6.bin"/>
-		<part name="v6.bin"/>
-		<part name="v7.bin"/>
-		<part name="v7.bin"/>
-		<part name="prom.6l"/>
+	<rbf>galaxian</rbf>
+	<switches default="FF,FF,F7">
+		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
+		<dip bits="18" name="Lives" ids="2,3"/>
+		<dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
+	</switches>
+	<rom index="1">
+		<part>0D</part>
 	</rom>
-	<rom index="0" zip="victoryc.zip" md5="86deedc5164beb2252765df36e5a9ed6" type="merged">
-		<part name="victorycb/v1.bin"/>
-		<part name="victorycb/v2.bin"/>
-		<part name="victorycb/v3.bin"/>
-		<part name="victorycb/v4.bin"/>
-		<part name="victorycb/v5.bin"/>
-		<part name="victorycb/v5.bin"/>
-		<part name="victorycb/v5.bin"/>
-		<part name="victorycb/v5.bin"/>
-		<part name="df.1k"/>
-		<part name="df.1k"/>
-		<part name="a4.1h"/>
-		<part name="a4.1h"/>
-		<part name="prom.6l"/>
+	<rom index="0" zip="victoryc.zip|victorycb.zip" md5="86deedc5164beb2252765df36e5a9ed6">
+		<part crc="de985696" name="v1.bin"/>
+		<part crc="59042c1e" name="v2.bin"/>
+		<part crc="ca3a6965" name="v3.bin"/>
+		<part crc="16b47fad" name="v4.bin"/>
+		<part crc="f60be3be" name="v5.bin"/>
+		<part crc="f60be3be" name="v5.bin"/>
+		<part crc="f60be3be" name="v5.bin"/>
+		<part crc="f60be3be" name="v5.bin"/>
+		<part crc="15e98c93" name="v6.bin"/>
+		<part crc="15e98c93" name="v6.bin"/>
+		<part crc="cd35a7e2" name="v7.bin"/>
+		<part crc="cd35a7e2" name="v7.bin"/>
+		<part crc="25329e5a" name="prom.6l"/>
 	</rom>
 </misterromdescription>

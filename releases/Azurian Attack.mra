@@ -1,22 +1,22 @@
 <misterromdescription>
 	<name>Azurian Attack</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
+	<mameversion>0220</mameversion>
+	<setname>azurian</setname>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1982</year>
 	<manufacturer>Rait Electronics Ltd</manufacturer>
 	<category>Space / Fighter</category>
-	<setname>azurian</setname>
 	<rbf>galaxian</rbf>
-        <switches default="7F,1F,04">
-                <dip bits="15" name="Lives" ids="3,5" />
-                <dip bits="16" name="Coin" ids="1c/1cr,2c/1cr"/>
-                <dip bits="17" name="Bonus Life After" ids="5000,7000"/>
-                <dip bits="19"    name="Cabinet" ids="Upright,Cocktail"/>
-        </switches>
+	<switches default="7F,1F,04">
+		<dip bits="15" name="Lives" ids="3,5" />
+		<dip bits="16" name="Coin" ids="1c/1cr,2c/1cr"/>
+		<dip bits="17" name="Bonus Life After" ids="5000,7000"/>
+		<dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
+	</switches>
 	<rom index="1">
 		<part>02</part>
-	</rom>  
-	<rom index="0" zip="azurian.zip" md5="ac001e48386008c63a602fe73c7121ba" type="merged|nonmerged">
+	</rom>
+	<rom index="0" zip="azurian.zip" md5="ac001e48386008c63a602fe73c7121ba">
 		<part crc="17a0fca7" name="pgm.1"/>
 		<part crc="14659848" name="pgm.2"/>
 		<part crc="8f60fb97" name="pgm.3"/>

@@ -1,11 +1,11 @@
 <misterromdescription>
 	<name>Catacomb</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
+	<mameversion>0220</mameversion>
+	<setname>catacomb</setname>
+	<mratimestamp>20200427161917</mratimestamp>
 	<year>1982</year>
 	<manufacturer>MTM Games</manufacturer>
 	<category>Space / Force</category>
-	<setname>catacomb</setname>
 	<rbf>galaxian</rbf>
 	<switches default="FF,DF,04">
 		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
@@ -14,7 +14,7 @@
 	<rom index="1">
 		<part>04</part>
 	</rom>
-	<rom index="0" zip="catacomb.zip" md5="a9c00095b4ccb5183445aa9e67c873af" type="merged|nonmerged">
+	<rom index="0" zip="catacomb.zip" md5="a9c00095b4ccb5183445aa9e67c873af">
 		<part crc="35cc28d2" name="catacomb.u"/>
 		<part crc="1d1ce133" name="catacomb.v"/>
 		<part crc="479bbde7" name="catacomb.w"/>

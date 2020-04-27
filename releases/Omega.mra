@@ -1,48 +1,33 @@
 <misterromdescription>
 	<name>Omega (bootleg)</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
-	<year>19??</year>
+	<mameversion>0220</mameversion>
 	<setname>omegab</setname>
+	<mratimestamp>20200427161917</mratimestamp>
+	<year>19??</year>
 	<manufacturer>bootleg?</manufacturer>
-        <rbf>galaxian</rbf>
-        <switches default="FF,5F,00">
-                <dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
-				<dip bits="16" name="Bonus Life After" ids="10000,20000"/>
-                <dip bits="18" name="Lives" ids="3,5"/>
-                <dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
-        </switches>
-        <rom index="1">
-                <part>09</part>
-        </rom>
-	<rom index="0" zip="omegab.zip" md5="3ac6f3a37b980d0cd669c68379c41db0" type="nonmerged">
-		<part name="omega1.bin"/>
-		<part name="omega2.bin"/>
-		<part name="omega3.bin"/>
-		<part name="omega4.bin"/>
-		<part name="omega5.bin"/>
-		<part name="omega6.bin"/>
-		<part name="omega6.bin"/>
-		<part name="omega6.bin"/>
-		<part name="omega1h.bin"/>
-		<part name="omega1h.bin"/>
-		<part name="omega1k.bin"/>
-		<part name="omega1k.bin"/>
-		<part name="mmi6331-1j.86"/>
+	<rbf>galaxian</rbf>
+	<switches default="FF,5F,00">
+		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
+		<dip bits="16" name="Bonus Life After" ids="10000,20000"/>
+		<dip bits="18" name="Lives" ids="3,5"/>
+		<dip bits="19" name="Cabinet" ids="Upright,Cocktail"/>
+	</switches>
+	<rom index="1">
+		<part>09</part>
 	</rom>
-	<rom index="0" zip="theend.zip" md5="3ac6f3a37b980d0cd669c68379c41db0" type="merged">
-		<part name="omegab/omega1.bin"/>
-		<part name="omegab/omega2.bin"/>
-		<part name="omegab/omega3.bin"/>
-		<part name="omegab/omega4.bin"/>
-		<part name="omegab/omega5.bin"/>
-		<part name="omegab/omega6.bin"/>
-		<part name="omegab/omega6.bin"/>
-		<part name="omegab/omega6.bin"/>
-		<part name="omegab/omega1h.bin"/>
-		<part name="omegab/omega1h.bin"/>
-		<part name="omegab/omega1k.bin"/>
-		<part name="omegab/omega1k.bin"/>
-		<part name="omegab/mmi6331-1j.86"/>
+	<rom index="0" zip="theend.zip|omegab.zip" md5="3ac6f3a37b980d0cd669c68379c41db0">
+		<part crc="fc2a096b" name="omega1.bin"/>
+		<part crc="ad100357" name="omega2.bin"/>
+		<part crc="d7e3be79" name="omega3.bin"/>
+		<part crc="42068171" name="omega4.bin"/>
+		<part crc="d8a93383" name="omega5.bin"/>
+		<part crc="32a42f44" name="omega6.bin"/>
+		<part crc="32a42f44" name="omega6.bin"/>
+		<part crc="32a42f44" name="omega6.bin"/>
+		<part crc="527fd384" name="omega1h.bin"/>
+		<part crc="527fd384" name="omega1h.bin"/>
+		<part crc="36de42c6" name="omega1k.bin"/>
+		<part crc="36de42c6" name="omega1k.bin"/>
+		<part crc="6a0c7d87" name="mmi6331-1j.86"/>
 	</rom>
 </misterromdescription>
