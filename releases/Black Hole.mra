@@ -4,7 +4,7 @@
 	<setname>blkhole</setname>
 	<mratimestamp>20200427161917</mratimestamp>
 	<year>1981</year>
-	<manufacturer>TDS &amp; MINTS</manufacturer>
+	<manufacturer>TDS and MINTS</manufacturer>
 	<category>Space / Shooter</category>
 	<rbf>galaxian</rbf>
 	<switches default="FF,1F,02">
