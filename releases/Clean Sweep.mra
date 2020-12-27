@@ -1,5 +1,6 @@
 <misterromdescription>
 	<setname>Clean Sweep</setname>
+	<mameversion>0000</mameversion>
         <rbf>galaxian</rbf>
         <switches default="FF,1F,00">
 		<dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
