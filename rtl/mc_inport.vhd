@@ -42,6 +42,9 @@ port (
 	I_SW0_OE   : in  std_logic;
 	I_SW1_OE   : in  std_logic;
 	I_DIP_OE   : in  std_logic;
+	I_SPEECH_DIP : in std_logic;
+	I_RAND     : in  std_logic;   --  for kingball noise check
+	mod_kingbal:in std_logic;
 	O_D        : out std_logic_vector(7 downto 0)
 );
 
@@ -51,15 +54,33 @@ architecture RTL of MC_INPORT is
         signal W_SW0_DO : std_logic_vector(7 downto 0) := (others => '0');
         signal W_SW1_DO : std_logic_vector(7 downto 0) := (others => '0');
         signal W_DIP_DO : std_logic_vector(7 downto 0) := (others => '0');
+
+        signal W_SW0    : std_logic_vector(7 downto 0) := (others => '0');
+    	  signal W_SW1    : std_logic_vector(7 downto 0) := (others => '0');
+
+		  
 begin
 
-	--W_SW0_DO <= x"00" when I_SW0_OE = '0' else I_SERVICE & I_TEST &  I_TABLE &  I_1P_SH &  I_1P_RI & I_1P_LE & I_COIN2    & I_COIN1;
-	--W_SW1_DO <= x"00" when I_SW1_OE = '0' else "000"                         &  I_2P_SH &  I_2P_RI & I_2P_LE & I_2P_START & I_1P_START;
-	--W_DIP_DO <= x"00" when I_DIP_OE = '0' else "00000100";
-	--W_DIP_DO <= x"00" when I_DIP_OE = '0' else I_DIP;
-	W_SW0_DO <= x"00" when I_SW0_OE = '0' else W_SW0_DI;
-	W_SW1_DO <= x"00" when I_SW1_OE = '0' else W_SW1_DI;
-	W_DIP_DO <= x"00" when I_DIP_OE = '0' else W_DIP_DI;
-	O_D      <= W_SW0_DO or W_SW1_DO or W_DIP_DO ;
 
+   ioports: process(W_SW0_DO,W_SW1_DO,W_DIP_DO,I_SW0_OE,W_SW0_DI,I_SW1_OE,W_SW1_DI,I_DIP_OE,W_DIP_DI,I_RAND,mod_kingbal,I_SPEECH_DIP)
+	begin
+
+			W_SW0 <= W_SW0_DI;
+			W_SW1 <= W_SW1_DI;
+		
+
+		if mod_kingbal = '1' then
+			if I_SPEECH_DIP = '1' then
+				W_SW0(6) <= '1'; -- Speech enable
+			end if;
+			W_SW1(5) <= I_RAND; -- kingball checks for randomness at $2529
+		end if;
+
+		if I_SW0_OE = '0' then W_SW0_DO <= x"00"; else W_SW0_DO <= W_SW0; end if;
+		if I_SW1_OE = '0' then W_SW1_DO <= x"00"; else W_SW1_DO <= W_SW1; end if;
+		if I_DIP_OE = '0' then W_DIP_DO <= x"00"; else W_DIP_DO <= W_DIP_DI; end if;
+
+		O_D      <= W_SW0_DO or W_SW1_DO or W_DIP_DO ;		
+
+	end process;
 end RTL;

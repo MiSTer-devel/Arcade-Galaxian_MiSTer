@@ -27,4 +27,12 @@
 		<part crc="ae96e5d1" name="gfx.2"/>
 		<part crc="6a0c7d87" name="l06_prom.bin"/>
 	</rom>
+   <rom index="3" md5="none">
+     <part>
+	 00 00 40 B3 03 00 00 00
+	 00 00 40 B4 01 50 50 00
+	 </part>
+   </rom>	
+	<nvram index="4" size="4"/>
+
 </misterromdescription>

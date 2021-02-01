@@ -30,4 +30,11 @@
 		<part crc="7e3f56a2" name="1k.bin"/>
 		<part crc="c3ac9467" name="6l.bpr"/>
 	</rom>
+	
+	
+   <rom index="3" md5="none">
+     <part>00 00 40 a8 03 00 00 00</part>
+   </rom>	
+	<nvram index="4" size="3"/>
+	
 </misterromdescription>

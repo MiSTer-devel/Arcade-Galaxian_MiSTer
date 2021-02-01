@@ -167,9 +167,11 @@ wire        direct_video;
 
 
 wire        ioctl_download;
+wire        ioctl_upload;
 wire        ioctl_wr;
 wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_dout;
+wire  [7:0] ioctl_din;
 wire  [7:0] ioctl_index;
 
 
@@ -194,10 +196,12 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 	.direct_video(direct_video),
 
 
+	.ioctl_upload(ioctl_upload),
 	.ioctl_download(ioctl_download),
 	.ioctl_wr(ioctl_wr),
 	.ioctl_addr(ioctl_addr),
 	.ioctl_dout(ioctl_dout),
+	.ioctl_din(ioctl_din),
 	.ioctl_index(ioctl_index),
 
 
@@ -370,6 +374,12 @@ galaxian galaxian
 	.dn_data(ioctl_dout),
 	.dn_wr(ioctl_wr && !ioctl_index),
 
+	.ram_address(ram_address),
+	.ram_data(ioctl_din),
+	.ram_data_in(hiscore_to_ram),
+	.ram_data_write(hiscore_write),
+
+	
 	.mod_mooncr(mod_mooncr),
 	.mod_devilfsh(mod_devilfsh),
 	.mod_pisces(mod_pisces),
@@ -381,5 +391,26 @@ galaxian galaxian
 	.W_SDAT_B(audio_b),
 	.W_SDAT_C(audio_c)
 );
+
+
+
+wire [9:0]ram_address;
+wire [7:0]hiscore_to_ram;
+wire hiscore_write;
+
+hiscore hi (
+   .clk(clk_sys),
+   .ioctl_upload(ioctl_upload),
+   .ioctl_download(ioctl_download),
+   .ioctl_wr(ioctl_wr),
+   .ioctl_addr(ioctl_addr),
+   .ioctl_dout(ioctl_dout),
+   .ioctl_din(ioctl_din),
+   .ioctl_index(ioctl_index),
+   .ram_address(ram_address),
+	.data_to_ram(hiscore_to_ram),
+	.ram_write(hiscore_write)
+);
+ 
 
 endmodule

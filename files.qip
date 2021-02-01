@@ -3,29 +3,25 @@ set_global_assignment -name VHDL_FILE ROM/FIR.vhd
 set_global_assignment -name VHDL_FILE ROM/kbe1-4.vhd
 set_global_assignment -name VHDL_FILE ROM/kbe2-5.vhd
 set_global_assignment -name VHDL_FILE ROM/kbe3-6.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80sed.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80as.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80_Reg.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80_Pack.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80_MCode.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80_ALU.vhd
-set_global_assignment -name VHDL_FILE rtl/cpu/T80.vhd
+set_global_assignment -name QIP_FILE rtl/T80/T80.qip
 set_global_assignment -name VHDL_FILE rtl/spram.vhd
 set_global_assignment -name VHDL_FILE rtl/dpram.vhd
 set_global_assignment -name VHDL_FILE rtl/sine_package.vhd
-set_global_assignment -name VHDL_FILE rtl/mc_video.vhd
+set_global_assignment -name VHDL_FILE rtl/mc_video.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE rtl/mc_stars.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_sound_vco.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_sound_b.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_sound_a.vhd
+set_global_assignment -name VHDL_FILE rtl/kb_synth.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_missile.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_logic.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_ld_pls.vhd
-set_global_assignment -name VHDL_FILE rtl/mc_inport.vhd
+set_global_assignment -name VHDL_FILE rtl/mc_inport.vhd -hdl_version VHDL_2008
 set_global_assignment -name VHDL_FILE rtl/mc_hv_count.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_col_pal.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_bram.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_adec.vhd
-set_global_assignment -name VHDL_FILE rtl/galaxian.vhd
+set_global_assignment -name VHDL_FILE rtl/galaxian.vhd -hdl_version VHDL_2008
 set_global_assignment -name SDC_FILE rtl/galaxian.sdc
+set_global_assignment -name SYSTEMVERILOG_FILE "rtl/hiscore.sv"
 set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-Galaxian.sv"

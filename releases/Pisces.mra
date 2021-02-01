@@ -32,4 +32,8 @@
 		<part crc="7130e9eb" name="g12.bin"/>
 		<part crc="57a45057" name="colour.bin"/>
 	</rom>
+	<rom index="3" md5="none">
+     <part>00 00 40 21 03 00 00 00</part>
+    </rom>	
+	<nvram index="4" size="3"/></misterromdescription>
 </misterromdescription>
