@@ -57,8 +57,9 @@ entity MC_ADEC is
 	port (
 		I_CLK_12M     : in  std_logic;
 		I_CLK_6M      : in  std_logic;
-		I_CPU_CLK     : in  std_logic;
 		I_RSTn        : in  std_logic;
+		I_MOONCR      : in  std_logic;
+		Flip_Vertical : in  std_logic;
 
 		I_CPU_A       : in  std_logic_vector(15 downto 0);
 		I_CPU_D       : in  std_logic;
@@ -90,6 +91,7 @@ entity MC_ADEC is
 		O_H_FLIP      : out std_logic;
 		O_V_FLIP      : out std_logic;
 		O_SPEECH      : out std_logic_vector(1 downto 0); -- kingballoon
+		O_SPEECH_DIP  : out std_logic;
 		O_BD_G        : out std_logic;
 		O_STARS_ON    : out std_logic
 	);
@@ -103,6 +105,7 @@ architecture RTL of MC_ADEC is
 	signal W_8M_Q    : std_logic_vector(7 downto 0) := (others => '0');
 	signal W_9N_Q    : std_logic_vector(7 downto 0) := (others => '0');
 	signal W_NMI_ONn : std_logic := '0';
+	signal MEM_SEL   : std_logic := '0';
 	--------  CPU WAITn  ----------------------------------------------
 --	signal W_6S1_Q   : std_logic := '0';
 	signal W_6S1_Qn  : std_logic := '0';
@@ -116,12 +119,12 @@ begin
 --		O_WAITn <= '1' ; -- No Wait
 		O_WAITn <= W_6S1_Qn;
 
-	process(I_CPU_CLK, I_V_BLn)
+	process(I_CLK_6M, I_V_BLn)
 	begin
 		if (I_V_BLn = '0') then
 --			W_6S1_Q  <= '0';
 			W_6S1_Qn <= '1';
-		elsif rising_edge(I_CPU_CLK) then
+		elsif rising_edge(I_CLK_6M) then
 --			W_6S1_Q  <= not (I_H_BL or W_8P_Q(2));
 			W_6S1_Qn <=      I_H_BL or W_8P_Q(2);
 		end if;
@@ -170,12 +173,14 @@ begin
 	--    W_8E1_Q[1] = 4000 - 7FFF    ---- GALAXIAN USE   *1
 	--    W_8E1_Q[2] = 8000 - BFFF    ---- MOONCREST USE
 	--    W_8E1_Q[3] = C000 - FFFF
+	
+	MEM_SEL <= W_8E1_Q(1) when I_MOONCR = '0' else W_8E1_Q(2);
 
 	u_8p : entity work.LOGIC_74XX138
 	port map (
 		I_G1  => I_RFSHn,
-		I_G2a => W_8E1_Q(1),   -- <= *1
-		I_G2b => W_8E1_Q(1),   -- <= *1
+		I_G2a => MEM_SEL,   -- <= *1
+		I_G2b => MEM_SEL,   -- <= *1
 		I_Sel => I_CPU_A(13 downto 11),
 		O_Q   => W_8P_Q
 	);
@@ -184,7 +189,7 @@ begin
 	port map (
 		I_G1  => '1',
 		I_G2a => I_RDn,
-		I_G2b => W_8E1_Q(1),   -- <= *1
+		I_G2b => MEM_SEL,   -- <= *1
 		I_Sel => I_CPU_A(13 downto 11),
 		O_Q   => W_8N_Q
 	);
@@ -194,7 +199,7 @@ begin
 	--	I_G1  => W_6S2_Qn,
 		I_G1  => '1', -- No Wait
 		I_G2a => I_WRn,
-		I_G2b => W_8E1_Q(1),   -- <= *1
+		I_G2b => MEM_SEL,   -- <= *1
 		I_Sel => I_CPU_A(13 downto 11),
 		O_Q   => W_8M_Q
 	);
@@ -246,8 +251,9 @@ begin
 	end process;
 
 	O_STARS_ON <= W_9N_Q(4);
-	O_H_FLIP   <= W_9N_Q(6);
-	O_V_FLIP   <= W_9N_Q(7);
+	O_H_FLIP   <= not W_9N_Q(6) when Flip_Vertical = '1' else W_9N_Q(6);
+	O_V_FLIP   <= not W_9N_Q(7) when Flip_Vertical = '1' else W_9N_Q(7);
 	O_SPEECH   <= W_9N_Q(2)&W_9N_Q(0); -- King & Balloon
+	O_SPEECH_DIP <= W_9N_Q(3);
 
 end RTL;

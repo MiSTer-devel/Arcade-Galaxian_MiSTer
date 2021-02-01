@@ -32,4 +32,5 @@
 		<part crc="d1220ae9" name="warofbug.1j"/>
 		<part crc="8688e64b" name="warofbug.clr"/>
 	</rom>
+	<!-- hi scores stored in RAM and Video Ram, need some wiring -->
 </misterromdescription>

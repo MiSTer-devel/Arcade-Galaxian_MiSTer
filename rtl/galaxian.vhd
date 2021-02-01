@@ -37,6 +37,12 @@ entity galaxian is
 		dn_data    : in  std_logic_vector(7 downto 0);
 		dn_wr      : in  std_logic;
 		--
+		ram_address: in  std_logic_vector(9 downto 0);
+		ram_data   : out std_logic_vector(7 downto 0);
+		ram_data_in: in  std_logic_vector(7 downto 0);
+		ram_data_write:  in std_logic;
+
+		--
 		mod_mooncr   : in  std_logic;
 		mod_devilfsh : in  std_logic;
 		mod_pisces   : in  std_logic;
@@ -44,7 +50,8 @@ entity galaxian is
 		mod_kingbal  : in  std_logic;
 		mod_orbitron : in  std_logic;
 		--
-
+		Flip_Vertical: in  std_logic;
+		--
 		W_R        : out std_logic_vector(2 downto 0);
 		W_G        : out std_logic_vector(2 downto 0);
 		W_B        : out std_logic_vector(2 downto 0);
@@ -66,7 +73,7 @@ architecture RTL of galaxian is
 	signal W_A_C              : std_logic_vector(15 downto 0) := (others => '0');
 	signal W_A_ORBITRON       : std_logic_vector(15 downto 0) := (others => '0');
 	--    CPU IF
-	signal W_CPU_CLK          : std_logic := '0';
+	signal W_CPU_CLK_EN       : std_logic := '0';
 	signal W_CPU_MREQn        : std_logic := '0';
 	signal W_CPU_NMIn         : std_logic := '0';
 	signal W_CPU_RDn          : std_logic := '0';
@@ -94,6 +101,7 @@ architecture RTL of galaxian is
 	-------- CPU RAM  ----------------------------
 	signal W_CPU_RAM_DO       : std_logic_vector(7 downto 0) := (others => '0');
 	-------- ADDRESS DECDER ----------------------
+	signal W_MOONCR           : std_logic := '0';
 	signal W_BD_G             : std_logic := '0';
 	signal W_CPU_RAM_CS       : std_logic := '0';
 	signal W_CPU_RAM_RD       : std_logic := '0';
@@ -107,9 +115,10 @@ architecture RTL of galaxian is
 	signal W_OBJ_RAM_WR       : std_logic := '0';
 	signal W_PITCH            : std_logic := '0';
 	signal W_SOUND_WE         : std_logic := '0';
+	signal W_SPEECH_OUT       : std_logic_vector(7 downto 0);
 	signal W_SPEECH_IN        : std_logic_vector(1 downto 0);
 	signal W_STARS_ON         : std_logic := '0';
-        signal W_STARS_ON_ADJ     : std_logic := '0';
+	signal W_STARS_ON_ADJ     : std_logic := '0';
 	signal W_STARS_OFFn       : std_logic := '0';
 	signal W_SW0_OE           : std_logic := '0';
 	signal W_SW1_OE           : std_logic := '0';
@@ -118,6 +127,7 @@ architecture RTL of galaxian is
 	signal W_VID_RAM_WR       : std_logic := '0';
 	signal W_WDR_OE           : std_logic := '0';
 	signal W_CPU_M1n          : std_logic := '0';
+	signal W_SPEECH_DIP       : std_logic := '0';
 	--------- INPORT -----------------------------
 	signal W_SW_DO            : std_logic_vector( 7 downto 0) := (others => '0');
 	--------- VIDEO  -----------------------------
@@ -127,7 +137,6 @@ architecture RTL of galaxian is
 	signal W_CPU_ROM_DOB      : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_BDO              : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_BDI              : std_logic_vector( 7 downto 0) := (others => '0');
-	signal W_CPU_RAM_CLK      : std_logic := '0';
 	signal W_VOL1             : std_logic := '0';
 	signal W_VOL2             : std_logic := '0';
 	signal W_FIRE             : std_logic := '0';
@@ -177,10 +186,11 @@ begin
 		dn_addr       => dn_addr,
 		dn_data       => dn_data,
 		dn_wr         => dn_wr,
-                mod_mooncr    => mod_mooncr,
-                mod_devilfsh  => mod_devilfsh,
-                mod_pisces    => mod_pisces,
-                mod_uniwars   => mod_uniwars,
+		mod_mooncr    => mod_mooncr,
+		mod_devilfsh  => mod_devilfsh,
+		mod_pisces    => mod_pisces,
+		mod_uniwars   => mod_uniwars,
+		Flip_Vertical => Flip_Vertical,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_H_CNT       => W_H_CNT,
@@ -212,13 +222,14 @@ begin
 	);
 
 
-        CPU_INT_n <= W_CPU_NMIn when mod_devilfsh = '1' else '1';
-        CPU_NMI_n <= '1' when mod_devilfsh = '1' else W_CPU_NMIn;
+	CPU_INT_n <= W_CPU_NMIn when mod_devilfsh = '1' else '1';
+	CPU_NMI_n <= '1' when mod_devilfsh = '1' else W_CPU_NMIn;
 
-	cpu : entity work.T80as
+	cpu : entity work.T80se
 	port map (
 		RESET_n       => W_RESETn,
-		CLK_n         => W_CPU_CLK,
+		CLK_n         => W_CLK_6M,
+		CLKEN         => W_CPU_CLK_EN,
 		WAIT_n        => W_CPU_WAITn,
 		INT_n         => CPU_INT_n,
 		NMI_n         => CPU_NMI_n,
@@ -230,7 +241,7 @@ begin
 		A             => W_A,
 		DI            => W_BDO,
 		DO            => W_BDI,
-		M1_n          => W_CPU_M1n,
+		M1_n          => open,
 		IORQ_n        => open,
 		HALT_n        => open,
 		BUSAK_n       => open--,
@@ -239,20 +250,30 @@ begin
 
 	mc_cpu_ram : entity work.MC_CPU_RAM
 	port map (
-		I_CLK         => W_CPU_RAM_CLK,
+		I_CLK         => W_CLK_12M,
+		I_CS          => W_CPU_RAM_CS,
 		I_ADDR        => W_A(9 downto 0),
 		I_D           => W_BDI,
 		I_WE          => W_CPU_WR,
 		I_OE          => W_CPU_RAM_RD,
-		O_D           => W_CPU_RAM_DO
+		O_D           => W_CPU_RAM_DO,
+		I_CLK_B       => W_CLK_12M,
+		O_D_B         => ram_data,
+		I_WE_B        => ram_data_write,
+		I_D_B         => ram_data_in,
+		I_ADDR_B      => ram_address
+
 	);
+	-- Kingball only now, original Moon Cresta ROM is scrambled
+  W_MOONCR <= '1' when mod_kingbal = '1' else '0';
 
 	mc_adec : entity work.MC_ADEC
 	port map(
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
-		I_CPU_CLK     => W_CPU_CLK,
 		I_RSTn        => W_RESETn,
+		I_MOONCR      => W_MOONCR,
+		Flip_Vertical => Flip_Vertical,
 
 		I_CPU_A       => W_A,
 		I_CPU_D       => W_BDI(0),
@@ -284,6 +305,7 @@ begin
 		O_H_FLIP      => W_H_FLIP,
 		O_V_FLIP      => W_V_FLIP,
 		O_SPEECH      => W_SPEECH_IN,
+		O_SPEECH_DIP  => W_SPEECH_DIP,
 		O_BD_G        => W_BD_G,
 		O_STARS_ON    => W_STARS_ON
 	);
@@ -297,7 +319,11 @@ begin
 		I_SW0_OE      => W_SW0_OE,
 		I_SW1_OE      => W_SW1_OE,
 		I_DIP_OE      => W_DIP_OE,
-		O_D           => W_SW_DO
+		O_D           => W_SW_DO,
+		mod_kingbal  => mod_kingbal,
+		I_SPEECH_DIP  => W_SPEECH_DIP,
+		I_RAND        => W_V_CNT(0)
+
 	);
 
 	mc_hv : entity work.MC_HV_COUNT
@@ -424,8 +450,7 @@ begin
 
 -----  CPU I/F  -------------------------------------
 
-	W_CPU_CLK     <= W_H_CNT(0);
-	W_CPU_RAM_CLK <= W_CLK_12M and W_CPU_RAM_CS;
+	W_CPU_CLK_EN  <= not W_H_CNT(0); -- CPU clock enable in the 6MHz domain
 
 	W_CPU_ROM_DOB <= W_CPU_ROM_DO when W_CPU_ROM_CS = '1' else (others=>'0');
 
@@ -435,16 +460,17 @@ begin
 
 	new_sw <= (W_FS(2) or W_FS(1) or W_FS(0)) & W_HIT & W_FIRE;
 
-	process(W_CPU_CLK, I_RESET)
+	process(W_CLK_6M, I_RESET)
 	begin
 		if (I_RESET = '1') then
 			rst_count <= (others => '0');
-		elsif rising_edge( W_CPU_CLK) then
-			if ( rst_count /= x"f") then
+		elsif rising_edge( W_CLK_6M) then
+			if ( W_CPU_CLK_EN = '1' and rst_count /= x"f") then
 				rst_count <= rst_count + 1;
 			end if;
 		end if;
 	end process;
+
 
 -----  Parts 9L ---------
 	process(W_CLK_12M, I_RESET)
@@ -520,15 +546,19 @@ W_STARS_ON_ADJ <= '0' when mod_kingbal='1' else W_STARS_ON;
 -------------------------------------------------------------------------------
 -- King & Balloon speech board
 
---        speech : entity work.kb_synth
---       port map(
---                reset_n       => W_RESETn,
---                clk           => W_CLK_12M,
---                in0           => W_SPEECH_IN(0),
---                in1           => W_SPEECH_IN(1),
---                in2           => '0', -- GND
---                in3           => '0', -- GND
---                speech_out    => W_SDAT_C
---        );
+	-- King & Balloon speech board
+	speech : entity work.kb_synth
+	port map(
+		reset_n       => W_RESETn,
+		clk           => W_CLK_12M,
+		in0           => W_SPEECH_IN(0),
+		in1           => W_SPEECH_IN(1),
+		in2           => '0', -- GND
+		in3           => '0', -- GND
+		speech_out    => W_SPEECH_OUT
+	);
+	
+	W_SDAT_C <= W_SPEECH_OUT when mod_kingbal='1' else (others => '0');
+
 
 end RTL;

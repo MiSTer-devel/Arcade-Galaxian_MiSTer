@@ -27,11 +27,17 @@ library ieee;
 entity MC_CPU_RAM is
 	port (
 		I_CLK  : in  std_logic;
+		I_CS   : in  std_logic;
 		I_ADDR : in  std_logic_vector(9 downto 0);
 		I_D    : in  std_logic_vector(7 downto 0);
 		I_WE   : in  std_logic;
 		I_OE   : in  std_logic;
-		O_D    : out std_logic_vector(7 downto 0)
+		O_D    : out std_logic_vector(7 downto 0);
+		I_CLK_B: in  std_logic;
+		O_D_B  : out std_logic_vector(7 downto 0);
+		I_D_B  : in  std_logic_vector(7 downto 0);
+		I_WE_B : in  std_logic;	
+		I_ADDR_B: in std_logic_vector(9 downto 0)
 	);
 end;
 architecture RTL of MC_CPU_RAM is
@@ -40,14 +46,20 @@ architecture RTL of MC_CPU_RAM is
 begin
 	O_D <= W_D when I_OE ='1' else (others=>'0');
 
-	ram_inst : work.spram generic map(10,8)
+	ram_inst : work.dpram generic map(10,8)
 	port map
 	(
-		address  => I_ADDR,
-		clock    => I_CLK,
-		data     => I_D,
-		wren		=> I_WE,
-		q			=> W_D
+		address_a  => I_ADDR,
+		clock_a    => I_CLK,
+		data_a     => I_D,
+		wren_a		=> I_WE and I_CS,
+		q_a			=> W_D,
+		address_b  => I_ADDR_B,
+		clock_b    => I_CLK_B,
+		data_b     => I_D_B,
+		wren_b		=> I_WE_B,
+		q_b			=> O_D_B
+		
 	);
 end RTL;
 

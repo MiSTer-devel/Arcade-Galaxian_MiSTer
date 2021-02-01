@@ -31,4 +31,8 @@
 		<part crc="46f4cca4" name="orbitron.7"/>
 		<part crc="6a0c7d87" name="l06_prom.bin"/>
 	</rom>
+   <rom index="3" md5="none">
+     <part>00 00 40 4A 03 00 00 00</part>
+   </rom>	
+	<nvram index="4" size="3"/>
 </misterromdescription>

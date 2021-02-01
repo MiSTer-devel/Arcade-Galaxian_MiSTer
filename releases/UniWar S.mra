@@ -33,4 +33,8 @@
 		<part crc="dcc2b33b" name="k01_2.bin"/>
 		<part crc="25c79518" name="uniwars.clr"/>
 	</rom>
+   <rom index="3" md5="none">
+     <part>00 00 40 a8 03 00 00 00</part>
+   </rom>	
+   <nvram index="4" size="3"/>
 </misterromdescription>

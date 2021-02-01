@@ -30,4 +30,10 @@
 		<part crc="03d11020" name="bh8"/>
 		<part crc="c3ac9467" name="6l.bpr"/>
 	</rom>
+   <rom index="3" md5="none">
+     <part>
+	 00 00 41 40 09 58 00 00
+	 </part>
+   </rom>	
+	<nvram index="4" size="9"/>	
 </misterromdescription>
