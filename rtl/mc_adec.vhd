@@ -59,6 +59,7 @@ entity MC_ADEC is
 		I_CLK_6M      : in  std_logic;
 		I_RSTn        : in  std_logic;
 		I_MOONCR      : in  std_logic;
+		Flip_Vertical : in  std_logic;
 
 		I_CPU_A       : in  std_logic_vector(15 downto 0);
 		I_CPU_D       : in  std_logic;
@@ -250,8 +251,8 @@ begin
 	end process;
 
 	O_STARS_ON <= W_9N_Q(4);
-	O_H_FLIP   <= W_9N_Q(6);
-	O_V_FLIP   <= W_9N_Q(7);
+	O_H_FLIP   <= not W_9N_Q(6) when Flip_Vertical = '1' else W_9N_Q(6);
+	O_V_FLIP   <= not W_9N_Q(7) when Flip_Vertical = '1' else W_9N_Q(7);
 	O_SPEECH   <= W_9N_Q(2)&W_9N_Q(0); -- King & Balloon
 	O_SPEECH_DIP <= W_9N_Q(3);
 

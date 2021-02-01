@@ -134,6 +134,7 @@ localparam CONF_STR = {
 	"H0OJK,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	"H0O2,Orientation,Vert,Horz;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+	"O6,Flip Vertical,Off,On;",
 	"-;",
 	"DIP;",
 	"-;",
@@ -386,6 +387,8 @@ galaxian galaxian
 	.mod_uniwars(mod_uniwars),
 	.mod_kingbal(mod_kingbal),
 	.mod_orbitron(mod_orbitron),
+	
+	.Flip_Vertical(status[6]),
 
 	.W_SDAT_A(audio_a),
 	.W_SDAT_B(audio_b),

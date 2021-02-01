@@ -40,6 +40,7 @@ entity MC_VIDEO is
 		mod_pisces : in  std_logic;
 		mod_uniwars : in  std_logic;
 		--
+		Flip_Vertical : in  std_logic;
 
 
 		I_CLK_12M     : in  std_logic;
@@ -99,6 +100,7 @@ architecture RTL of MC_VIDEO is
 	signal W_COL        : std_logic_vector( 2 downto 0) := (others => '0');
 
 	signal W_H_POSI     : std_logic_vector( 7 downto 0) := (others => '0');
+	signal W_H_POSI_MODIFIED:std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_OBJ_D      : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_2M_Q       : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_6K_Q       : std_logic_vector( 2 downto 0) := (others => '0');
@@ -216,13 +218,17 @@ begin
 		O_Dn   => W_LRAM_DO
 	);
 
+	
+	W_H_POSI_MODIFIED   <= not W_H_POSI  when Flip_Vertical  = '1' else W_H_POSI;
+
+
 	missile : entity work.MC_MISSILE
 	port map(
 		I_CLK_6M   => I_CLK_6M,
 		I_C_BLn_X  => W_C_BLnX,
 		I_MLDn     => W_MLDn,
 		I_SLDn     => W_SLDn,
-		I_HPOS     => W_H_POSI,
+		I_HPOS     => W_H_POSI_MODIFIED,
 		O_MISSILEn => O_MISSILEn,
 		O_SHELLn   => O_SHELLn
 	);

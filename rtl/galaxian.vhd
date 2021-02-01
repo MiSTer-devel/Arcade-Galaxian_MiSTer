@@ -50,7 +50,8 @@ entity galaxian is
 		mod_kingbal  : in  std_logic;
 		mod_orbitron : in  std_logic;
 		--
-
+		Flip_Vertical: in  std_logic;
+		--
 		W_R        : out std_logic_vector(2 downto 0);
 		W_G        : out std_logic_vector(2 downto 0);
 		W_B        : out std_logic_vector(2 downto 0);
@@ -189,6 +190,7 @@ begin
 		mod_devilfsh  => mod_devilfsh,
 		mod_pisces    => mod_pisces,
 		mod_uniwars   => mod_uniwars,
+		Flip_Vertical => Flip_Vertical,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
 		I_H_CNT       => W_H_CNT,
@@ -271,6 +273,7 @@ begin
 		I_CLK_6M      => W_CLK_6M,
 		I_RSTn        => W_RESETn,
 		I_MOONCR      => W_MOONCR,
+		Flip_Vertical => Flip_Vertical,
 
 		I_CPU_A       => W_A,
 		I_CPU_D       => W_BDI(0),
