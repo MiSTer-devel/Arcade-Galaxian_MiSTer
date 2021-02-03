@@ -341,8 +341,8 @@ wire [7:0] sw1_victory = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_star
 wire [7:0] sw0_warofbug = sw[0] & { m_up,  m_down, 1'b1, m_fire, m_right, m_left, m_up_2, m_coin};
 wire [7:0] sw1_warofbug = sw[1] & { 2'b11, m_down, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
-wire rotate_ccw = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday);
-
+wire rotate_ccw_orig = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday);
+wire rotate_ccw = status[6] ? ~rotate_ccw_orig : rotate_ccw_orig;
 // zigzag??
 
 wire mod_orb_war  = mod_orbitron;
