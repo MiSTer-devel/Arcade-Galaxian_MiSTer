@@ -3,6 +3,9 @@
 	<mameversion>0216</mameversion>
 	<mratimestamp>201911270000</mratimestamp>
 	<setname>kingball</setname>
+	<year>1980</year>
+	<manufacturer>Namco</manufacturer>
+	<category>Shoot em up</category>
 	<rbf>galaxian</rbf>
 	<switches default="1F,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>
