@@ -5,6 +5,7 @@
 	<mratimestamp>20200427161917</mratimestamp>
 	<year>1982</year>
 	<manufacturer>bootleg</manufacturer>
+	<category>Shoot em up</category>
 	<rbf>galaxian</rbf>
 	<switches default="FF,FF,F7">
 		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
