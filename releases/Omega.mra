@@ -3,8 +3,9 @@
 	<mameversion>0220</mameversion>
 	<setname>omegab</setname>
 	<mratimestamp>20200427161917</mratimestamp>
-	<year>19??</year>
-	<manufacturer>bootleg?</manufacturer>
+	<year>1979</year>
+	<manufacturer>bootleg</manufacturer>
+	<category>Shoot em up</category>
 	<rbf>galaxian</rbf>
 	<switches default="FF,5F,00">
 		<dip bits="14" name="Coinage" ids="2c/1cr,1c/1cr"/>
