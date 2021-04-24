@@ -1,0 +1,23 @@
+name: MRA Validation
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Validate with MRA checker script
+      shell: bash
+      run: |
+        set -euo pipefail
+        MRA_CHECKER_SCRIPT_URL=${MRA_CHECKER_SCRIPT_URL:-"https://raw.githubusercontent.com/MiSTer-devel/Scripts_MiSTer/master/other_authors/mra_rom_check.sh"}
+        echo "${MRA_CHECKER_SCRIPT_URL}"
+        curl --fail --location -o /tmp/mra_checker.sh "${MRA_CHECKER_SCRIPT_URL}"
+        chmod +x /tmp/mra_checker.sh
+        /tmp/mra_checker.sh ${MRA_CHECKER_RELEASES_OPTIONS:---mra-folder releases --ignore-roms}
+      env:
+        MRA_CHECKER_SCRIPT_URL: ${{ secrets.MRA_CHECKER_SCRIPT_URL }}
+        MRA_CHECKER_RELEASES_OPTIONS: ${{ secrets.MRA_CHECKER_RELEASES_OPTIONS }}
