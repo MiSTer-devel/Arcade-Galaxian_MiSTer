@@ -29,6 +29,7 @@ entity MC_SOUND_B is
 		I_SW      : in  std_logic_vector( 2 downto 0);
 		I_DAC     : in  std_logic_vector( 3 downto 0);
 		I_FS      : in  std_logic_vector( 2 downto 0);
+		I_KINGBAL : in  std_logic;
 		O_SDAT    : out std_logic_vector( 7 downto 0)
 	);
 end;
@@ -68,7 +69,12 @@ begin
 	process(I_CLK1)
 	begin
 		if rising_edge(I_CLK1) then
-			SDAT <=  ("000" & W_VCO3_OUT) + ( ( ("000" & W_VCO2_OUT) + ("000" & W_VCO1_OUT) ) + ( ("000" & WAV_D0) + ("000" & WAV_D1) ) );
+			if (I_KINGBAL = '1') then
+				-- King and balloon leave out rack noise
+				SDAT <=  (("00" & WAV_D0 & "0") + ("00" & WAV_D1 & "0"));
+			else
+				SDAT <=  ("000" & W_VCO3_OUT) + ( ( ("000" & W_VCO2_OUT) + ("000" & W_VCO1_OUT) ) + ( ("000" & WAV_D0) + ("000" & WAV_D1) ) );
+			end if;			
 		end if;
 	end process;
 

@@ -88,7 +88,8 @@ begin
 --		DATA => W_COL_ROM_DO
 --	);
 
-        clut_cs  <= '1' when dn_addr(15 downto 12) = X"6" else '0';
+        --clut_cs  <= '1' when dn_addr(15 downto 12) = X"6" else '0';
+		  clut_cs  <= '1' when dn_addr(15 downto 5) = "01100000000" else '0';  -- 6000-601F only
 
 
         clut : work.dpram generic map (5,8)

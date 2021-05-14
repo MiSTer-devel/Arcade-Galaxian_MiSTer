@@ -6,6 +6,10 @@ library ieee;
 
 entity kb_synth is
 	port (
+		dn_addr       : in  std_logic_vector(15 downto 0);
+		dn_data       : in  std_logic_vector(7 downto 0);
+		dn_wr         : in  std_logic;
+
 		reset_n  : in  std_logic;
 		clk : in  std_logic;
 		in0 : in  std_logic;
@@ -24,9 +28,9 @@ signal cpu_addr : std_logic_vector(15 downto 0);
 signal cpu_di : std_logic_vector(7 downto 0);
 signal cpu_do : std_logic_vector(7 downto 0);
 signal ram_do : std_logic_vector(7 downto 0);
-signal rom4_do : std_logic_vector(7 downto 0);
-signal rom5_do : std_logic_vector(7 downto 0);
-signal rom6_do : std_logic_vector(7 downto 0);
+--signal rom4_do : std_logic_vector(7 downto 0);
+--signal rom5_do : std_logic_vector(7 downto 0);
+--signal rom6_do : std_logic_vector(7 downto 0);
 signal mreq_n : std_logic;
 signal iorq_n : std_logic;
 signal rd_n : std_logic;
@@ -34,18 +38,23 @@ signal wr_n : std_logic;
 
 signal ram_ce : std_logic;
 signal ram_wr : std_logic;
-signal rom4_ce : std_logic;
-signal rom5_ce : std_logic;
-signal rom6_ce : std_logic;
+--signal rom4_ce : std_logic;
+--signal rom5_ce : std_logic;
+--signal rom6_ce : std_logic;
 signal buf_do : std_logic_vector(7 downto 0);
 signal buf_ce_n : std_logic;
+
+signal Rom_ld : std_logic;
+signal rom_do : std_logic_vector(7 downto 0);
+signal rom_ce : std_logic;
 
 begin
 
 	cpu_di <= ram_do when ram_ce = '1' else
-	         rom4_do when rom4_ce = '1' else
-	         rom5_do when rom5_ce = '1' else
-	         rom6_do when rom6_ce = '1' else
+--	         rom4_do when rom4_ce = '1' else
+--	         rom5_do when rom5_ce = '1' else
+--	         rom6_do when rom6_ce = '1' else
+				 rom_do when rom_ce = '1' else
 	          buf_do when buf_ce_n = '0' else
 	         "00000000";
 
@@ -95,29 +104,47 @@ begin
 		q          => ram_do
 	);
 
-	rom4_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "000" else '0';
-	rom4_inst : entity work.kbe1_IC4
-	port map (
-		clk    	 	 => clk,
-		addr  	 	 => cpu_addr(10 downto 0),
-		data			 => rom4_do
-	);
+	-- Load rom from MRA 
+	
+	Rom_ld <= '1' when dn_addr(15 downto 12) = X"7" or dn_addr(15 downto 12) = X"8" else '0';
+	rom_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13) = '0' else '0';
+	
+	soundrom : work.dpram generic map (13,8)
+	port map
+	(
+			 clock_a   => clk,
+			 wren_a    => dn_wr and Rom_ld,
+			 address_a => not dn_addr(12) & dn_addr(11 downto 0),
+			 data_a    => dn_data,
 
-	rom5_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "001" else '0';
-	rom5_inst : entity work.kbe2_IC5
-	port map (
-		clk    	 	 => clk,
-		addr  	 	 => cpu_addr(10 downto 0),
-		data			 => rom5_do
+			 clock_b   => clk,
+			 address_b => cpu_addr(12 downto 0),
+			 q_b       => rom_do 
 	);
-
-	rom6_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "010" else '0';
-	rom6_inst : entity work.kbe3_IC6
-	port map (
-		clk    	 	 => clk,
-		addr  	 	 => cpu_addr(10 downto 0),
-		data			 => rom6_do
-	);
+	
+--rom4_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "000" else '0';
+--	rom4_inst : entity work.kbe1_IC4
+--	port map (
+--		clk    	 	 => clk,
+--		addr  	 	 => cpu_addr(10 downto 0),
+--		data			 => rom4_do
+--	);
+--
+--	rom5_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "001" else '0';
+--	rom5_inst : entity work.kbe2_IC5
+--	port map (
+--		clk    	 	 => clk,
+--		addr  	 	 => cpu_addr(10 downto 0),
+--		data			 => rom5_do
+--	);
+--
+--	rom6_ce <= '1' when rd_n = '0' and mreq_n = '0' and cpu_addr(13 downto 11) = "010" else '0';
+--	rom6_inst : entity work.kbe3_IC6
+--	port map (
+--		clk    	 	 => clk,
+--		addr  	 	 => cpu_addr(10 downto 0),
+--		data			 => rom6_do
+--	);
 
 	process(clk, reset_n)
 	begin
