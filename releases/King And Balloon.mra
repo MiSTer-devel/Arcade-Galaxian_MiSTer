@@ -16,7 +16,7 @@
 		<dip bits="18" name="Lives" ids="2,3"/>
 	</switches>
 	<rom index="1"><part>07</part></rom>
-	<rom index="0" zip="kingball.zip" md5="none" type="merged|nonmerged">
+	<rom index="0" zip="kingball.zip" md5="55616b75842d0982e3cf14a127fb328a" type="merged|nonmerged">
 		<part crc="6cb49046" name="prg1.7f"/>
 		<part crc="c223b416" name="prg2.7j"/>
 		<part crc="453634c0" name="prg3.7l"/>
