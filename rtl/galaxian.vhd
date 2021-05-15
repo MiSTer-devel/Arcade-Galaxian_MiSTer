@@ -398,7 +398,8 @@ begin
 		I_SW          => new_sw,
 		I_DAC         => W_DAC,
 		I_FS          => W_FS,
-		O_SDAT        => W_SDAT_B
+		O_SDAT        => W_SDAT_B,
+		I_KINGBAL     => mod_kingbal
 	);
 
 --------- ROM           -------------------------------------------------------
@@ -549,6 +550,10 @@ W_STARS_ON_ADJ <= '0' when mod_kingbal='1' else W_STARS_ON;
 	-- King & Balloon speech board
 	speech : entity work.kb_synth
 	port map(
+		dn_addr       => dn_addr,
+		dn_data       => dn_data,
+		dn_wr         => dn_wr,
+		
 		reset_n       => W_RESETn,
 		clk           => W_CLK_12M,
 		in0           => W_SPEECH_IN(0),

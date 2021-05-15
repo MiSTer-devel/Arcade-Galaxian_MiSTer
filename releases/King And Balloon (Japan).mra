@@ -1,8 +1,8 @@
 <misterromdescription>
-	<name>King and Balloon</name>
+	<name>King and Balloon (Japan)</name>
 	<mameversion>0216</mameversion>
 	<mratimestamp>201911270000</mratimestamp>
-	<setname>kingball</setname>
+	<setname>kingballj</setname>
 	<year>1980</year>
 	<manufacturer>Namco</manufacturer>
 	<category>Shoot em up</category>
@@ -16,7 +16,7 @@
 		<dip bits="18" name="Lives" ids="2,3"/>
 	</switches>
 	<rom index="1"><part>07</part></rom>
-	<rom index="0" zip="kingball.zip" md5="55616b75842d0982e3cf14a127fb328a" type="merged|nonmerged">
+	<rom index="0" zip="kingball.zip|kingballj.zip" md5="none" type="merged|nonmerged">
 		<part crc="6cb49046" name="prg1.7f"/>
 		<part crc="c223b416" name="prg2.7j"/>
 		<part crc="453634c0" name="prg3.7l"/>
@@ -30,10 +30,10 @@
 		<part crc="15dd5b16" name="kb2-1"/>
 		<part repeat="0x0FE0">00</part>
 
-		<part crc="5be2c80a" name="kbe1.ic4"/>
-		<part crc="bb59e965" name="kbe2.ic5"/>
-		<part crc="fbc7d286" name="kbe3.ic6"/>
-		<part crc="bb59e965" name="kbe2.ic7"/>
+		<part crc="ba16beb7" name="kbj1.ic4"/>
+		<part crc="56686a63" name="kbj2.ic5"/>
+		<part crc="fbc570a5" name="kbj3.ic6"/>
+		<part crc="56686a63" name="kbj2.ic7"/>
 	</rom>
    <rom index="3" md5="none">
      <part>
