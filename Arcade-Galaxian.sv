@@ -109,7 +109,7 @@ localparam CONF_STR = {
 	"R0,Reset;",
 	"J1,Fire,Start 1P,Start 2P,Coin;",
 	"jn,A,Start,Select,R;",
-	"jp,B,Start,,Select;",
+	"jp,B,Start,Select,R;",
 	"V,v",`BUILD_DATE
 };
 
@@ -286,8 +286,8 @@ reg btn_test=0;
 
 wire no_rotate = status[2] | direct_video;
 
-wire m_start1 = btn_start_1 | joy[5];
-wire m_start2 = btn_start_2 | joy[6];
+wire m_start1 = btn_start_1 | joystick_0[5];
+wire m_start2 = btn_start_2 | joy[6] | joystick_1[5];
 wire m_coin   = btn_coin_1 | btn_coin_2 | joy[7];
 
 wire m_up_2     = btn_up_2    | joy[3];
