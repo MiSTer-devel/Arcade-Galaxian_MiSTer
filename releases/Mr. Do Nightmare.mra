@@ -1,20 +1,42 @@
 <misterromdescription>
 	<name>Mr. Do Nightmare</name>
-	<mameversion>0220</mameversion>
-	<mratimestamp>20200427161917</mratimestamp>
+	<region></region>
+	<homebrew>no</homebrew>
+	<bootleg>no</bootleg>
+	<version></version>
+	<alternative></alternative>
+	<platform></platform>
+	<series>Mr. Do</series>
 	<year>2004</year>
 	<manufacturer>Crazy Ivan</manufacturer>
-	<category>Maze / Digging</category>
+	<category>Maze</category>
+
+	<setname></setname>
+	<parent></parent>
+	<mameversion>0220</mameversion>
 	<rbf>galaxian</rbf>
+	<about></about>
+
+	<resolution>15kHz</resolution>
+	<rotation>vertical (cw)</rotation>
+	<flip>yes</flip>
+
+	<players>2 (alternating)</players>
+	<joystick>4-way</joystick>
+	<special_controls></special_controls>
+	<num_buttons>1</num_buttons>
+	<button_names></button_names>
+
 	<switches default="FF,1F,04">
-		<dip bits="5"    name="Cabinet" ids="Upright,Cocktail"/>
-		<dip bits="14,15" name="Coinage" ids="1C/1Cr,Free Play"/>
-	</switches>
+		<dip bits="5" ids="Upright,Cocktail" name="Cabinet"></dip>
+		<dip bits="14,15" ids="1C/1Cr,Free Play" name="Coinage"></dip>
+		</switches>
+
 	<rom index="1">
 		<part>08</part>
-	</rom>
+		</rom>
 	<rom index="0" md5="58c6153b90652577329cc2691450c764">
-	<part>
+		<part>
 af320170c3d0003a36403ce607323640
 201a061a1109581afe052809fe062008
 3e051218033e0612131310ebc9ffffff
@@ -1574,9 +1596,18 @@ e2040810c82414120585858505050911
 001070e0e0c0c0e00008090505070604
 e0c0c0e0e07010000406070505090800
 	</part>
-	<part>
-001e21f600c007f600f607a400c0c407
-00f6c076001ec080001e80c0007607c6
-	</part>
-	</rom>
+		<part>
+		001e21f600c007f600f607a400c0c407
+		00f6c076001ec080001e80c0007607c6
+			</part>
+		</rom>
+	<rom index="2"></rom>
+	<rom index="3"></rom>
+	<rom index="4"></rom>
+
+	<nvram></nvram>
+
+	<remark></remark>
+
+	<mratimestamp>20210430005030</mratimestamp>
 </misterromdescription>
