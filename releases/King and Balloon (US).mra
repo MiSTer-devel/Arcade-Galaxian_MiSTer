@@ -1,0 +1,66 @@
+<misterromdescription>
+	<name>King and Balloon</name>
+	<region>USA</region>
+	<homebrew>no</homebrew>
+	<bootleg>no</bootleg>
+	<version></version>
+	<alternative></alternative>
+	<platform></platform>
+	<series></series>
+	<year>1980</year>
+	<manufacturer>Namco</manufacturer>
+	<category>Shooter - Gallery</category>
+
+	<setname>kingball</setname>
+	<parent>kingball</parent>
+	<mameversion>0216</mameversion>
+	<rbf>galaxian</rbf>
+	<about></about>
+
+	<resolution>15kHz</resolution>
+	<rotation>vertical (cw)</rotation>
+	<flip>yes</flip>
+
+	<players>2 (alternating)</players>
+	<joystick>2-way horizontal</joystick>
+	<special_controls></special_controls>
+	<num_buttons>1</num_buttons>
+	<button_names></button_names>
+
+	<switches default="1F,1F,04">
+		<dip bits="7" ids="Off,On" name="Service"></dip>
+		<dip bits="6" ids="Off,On" name="Test"></dip>
+		<dip bits="5" ids="Upright,Cocktail" name="Cabinet"></dip>
+		<dip bits="14,15" ids="1c/1cr,1c/2cr,2c/1cr,Free Play" name="Coinage" values="1,2,3,0"></dip>
+		<dip bits="16,17" ids="10000,12000,15000,None" name="Bonus Life After"></dip>
+		<dip bits="18" ids="2,3" name="Lives"></dip>
+		</switches>
+
+	<rom index="1"><part>07</part></rom>
+	<rom index="0" md5="1fcb9ca52df7231e6b49af1c5a264b8b" type="merged|nonmerged" zip="kingball.zip">
+		<part crc="6cb49046" name="prg1.7f"></part>
+		<part crc="c223b416" name="prg2.7j"></part>
+		<part crc="453634c0" name="prg3.7l"></part>
+		<part repeat="0x1800">FF</part>
+		<part crc="a206757d" name="chg2.1k"></part>
+		<part crc="a206757d" name="chg2.1k"></part>
+		<part crc="9cd550e7" name="chg1.1h"></part>
+		<part crc="9cd550e7" name="chg1.1h"></part>
+		<part crc="15dd5b16" name="kb2-1"></part>
+		</rom>
+	<rom index="2"></rom>
+	<rom index="3" md5="none">
+		<part>
+			  00 00 83 05 03 00 00 00
+			  00 00 80 0d 03 00 00 00
+		     00 00 83 02 01 01 01 00
+			  </part>
+		</rom>
+	<rom index="4"></rom>
+
+	<nvram index="4" size="7"></nvram>
+
+	<remark></remark>
+
+	<mratimestamp>20210430005030</mratimestamp>
+</misterromdescription>

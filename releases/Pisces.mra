@@ -1,39 +1,67 @@
 <misterromdescription>
 	<name>Pisces</name>
-	<mameversion>0220</mameversion>
-	<setname>pisces</setname>
-	<mratimestamp>20200427161917</mratimestamp>
-	<year>1980</year>
+	<region></region>
+	<homebrew>no</homebrew>
+	<bootleg>no</bootleg>
+	<version></version>
+	<alternative></alternative>
+	<platform></platform>
+	<series></series>
+	<year>1982</year>
 	<manufacturer>Subelectro</manufacturer>
-	<category>Space / Shooter</category>
+	<category>Shooter - Gallery</category>
+
+	<setname>pisces</setname>
+	<parent>pisces</parent>
+	<mameversion>0220</mameversion>
 	<rbf>galaxian</rbf>
+	<about></about>
+
+	<resolution>15kHz</resolution>
+	<rotation>vertical (cw)</rotation>
+	<flip>yes</flip>
+
+	<players>2 (alternating)</players>
+	<joystick>2-way horizontal</joystick>
+	<special_controls></special_controls>
+	<num_buttons>1</num_buttons>
+	<button_names></button_names>
+
 	<switches default="FF,1F,00">
-		<dip bits="14" name="Lives" ids="3,4"/>
-		<dip bits="15" name="Cabinet" ids="Upright,Cocktail"/>
-		<dip bits="16" name="Bonus Life After" ids="10000,20000"/>
-		<dip bits="17" name="Coinage" ids="1c/1cr,2c/1cr"/>
-		<dip bits="18" name="Difficulty" ids="Easy,Hard"/>
-	</switches>
+		<dip bits="14" ids="3,4" name="Lives"></dip>
+		<dip bits="15" ids="Upright,Cocktail" name="Cabinet"></dip>
+		<dip bits="16" ids="10000,20000" name="Bonus Life After"></dip>
+		<dip bits="17" ids="1c/1cr,2c/1cr" name="Coinage"></dip>
+		<dip bits="18" ids="Easy,Hard" name="Difficulty"></dip>
+		</switches>
+
 	<rom index="1">
 		<part>0B</part>
-	</rom>
-	<rom index="0" zip="pisces.zip" md5="41f6f556ea5dd7cc27d2ca64feea8b9f">
-		<part crc="40c5b0e4" name="p1.bin"/>
-		<part crc="055f9762" name="p2.bin"/>
-		<part crc="3073dd04" name="p3.bin"/>
-		<part crc="44aaf525" name="p4.bin"/>
-		<part crc="fade512b" name="p5.bin"/>
-		<part crc="5ab2822f" name="p6.bin"/>
-		<part crc="5ab2822f" name="p6.bin"/>
-		<part crc="5ab2822f" name="p6.bin"/>
-		<part crc="9503a23a" name="g09.bin"/>
-		<part crc="0adfc3fe" name="g11.bin"/>
-		<part crc="3e61f849" name="g10.bin"/>
-		<part crc="7130e9eb" name="g12.bin"/>
-		<part crc="57a45057" name="colour.bin"/>
-	</rom>
+		</rom>
+	<rom index="0" md5="41f6f556ea5dd7cc27d2ca64feea8b9f" zip="pisces.zip">
+		<part crc="40c5b0e4" name="p1.bin"></part>
+		<part crc="055f9762" name="p2.bin"></part>
+		<part crc="3073dd04" name="p3.bin"></part>
+		<part crc="44aaf525" name="p4.bin"></part>
+		<part crc="fade512b" name="p5.bin"></part>
+		<part crc="5ab2822f" name="p6.bin"></part>
+		<part crc="5ab2822f" name="p6.bin"></part>
+		<part crc="5ab2822f" name="p6.bin"></part>
+		<part crc="9503a23a" name="g09.bin"></part>
+		<part crc="0adfc3fe" name="g11.bin"></part>
+		<part crc="3e61f849" name="g10.bin"></part>
+		<part crc="7130e9eb" name="g12.bin"></part>
+		<part crc="57a45057" name="colour.bin"></part>
+		</rom>
+	<rom index="2"></rom>
 	<rom index="3" md5="none">
-     <part>00 00 40 21 03 00 00 00</part>
-    </rom>	
-	<nvram index="4" size="3"/>
+		<part>00 00 40 21 03 00 00 00</part>
+		</rom>
+	<rom index="4"></rom>
+
+	<nvram index="4" size="3"></nvram>
+
+	<remark></remark>
+
+	<mratimestamp>20210430005030</mratimestamp>
 </misterromdescription>
