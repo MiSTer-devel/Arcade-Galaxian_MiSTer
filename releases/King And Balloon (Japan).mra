@@ -1,12 +1,32 @@
 <misterromdescription>
-	<name>King and Balloon (Japan)</name>
-	<mameversion>0216</mameversion>
-	<mratimestamp>201911270000</mratimestamp>
-	<setname>kingballj</setname>
+	<name>King and Balloon</name>
+	<region></region>
+	<homebrew>no</homebrew>
+	<bootleg>no</bootleg>
+	<version></version>
+	<alternative></alternative>
+	<platform></platform>
+	<series></series>
 	<year>1980</year>
 	<manufacturer>Namco</manufacturer>
-	<category>Shoot em up</category>
+	<category>Shooter - Gallery</category>
+
+	<setname>kingballj</setname>
+	<parent>kingball</parent>
+	<mameversion>0216</mameversion>
 	<rbf>galaxian</rbf>
+	<about></about>
+
+	<resolution>15kHz</resolution>
+	<rotation>vertical (cw)</rotation>
+	<flip>yes</flip>
+
+	<players>2 (alternating)</players>
+	<joystick>2-way horizontal</joystick>
+	<special_controls></special_controls>
+	<num_buttons>1</num_buttons>
+	<buttons></buttons>
+
 	<switches default="1F,1F,04">
 		<dip bits="7"    name="Service" ids="Off,On"/>
 		<dip bits="6"    name="Test" ids="Off,On"/>
@@ -15,6 +35,7 @@
 		<dip bits="16,17" name="Bonus Life After" ids="10000,12000,15000,None"/>
 		<dip bits="18" name="Lives" ids="2,3"/>
 	</switches>
+	
 	<rom index="1"><part>07</part></rom>
 	<rom index="0" zip="kingball.zip|kingballj.zip" md5="none" type="merged|nonmerged">
 		<part crc="6cb49046" name="prg1.7f"/>
@@ -35,12 +56,17 @@
 		<part crc="fbc570a5" name="kbj3.ic6"/>
 		<part crc="56686a63" name="kbj2.ic7"/>
 	</rom>
-   <rom index="3" md5="none">
-     <part>
-	  00 00 83 05 03 00 00 00
-	  00 00 80 0d 03 00 00 00
-     00 00 83 02 01 01 01 00
+	<rom index="3" md5="none">
+		<part>
+			00 00 83 05 03 00 00 00
+			00 00 80 0d 03 00 00 00
+			00 00 83 02 01 01 01 00
 	  </part>
-   </rom>	
+	</rom>	
+   
 	<nvram index="4" size="7"/>	
+
+	<remark></remark>
+
+	<mratimestamp>202106111651</mratimestamp>
 </misterromdescription>
