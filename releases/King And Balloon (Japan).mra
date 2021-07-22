@@ -42,28 +42,27 @@
 		<part crc="c223b416" name="prg2.7j"/>
 		<part crc="453634c0" name="prg3.7l"/>
 		<part repeat="0x1800">FF</part>
-
 		<part crc="a206757d" name="chg2.1k"/>
 		<part crc="a206757d" name="chg2.1k"/>
 		<part crc="9cd550e7" name="chg1.1h"/>
 		<part crc="9cd550e7" name="chg1.1h"/>
-
 		<part crc="15dd5b16" name="kb2-1"/>
 		<part repeat="0x0FE0">00</part>
-
 		<part crc="ba16beb7" name="kbj1.ic4"/>
 		<part crc="56686a63" name="kbj2.ic5"/>
 		<part crc="fbc570a5" name="kbj3.ic6"/>
 		<part crc="56686a63" name="kbj2.ic7"/>
 	</rom>
+	<rom index="2"></rom>
 	<rom index="3" md5="none">
 		<part>
 			00 00 83 05 03 00 00 00
 			00 00 80 0d 03 00 00 00
 			00 00 83 02 01 01 01 00
-	  </part>
+	    </part>
 	</rom>	
-   
+	<rom index="4"></rom>
+
 	<nvram index="4" size="7"/>	
 
 	<remark></remark>
