@@ -11,7 +11,7 @@
 	<manufacturer>Ramtek</manufacturer>
 	<category>Maze</category>
 
-	<setname></setname>
+	<setname>cleansweept</setname>
 	<parent></parent>
 	<mameversion>0226</mameversion>
 	<rbf>galaxian</rbf>
