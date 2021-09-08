@@ -1,21 +1,20 @@
 <misterromdescription>
 	<name>Clean Sweep</name>
 	<region></region>
-	<homebrew>no</homebrew>
+	<homebrew>yes</homebrew>
 	<bootleg>no</bootleg>
-	<version>TTL</version>
 	<alternative></alternative>
 	<platform></platform>
 	<series></series>
-	<year>1974</year>
-	<manufacturer>Ramtek</manufacturer>
+	<year>1982</year>
+	<manufacturer>GCE</manufacturer>
 	<category>Maze</category>
 
 	<setname>cleansweept</setname>
 	<parent></parent>
-	<mameversion>0226</mameversion>
+	<mameversion>0000</mameversion>
 	<rbf>galaxian</rbf>
-	<about></about>
+	<about>This is a homebrew version of the Vectrex game of the same name.</about>
 
 	<resolution>15kHz</resolution>
 	<rotation>vertical (cw)</rotation>
