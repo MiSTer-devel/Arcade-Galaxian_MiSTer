@@ -14,7 +14,7 @@
 	<parent></parent>
 	<mameversion>0000</mameversion>
 	<rbf>galaxian</rbf>
-	<about>This is a homebrew version of the Vectrex game of the same name. See https://misterfpga.org/viewtopic.php?f=25&p=12248#p12248</about>
+	<about>This is a homebrew version of the Vectrex game of the same name.</about>
 
 	<resolution>15kHz</resolution>
 	<rotation>vertical (cw)</rotation>
