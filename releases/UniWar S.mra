@@ -27,6 +27,8 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,B,L" names="Fire,Start 1P,Start 2P,Coin,Test,Pause"></buttons>
+
 	<switches default="1F,1F,00">
 		<dip bits="7" ids="Off,On" name="Service"></dip>
 		<dip bits="6" ids="Off,On" name="Test"></dip>

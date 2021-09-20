@@ -27,6 +27,8 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,B,L" names="Fire,Start 1P,Start 2P,Coin,Test,Pause"></buttons>
+
 	<switches default="FF,5F,00">
 		<dip bits="14" ids="2c/1cr,1c/1cr" name="Coinage"></dip>
 		<dip bits="16" ids="10000,20000" name="Bonus Life After"></dip>

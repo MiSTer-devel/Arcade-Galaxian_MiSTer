@@ -27,6 +27,8 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,B,L" names="Fire,Start 1P,Start 2P,Coin,Test,Pause"></buttons>
+
 	<switches default="FF,1F,00">
 		<dip bits="14" ids="3,4" name="Lives"></dip>
 		<dip bits="15" ids="Upright,Cocktail" name="Cabinet"></dip>
