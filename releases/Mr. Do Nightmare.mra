@@ -27,14 +27,16 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,L" names="Fire,Start 1P,Start 2P,Coin,-,Pause"></buttons>
+
 	<switches default="FF,1F,04">
 		<dip bits="5" ids="Upright,Cocktail" name="Cabinet"></dip>
 		<dip bits="14,15" ids="1C/1Cr,Free Play" name="Coinage"></dip>
-		</switches>
+	</switches>
 
 	<rom index="1">
 		<part>08</part>
-		</rom>
+	</rom>
 	<rom index="0" md5="58c6153b90652577329cc2691450c764">
 		<part>
 af320170c3d0003a36403ce607323640
@@ -1600,7 +1602,7 @@ e0c0c0e0e07010000406070505090800
 		001e21f600c007f600f607a400c0c407
 		00f6c076001ec080001e80c0007607c6
 			</part>
-		</rom>
+	</rom>
 	<rom index="2"></rom>
 	<rom index="3"></rom>
 	<rom index="4"></rom>

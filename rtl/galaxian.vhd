@@ -37,10 +37,12 @@ entity galaxian is
 		dn_data    : in  std_logic_vector(7 downto 0);
 		dn_wr      : in  std_logic;
 		--
-		ram_address: in  std_logic_vector(9 downto 0);
-		ram_data   : out std_logic_vector(7 downto 0);
-		ram_data_in: in  std_logic_vector(7 downto 0);
-		ram_data_write:  in std_logic;
+		hs_address : in  std_logic_vector(9 downto 0);
+		hs_data_out: out std_logic_vector(7 downto 0);
+		hs_data_in : in  std_logic_vector(7 downto 0);
+		hs_write   : in std_logic;
+
+		pause_cpu_n : in std_logic;
 
 		--
 		mod_mooncr   : in  std_logic;
@@ -230,7 +232,7 @@ begin
 		RESET_n       => W_RESETn,
 		CLK_n         => W_CLK_6M,
 		CLKEN         => W_CPU_CLK_EN,
-		WAIT_n        => W_CPU_WAITn,
+		WAIT_n        => W_CPU_WAITn and pause_cpu_n,
 		INT_n         => CPU_INT_n,
 		NMI_n         => CPU_NMI_n,
 		BUSRQ_n       => '1',
@@ -258,10 +260,10 @@ begin
 		I_OE          => W_CPU_RAM_RD,
 		O_D           => W_CPU_RAM_DO,
 		I_CLK_B       => W_CLK_12M,
-		O_D_B         => ram_data,
-		I_WE_B        => ram_data_write,
-		I_D_B         => ram_data_in,
-		I_ADDR_B      => ram_address
+		O_D_B         => hs_data_out,
+		I_WE_B        => hs_write,
+		I_D_B         => hs_data_in,
+		I_ADDR_B      => hs_address
 
 	);
 	-- Kingball only now, original Moon Cresta ROM is scrambled
@@ -372,6 +374,7 @@ begin
 		I_2V          => W_V_CNT(1),
 		I_STARS_ON    => W_STARS_ON_ADJ,
 		I_STARS_OFFn  => W_STARS_OFFn,
+		I_PAUSEn		  => pause_cpu_n,
 		O_R           => W_STARS_R,
 		O_G           => W_STARS_G,
 		O_B           => W_STARS_B,

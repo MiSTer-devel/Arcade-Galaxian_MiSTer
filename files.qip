@@ -20,5 +20,6 @@ set_global_assignment -name VHDL_FILE rtl/mc_bram.vhd
 set_global_assignment -name VHDL_FILE rtl/mc_adec.vhd
 set_global_assignment -name VHDL_FILE rtl/galaxian.vhd -hdl_version VHDL_2008
 set_global_assignment -name SDC_FILE rtl/galaxian.sdc
-set_global_assignment -name SYSTEMVERILOG_FILE "rtl/hiscore.sv"
+set_global_assignment -name VERILOG_FILE "rtl/hiscore.v"
+set_global_assignment -name VERILOG_FILE "rtl/pause.v"
 set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-Galaxian.sv"

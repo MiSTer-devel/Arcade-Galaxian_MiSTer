@@ -27,15 +27,17 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,L" names="Fire,Start 1P,Start 2P,Coin,-,Pause"></buttons>
+
 	<switches default="FF,FF,F7">
 		<dip bits="14" ids="2c/1cr,1c/1cr" name="Coinage"></dip>
 		<dip bits="18" ids="2,3" name="Lives"></dip>
 		<dip bits="19" ids="Upright,Cocktail" name="Cabinet"></dip>
-		</switches>
+	</switches>
 
 	<rom index="1">
 		<part>0D</part>
-		</rom>
+	</rom>
 	<rom index="0" md5="86deedc5164beb2252765df36e5a9ed6" zip="victoryc.zip|victorycb.zip">
 		<part crc="de985696" name="v1.bin"></part>
 		<part crc="59042c1e" name="v2.bin"></part>
@@ -50,7 +52,7 @@
 		<part crc="cd35a7e2" name="v7.bin"></part>
 		<part crc="cd35a7e2" name="v7.bin"></part>
 		<part crc="25329e5a" name="prom.6l"></part>
-		</rom>
+	</rom>
 	<rom index="2"></rom>
 	<rom index="3"></rom>
 	<rom index="4"></rom>

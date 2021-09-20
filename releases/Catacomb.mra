@@ -27,14 +27,16 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,L" names="Fire,Start 1P,Start 2P,Coin,-,Pause"></buttons>
+
 	<switches default="FF,DF,04">
 		<dip bits="14" ids="2c/1cr,1c/1cr" name="Coinage"></dip>
 		<dip bits="18" ids="5,3" name="Lives"></dip>
-		</switches>
+	</switches>
 
 	<rom index="1">
 		<part>04</part>
-		</rom>
+	</rom>
 	<rom index="0" md5="a9c00095b4ccb5183445aa9e67c873af" zip="catacomb.zip">
 		<part crc="35cc28d2" name="catacomb.u"></part>
 		<part crc="1d1ce133" name="catacomb.v"></part>
@@ -49,7 +51,7 @@
 		<part crc="b14dafaa" name="cat-gfx2"></part>
 		<part crc="b14dafaa" name="cat-gfx2"></part>
 		<part crc="6a0c7d87" name="mmi6331.6l"></part>
-		</rom>
+	</rom>
 	<rom index="2"></rom>
 	<rom index="3"></rom>
 	<rom index="4"></rom>

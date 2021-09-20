@@ -28,6 +28,7 @@ entity MC_STARS is
 		I_2V          : in  std_logic;
 		I_STARS_ON    : in  std_logic;
 		I_STARS_OFFn  : in  std_logic;
+		I_PAUSEn		  : in  std_logic;
 
 		O_R           : out std_logic_vector(1 downto 0);
 		O_G           : out std_logic_vector(1 downto 0);

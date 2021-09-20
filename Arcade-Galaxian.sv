@@ -173,10 +173,8 @@ module emu
 	input         OSD_STATUS
 );
 
-assign ADC_BUS  = 'Z;
-assign USER_OUT = '1;
-assign {UART_RTS, UART_TXD, UART_DTR} = 0;
 assign {SD_SCK, SD_MOSI, SD_CS} = 'Z;
+assign {UART_RTS, UART_TXD, UART_DTR} = 0;
 assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
 assign VGA_F1    = 0;
@@ -185,16 +183,15 @@ assign USER_OUT  = '1;
 assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
 assign LED_POWER = 0;
+assign BUTTONS   = 0;
 assign AUDIO_MIX = 0;
+assign FB_FORCE_BLANK = 0;
 assign HDMI_FREEZE = 0;
-assign BUTTONS = 0;
 
 wire [1:0] ar = status[20:19];
 
 assign VIDEO_ARX = (!ar) ? ((status[2] ) ? 8'd4 : 8'd3) : (ar - 1'd1);
 assign VIDEO_ARY = (!ar) ? ((status[2] ) ? 8'd3 : 8'd4) : 12'd0;
-
-
 
 `include "build_id.v" 
 localparam CONF_STR = {
@@ -204,11 +201,16 @@ localparam CONF_STR = {
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O6,Flip Vertical,Off,On;",
 	"-;",
+	"H1OR,Autosave Hiscores,Off,On;",
+	"P1,Pause options;",
+	"P1OP,Pause when OSD is open,On,Off;",
+	"P1OQ,Dim video after 10s,On,Off;",
+	"-;",
 	"DIP;",
 	"-;",
 	"R0,Reset;",
-	"J1,Fire,Start 1P,Start 2P,Coin,Test;",
-	"jn,A,Start,Select,R,L;",
+	"J1,Fire,Start 1P,Start 2P,Coin,Test,Pause;",
+	"jn,A,Start,Select,R,L,C;",
 	"V,v",`BUILD_DATE
 };
 
@@ -237,6 +239,7 @@ wire        direct_video;
 
 wire        ioctl_download;
 wire        ioctl_upload;
+wire        ioctl_upload_req;
 wire        ioctl_wr;
 wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_dout;
@@ -250,22 +253,20 @@ wire [15:0] joy = joystick_0 | joystick_1;
 wire [21:0] gamma_bus;
 
 
-hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
+hps_io #(.CONF_STR(CONF_STR)) hps_io
 (
 	.clk_sys(clk_sys),
 	.HPS_BUS(HPS_BUS),
 
-	.conf_str(CONF_STR),
-
 	.buttons(buttons),
 	.status(status),
-	.status_menumask(direct_video),
+	.status_menumask({~hs_configured,direct_video}),
 	.forced_scandoubler(forced_scandoubler),
 	.gamma_bus(gamma_bus),
 	.direct_video(direct_video),
 
-
 	.ioctl_upload(ioctl_upload),
+	.ioctl_upload_req(ioctl_upload_req),
 	.ioctl_download(ioctl_download),
 	.ioctl_wr(ioctl_wr),
 	.ioctl_addr(ioctl_addr),
@@ -344,10 +345,21 @@ wire m_left_2   = joy[1];
 wire m_right_2  = joy[0];
 wire m_fire_2   = joy[4];
 
+wire m_pause    = joy[9];
+
+// PAUSE SYSTEM
+wire				pause_cpu;
+wire [8:0]		rgb_out;
+pause #(3,3,3,24) pause (
+	.*,
+	.user_button(m_pause),
+	.pause_request(hs_pause),
+	.options(~status[26:25])
+);
+
 wire hblank, vblank;
 wire hs, vs;
-wire [2:0] r,g;
-wire [2:0] b;
+wire [2:0] r,g,b;
 
 reg ce_pix;
 always @(posedge clk_48) begin
@@ -367,7 +379,7 @@ arcade_video #(257,9) arcade_video
 
         .clk_video(clk_48),
 
-        .RGB_in({r,g,b}),
+        .RGB_in(rgb_out),
         .HBlank(hblank),
         .VBlank(vblank),
         .HSync(hs),
@@ -378,7 +390,7 @@ arcade_video #(257,9) arcade_video
 
 
 wire [7:0] audio_a, audio_b,audio_c;
-wire [10:0] audio = {1'b0, audio_b, 2'b0} + {3'b0, audio_a} + {2'b00, audio_c, 1'b0};
+wire [10:0] audio = pause_cpu ? 11'b0 : {1'b0, audio_b, 2'b0} + {3'b0, audio_a} + {2'b00, audio_c, 1'b0};
 
 assign AUDIO_L = {audio, 5'd0};
 assign AUDIO_R = {audio, 5'd0};
@@ -420,11 +432,14 @@ wire [7:0] m_dip = sw[2] ;
 wire [7:0] sw0 = mod_warofbug ? sw0_warofbug : mod_victory ? sw0_victory : mod_azurian ? sw0_azurian : mod_orbitron ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
 wire [7:0] sw1 = mod_warofbug ? sw1_warofbug : mod_victory ? sw1_victory : mod_azurian ? sw1_azurian : mod_orbitron ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
 
+wire rom_download = ioctl_download & !ioctl_index;
+wire reset = (RESET | status[0] | buttons[1] | rom_download);
+
 galaxian galaxian
 (
 	.W_CLK_12M(clk_sys),
 	.W_CLK_6M(clk_6),
-	.I_RESET(RESET | status[0] | buttons[1]),
+	.I_RESET(reset),
 
 	// NOTE: mame order matches order in mc_inport, mc_inport reorders these
 	.W_SW0_DI(sw0),
@@ -443,11 +458,12 @@ galaxian galaxian
 	.dn_data(ioctl_dout),
 	.dn_wr(ioctl_wr && !ioctl_index),
 
-	.ram_address(ram_address),
-	.ram_data(ioctl_din),
-	.ram_data_in(hiscore_to_ram),
-	.ram_data_write(hiscore_write),
+	.hs_address(hs_address),
+	.hs_data_out(hs_data_out),
+	.hs_data_in(hs_data_in),
+	.hs_write(hs_write_enable),
 
+	.pause_cpu_n(~pause_cpu),
 	
 	.mod_mooncr(mod_mooncr),
 	.mod_devilfsh(mod_devilfsh),
@@ -463,25 +479,33 @@ galaxian galaxian
 	.W_SDAT_C(audio_c)
 );
 
+// HISCORE SYSTEM
+// --------------
+wire [9:0]hs_address;
+wire [7:0] hs_data_in;
+wire [7:0] hs_data_out;
+wire hs_write_enable;
+wire hs_pause;
+wire hs_configured;
 
-
-wire [9:0]ram_address;
-wire [7:0]hiscore_to_ram;
-wire hiscore_write;
-
-hiscore hi (
-   .clk(clk_sys),
-   .ioctl_upload(ioctl_upload),
-   .ioctl_download(ioctl_download),
-   .ioctl_wr(ioctl_wr),
-   .ioctl_addr(ioctl_addr),
-   .ioctl_dout(ioctl_dout),
-   .ioctl_din(ioctl_din),
-   .ioctl_index(ioctl_index),
-   .ram_address(ram_address),
-	.data_to_ram(hiscore_to_ram),
-	.ram_write(hiscore_write)
+hiscore #(
+	.HS_ADDRESSWIDTH(10),
+	.CFG_LENGTHWIDTH(2)
+) hi (
+	.*,
+	.clk(clk_sys),
+	.paused(pause_cpu),
+	.autosave(status[27]),
+	.ram_address(hs_address),
+	.data_from_ram(hs_data_out),
+	.data_to_ram(hs_data_in),
+	.data_from_hps(ioctl_dout),
+	.data_to_hps(ioctl_din),
+	.ram_write(hs_write_enable),
+	.ram_intent_read(),
+	.ram_intent_write(),
+	.pause_cpu(hs_pause),
+	.configured(hs_configured)
 );
- 
 
 endmodule

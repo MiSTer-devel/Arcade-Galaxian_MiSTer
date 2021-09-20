@@ -27,6 +27,8 @@
 	<num_buttons>1</num_buttons>
 	<button_names></button_names>
 
+	<buttons default="A,Start,Select,R,B,L" names="Fire,Start 1P,Start 2P,Coin,Test,Pause"></buttons>
+
 	<switches default="1F,1F,04">
 		<dip bits="7" ids="Off,On" name="Service"></dip>
 		<dip bits="6" ids="Off,On" name="Test"></dip>
@@ -56,14 +58,13 @@
 	<rom index="2"></rom>
 	<rom index="3" md5="none">
 		<part>
-			00 00 83 05 03 00 00 00
-			00 00 80 0d 03 00 00 00
-		    00 00 83 02 01 01 01 00
+		00 00 00 00 00 FF 00 02 00 02 00 01 00 FF 02 00
+		00 00 83 05 00 03 00 00
+		00 00 80 0d 00 03 00 00
+		00 00 83 02 00 01 01 01
 		</part>
 	</rom>
-	<rom index="4"></rom>
-
-	<nvram index="4" size="7"></nvram>
+	<nvram index="4" size="7"/>
 
 	<remark></remark>
 
