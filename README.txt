@@ -46,7 +46,7 @@ information on how to setup and use the environment.
 
 Quickreference for folders and file placement:
 
-/_Arcade/<game name>.mra
-/_Arcade/cores/<game rbf>.rbf
-/_Arcade/mame/<mame rom>.zip
-/_Arcade/hbmame/<hbmame rom>.zip
+/_Arcades/<game name>.mra
+/_Arcades/cores/<game rbf>.rbf
+/_Arcades/mame/<mame rom>.zip
+/_Arcades/hbmame/<hbmame rom>.zip
