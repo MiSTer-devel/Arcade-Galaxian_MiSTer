@@ -93,7 +93,9 @@ entity MC_ADEC is
 		O_SPEECH      : out std_logic_vector(1 downto 0); -- kingballoon
 		O_SPEECH_DIP  : out std_logic;
 		O_BD_G        : out std_logic;
-		O_STARS_ON    : out std_logic
+		O_STARS_ON    : out std_logic;		
+		mod_moonqsr   : in  std_logic;
+		mod_porter    : in  std_logic
 	);
 end;
 
@@ -114,7 +116,7 @@ architecture RTL of MC_ADEC is
 	signal W_V_BL    : std_logic := '0';
 
 begin
-		W_NMI_ONn <= W_9N_Q(1); --  galaxian
+		W_NMI_ONn <= W_9N_Q(1) when mod_moonqsr = '0' and mod_porter = '0' else W_9N_Q(0); --  galaxian xxx1 / Moon Quasar & porter xxx0
 
 --		O_WAITn <= '1' ; -- No Wait
 		O_WAITn <= W_6S1_Qn;
@@ -166,7 +168,7 @@ begin
 		O_Q      => W_8E2_Q
 	);
 
-	O_CPU_ROM_CS  <= not (W_8E2_Q(0) and W_8E2_Q(1) ) ;  --   0000 - 3FFF
+	O_CPU_ROM_CS  <= not (W_8E2_Q(0) and W_8E2_Q(1) ) when mod_porter='0' else not I_CPU_A(15);  --   0000 - 3FFF galaxian, 0000 - 7FFF porter (only uses 0000-4FFF, but nothing else in range)
 	-------------------------------------------------------------------
 	--                  ADDRESS
 	--    W_8E1_Q[0] = 0000 - 3FFF    ---- CPU_ROM_USE
@@ -250,7 +252,7 @@ begin
 		end if;
 	end process;
 
-	O_STARS_ON <= W_9N_Q(4);
+	O_STARS_ON <= W_9N_Q(4) when mod_porter='0' else '0';
 	O_H_FLIP   <= not W_9N_Q(6) when Flip_Vertical = '1' else W_9N_Q(6);
 	O_V_FLIP   <= not W_9N_Q(7) when Flip_Vertical = '1' else W_9N_Q(7);
 	O_SPEECH   <= W_9N_Q(2)&W_9N_Q(0); -- King & Balloon

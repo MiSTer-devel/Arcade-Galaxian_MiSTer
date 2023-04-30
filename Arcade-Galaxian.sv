@@ -297,32 +297,32 @@ reg mod_pisces= 0;
 reg mod_uniwars= 0;
 reg mod_victory= 0;
 reg mod_warofbug= 0;
-reg mod_zigzag= 0;
 reg mod_tripledr= 0;
 reg mod_lucktoday= 0;
+reg mod_moonqsr = 0;
 
 always @(posedge clk_sys) begin
 	reg [7:0] mod = 0;
 	if (ioctl_wr & (ioctl_index==1)) mod <= ioctl_dout;
 	
 	mod_galaxian	<= (mod == 0);
-	mod_mooncr	<= (mod == 1);
-	mod_azurian	<= (mod == 2);
+	mod_mooncr		<= (mod == 1);
+	mod_azurian		<= (mod == 2);
 	mod_blackhole	<= (mod == 3);
 	mod_catacomb	<= (mod == 4);
-	mod_chewingg	<= (mod == 5);
+	mod_porter		<= (mod == 5); 
 	mod_devilfsh	<= (mod == 6);
-	mod_kingbal	<= (mod == 7);
+	mod_kingbal		<= (mod == 7);
 	mod_mrdonigh	<= (mod == 8);
-	mod_omega	<= (mod == 9);
+	mod_omega		<= (mod == 9);
 	mod_orbitron	<= (mod == 10);
-	mod_pisces	<= (mod == 11);
-	mod_uniwars	<= (mod == 12);
-	mod_victory	<= (mod == 13);
+	mod_pisces		<= (mod == 11);
+	mod_uniwars		<= (mod == 12);
+	mod_victory		<= (mod == 13);
 	mod_warofbug	<= (mod == 14);
-	mod_zigzag	<= (mod == 15);
-	mod_tripledr	<= (mod == 16);
-	mod_lucktoday   <= (mod == 17);
+	mod_moonqsr		<= (mod == 15);
+	mod_tripledr	<= (mod == 16); 	// no MRA for this one
+	mod_lucktoday 	<= (mod == 17);
 end
 
 
@@ -426,16 +426,19 @@ wire [7:0] sw1_victory = sw[1] & { 3'b111, m_fire_2, m_right_2, m_left_2, m_star
 wire [7:0] sw0_warofbug = sw[0] & { m_up,  m_down, 1'b1, m_fire, m_right, m_left, m_up_2, m_coin};
 wire [7:0] sw1_warofbug = sw[1] & { 2'b11, m_down, m_fire_2, m_right_2, m_left_2, m_start2, m_start1};
 
+// Portman controls (may be some switching for multiplexed controls (fire & start1) .. need to investigate!)
+wire [7:0] sw0_porter = { m_down, m_down_2, 1'b0, m_up, m_right, m_left, 1'b0, m_coin};
+wire [7:0] sw1_porter = { sw[1][7:6], m_fire_2, m_up_2, m_right_2, m_left_2, m_start2, m_fire | m_start1};
+
 wire rotate_ccw_orig = (mod_devilfsh|mod_mooncr| mod_omega|mod_orbitron|mod_victory|mod_lucktoday);
 wire rotate_ccw = status[6] ? ~rotate_ccw_orig : rotate_ccw_orig;
-// zigzag??
 
 wire mod_orb_war  = mod_orbitron;
 wire mod_dev_trip = mod_devilfsh | mod_tripledr | mod_lucktoday;
 
 wire [7:0] m_dip = sw[2] ;
-wire [7:0] sw0 = mod_warofbug ? sw0_warofbug : mod_victory ? sw0_victory : mod_azurian ? sw0_azurian : mod_orbitron ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : sw0_galaxian;
-wire [7:0] sw1 = mod_warofbug ? sw1_warofbug : mod_victory ? sw1_victory : mod_azurian ? sw1_azurian : mod_orbitron ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : sw1_galaxian;
+wire [7:0] sw0 = mod_warofbug ? sw0_warofbug : mod_victory ? sw0_victory : mod_azurian ? sw0_azurian : mod_orbitron ? sw0_orbitron : mod_dev_trip ? sw0_devilfsh : mod_mrdonigh ? sw0_mrdonigh : mod_porter? sw0_porter : sw0_galaxian;
+wire [7:0] sw1 = mod_warofbug ? sw1_warofbug : mod_victory ? sw1_victory : mod_azurian ? sw1_azurian : mod_orbitron ? sw1_orbitron : mod_dev_trip ? sw1_devilfsh : mod_mrdonigh ? sw1_mrdonigh : mod_porter? sw1_porter : sw1_galaxian;
 
 wire rom_download = ioctl_download & !ioctl_index;
 wire reset = (RESET | status[0] | buttons[1] | rom_download);
@@ -476,6 +479,8 @@ galaxian galaxian
 	.mod_uniwars(mod_uniwars),
 	.mod_kingbal(mod_kingbal),
 	.mod_orbitron(mod_orbitron),
+	.mod_moonqsr(mod_moonqsr),
+	.mod_porter(mod_porter),
 	
 	.Flip_Vertical(status[6]),
 
@@ -486,7 +491,7 @@ galaxian galaxian
 
 // HISCORE SYSTEM
 // --------------
-wire [9:0]hs_address;
+wire [10:0]hs_address;
 wire [7:0] hs_data_in;
 wire [7:0] hs_data_out;
 wire hs_write_enable;

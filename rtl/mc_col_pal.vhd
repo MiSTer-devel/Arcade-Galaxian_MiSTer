@@ -39,7 +39,9 @@ port (
 	O_STARS_OFFn : out std_logic;
 	O_R          : out std_logic_vector(2 downto 0);
 	O_G          : out std_logic_vector(2 downto 0);
-	O_B          : out std_logic_vector(2 downto 0)
+	O_B          : out std_logic_vector(2 downto 0);
+	
+	mod_porter   : in  std_logic
 );
 end;
 
@@ -51,7 +53,7 @@ architecture RTL of MC_COL_PAL is
 	signal W_6M_CLR     : std_logic := '0';
 	signal W_6M_HBL     : std_logic := '0';
 	signal W_6M_HBLCLR  : std_logic := '0';
-        signal clut_cs	    : std_logic;
+   signal clut_cs	     : std_logic;
 
 begin
 	W_6M_DI      <= I_COL(2 downto 0) & I_VID(1 downto 0) & not (I_VID(0) or I_VID(1)) & I_C_BLnX;
@@ -89,8 +91,7 @@ begin
 --	);
 
         --clut_cs  <= '1' when dn_addr(15 downto 12) = X"6" else '0';
-		  clut_cs  <= '1' when dn_addr(15 downto 5) = "01100000000" else '0';  -- 6000-601F only
-
+		  clut_cs  <= '1' when dn_addr(15 downto 5) = "01100000000" and mod_porter='0' else '1' when dn_addr(15 downto 5) = "01110000000" and mod_porter='1' else '0';  -- 6000-601F only
 
         clut : work.dpram generic map (5,8)
         port map

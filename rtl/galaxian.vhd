@@ -37,20 +37,22 @@ entity galaxian is
 		dn_data    : in  std_logic_vector(7 downto 0);
 		dn_wr      : in  std_logic;
 		--
-		hs_address : in  std_logic_vector(9 downto 0);
+		hs_address : in  std_logic_vector(10 downto 0);
 		hs_data_out: out std_logic_vector(7 downto 0);
 		hs_data_in : in  std_logic_vector(7 downto 0);
 		hs_write   : in std_logic;
-
-		pause_cpu_n : in std_logic;
-
 		--
+		pause_cpu_n : in std_logic;
+		--
+		-- Used to trigger particular decryption, memory maps and graphics mapping
 		mod_mooncr   : in  std_logic;
 		mod_devilfsh : in  std_logic;
 		mod_pisces   : in  std_logic;
 		mod_uniwars  : in  std_logic;
 		mod_kingbal  : in  std_logic;
 		mod_orbitron : in  std_logic;
+		mod_moonqsr  : in  std_logic;
+		mod_porter   : in  std_logic;
 		--
 		Flip_Vertical: in  std_logic;
 		--
@@ -74,6 +76,7 @@ architecture RTL of galaxian is
 	signal W_A_R              : std_logic_vector(15 downto 0) := (others => '0');
 	signal W_A_C              : std_logic_vector(15 downto 0) := (others => '0');
 	signal W_A_ORBITRON       : std_logic_vector(15 downto 0) := (others => '0');
+	signal W_A_PORTER         : std_logic_vector(15 downto 0) := (others => '0');
 	--    CPU IF
 	signal W_CPU_CLK_EN       : std_logic := '0';
 	signal W_CPU_MREQn        : std_logic := '0';
@@ -83,6 +86,7 @@ architecture RTL of galaxian is
 	signal W_CPU_WAITn        : std_logic := '0';
 	signal W_CPU_WRn          : std_logic := '0';
 	signal W_CPU_WR           : std_logic := '0';
+	signal W_CPU_M1n          : std_logic := '0';
 	signal W_RESETn           : std_logic := '0';
         signal CPU_INT_n          : std_logic;
         signal CPU_NMI_n          : std_logic;
@@ -128,7 +132,6 @@ architecture RTL of galaxian is
 	signal W_VID_RAM_RD       : std_logic := '0';
 	signal W_VID_RAM_WR       : std_logic := '0';
 	signal W_WDR_OE           : std_logic := '0';
-	signal W_CPU_M1n          : std_logic := '0';
 	signal W_SPEECH_DIP       : std_logic := '0';
 	--------- INPORT -----------------------------
 	signal W_SW_DO            : std_logic_vector( 7 downto 0) := (others => '0');
@@ -179,9 +182,11 @@ architecture RTL of galaxian is
 	signal W_DAC              : std_logic_vector( 3 downto 0) := (others => '0');
 
 	signal rom_cs             : std_logic;
+	signal rom_decode			  : std_logic_vector( 7 downto 0);
 
 begin
-	rom_cs <= '1' when dn_addr(15 downto 14) = "00" else '0';
+	-- Loads up to 32k, most games use 16k, one uses 20k. rest will be ignored
+	rom_cs <= '1' when dn_addr(15) = '0' else '0';
 
 	mc_vid : entity work.MC_VIDEO
 	port map(
@@ -192,6 +197,8 @@ begin
 		mod_devilfsh  => mod_devilfsh,
 		mod_pisces    => mod_pisces,
 		mod_uniwars   => mod_uniwars,
+		mod_moonqsr   => mod_moonqsr,
+		mod_porter    => mod_porter,
 		Flip_Vertical => Flip_Vertical,
 		I_CLK_12M     => W_CLK_12M,
 		I_CLK_6M      => W_CLK_6M,
@@ -223,7 +230,7 @@ begin
 		O_COL         => W_COL
 	);
 
-
+	-- Devil fish uses INT, everything else uses NMI
 	CPU_INT_n <= W_CPU_NMIn when mod_devilfsh = '1' else '1';
 	CPU_NMI_n <= '1' when mod_devilfsh = '1' else W_CPU_NMIn;
 
@@ -243,7 +250,7 @@ begin
 		A             => W_A,
 		DI            => W_BDO,
 		DO            => W_BDI,
-		M1_n          => open,
+		M1_n          => W_CPU_M1n,
 		IORQ_n        => open,
 		HALT_n        => open,
 		BUSAK_n       => open--,
@@ -254,7 +261,7 @@ begin
 	port map (
 		I_CLK         => W_CLK_12M,
 		I_CS          => W_CPU_RAM_CS,
-		I_ADDR        => W_A(9 downto 0),
+		I_ADDR        => W_A(10 downto 0),
 		I_D           => W_BDI,
 		I_WE          => W_CPU_WR,
 		I_OE          => W_CPU_RAM_RD,
@@ -266,8 +273,8 @@ begin
 		I_ADDR_B      => hs_address
 
 	);
-	-- Kingball only now, original Moon Cresta ROM is scrambled
-  W_MOONCR <= '1' when mod_kingbal = '1' else '0';
+   -- Kingball, Moon Quasar and Porter have different memory maps. Moon Cresta uses galaxian map version
+   W_MOONCR <= '1' when mod_kingbal = '1' or mod_moonqsr = '1' or mod_porter='1' else '0';
 
 	mc_adec : entity work.MC_ADEC
 	port map(
@@ -309,7 +316,9 @@ begin
 		O_SPEECH      => W_SPEECH_IN,
 		O_SPEECH_DIP  => W_SPEECH_DIP,
 		O_BD_G        => W_BD_G,
-		O_STARS_ON    => W_STARS_ON
+		O_STARS_ON    => W_STARS_ON,
+		mod_moonqsr   => mod_moonqsr,
+		mod_porter    => mod_porter
 	);
 
 	-- active high buttons
@@ -359,7 +368,8 @@ begin
 		O_STARS_OFFn  => W_STARS_OFFn,
 		O_R           => W_VIDEO_R,
 		O_G           => W_VIDEO_G,
-		O_B           => W_VIDEO_B
+		O_B           => W_VIDEO_B,
+		mod_porter    => mod_porter
 	);
 
 	mc_stars : entity work.MC_STARS
@@ -406,26 +416,82 @@ begin
 	);
 
 --------- ROM           -------------------------------------------------------
-	W_A_C <= W_A_R when mod_devilfsh = '1' else W_A_ORBITRON when mod_orbitron = '1' else W_A;
-	--mc_roms : entity work.kb_prog
-	--	port map (
-	--			 clk => W_CLK_12M, 
-	--			 addr => W_A_C(13 downto 0), 
-	--			 data => W_CPU_ROM_DO);
 
-	mc_roms : work.dpram generic map (14,8)
+	mc_roms : work.dpram generic map (15,8)
 	port map
 	(
 		clock_a   => W_CLK_12M,
 		wren_a    => dn_wr and rom_cs,
-		address_a => dn_addr(13 downto 0),
+		address_a => dn_addr(14 downto 0),
 		data_a    => dn_data,
 
 		clock_b   => W_CLK_12M,
-		address_b => W_A_C(13 downto 0),
-		q_b       => W_CPU_ROM_DO
+		address_b => W_A_C(14 downto 0),
+		q_b       => rom_decode
 	);
 
+	-- Rom based protection schemes
+	-------------------------------
+
+	process(rom_decode)
+	variable B : std_logic_vector(7 downto 0);
+	begin
+		-- Used for Moon Quasar opcodes only
+		if mod_moonqsr = '1' and W_CPU_M1n = '0' then
+			-- decode it (operand only)
+			B := rom_decode;
+			if B(1)='1' then 
+				B := B xor x"40";
+			end if;
+			if B(5)='1' then 
+				B := B xor x"04";
+			end if;
+			if W_A_C(0) = '0' then
+				W_CPU_ROM_DO <= B(7) & B(2) & B(5 downto 3) & B(6) & B(1 downto 0);
+			else
+				W_CPU_ROM_DO <= B;
+			end if;
+		else
+			W_CPU_ROM_DO <= rom_decode;
+		end if;
+	end process;
+
+	-- Address based protection schemes
+	-----------------------------------
+	
+	-- Protection schemes - Orbitron
+	W_A_ORBITRON(13 downto 0) <= W_A(13 downto 11) & (W_A(10) xor (not W_A(13))) & (W_A(9) xor (not W_A(13))) & W_A(8 downto 0);
+
+	--- Remap CPU address to rom address (due to interleave rather than protection)
+	process(W_A)
+	begin
+			--- Devil fish
+			W_A_R(10 downto 0) <= W_A(10 downto 0);
+			case(W_A(13 downto 11)) is
+							  when "000" => W_A_R(13 downto 11) <= "001";
+							  when "001" => W_A_R(13 downto 11) <= "011";
+							  when "010" => W_A_R(13 downto 11) <= "101";
+							  when "011" => W_A_R(13 downto 11) <= "111";
+							  when "100" => W_A_R(13 downto 11) <= "000";
+							  when "101" => W_A_R(13 downto 11) <= "010";
+							  when "110" => W_A_R(13 downto 11) <= "100";
+							  when "111" => W_A_R(13 downto 11) <= "110";
+			end case;
+	
+			-- Porter
+			W_A_PORTER(15 downto 14) <= W_A(15 downto 14);
+			W_A_PORTER(10 downto 0) <= W_A(10 downto 0);
+			
+			if W_A(14)='1' then
+				W_A_PORTER(13 downto 11) <= W_A(13 downto 11);
+			else 
+				W_A_PORTER(13 downto 11) <= W_A(12) & W_A(11) & W_A(13);
+			end if;
+			
+	end process;
+	
+	W_A_C <= W_A_R when mod_devilfsh = '1' else W_A_ORBITRON when mod_orbitron = '1' else W_A_PORTER when mod_porter = '1' else W_A;
+	
 -------- VIDEO  -----------------------------
 	blx_comb <= not ( W_C_BLXn and W_V_BL2n );
 	W_V_SYNC <= not W_V_SYNC_int;
@@ -524,24 +590,6 @@ begin
 			end if;
 		end if;
 	end process;
-
-	W_A_ORBITRON(13 downto 0) <= W_A(13 downto 11) & (W_A(10) xor (not W_A(13))) & (W_A(9) xor (not W_A(13))) & W_A(8 downto 0);
-
-        --- remap CPU address to rom address
-        process(W_A)
-        begin
-                W_A_R(10 downto 0) <= W_A(10 downto 0);
-                case(W_A(13 downto 11)) is
-                                when "000" => W_A_R(13 downto 11) <= "001";
-                                when "001" => W_A_R(13 downto 11) <= "011";
-                                when "010" => W_A_R(13 downto 11) <= "101";
-                                when "011" => W_A_R(13 downto 11) <= "111";
-                                when "100" => W_A_R(13 downto 11) <= "000";
-                                when "101" => W_A_R(13 downto 11) <= "010";
-                                when "110" => W_A_R(13 downto 11) <= "100";
-                                when "111" => W_A_R(13 downto 11) <= "110";
-                end case;
-        end process;
 
 -------------------------------------------------------------------------------
 

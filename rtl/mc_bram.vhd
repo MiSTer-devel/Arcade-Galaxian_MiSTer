@@ -28,7 +28,7 @@ entity MC_CPU_RAM is
 	port (
 		I_CLK  : in  std_logic;
 		I_CS   : in  std_logic;
-		I_ADDR : in  std_logic_vector(9 downto 0);
+		I_ADDR : in  std_logic_vector(10 downto 0);
 		I_D    : in  std_logic_vector(7 downto 0);
 		I_WE   : in  std_logic;
 		I_OE   : in  std_logic;
@@ -37,7 +37,7 @@ entity MC_CPU_RAM is
 		O_D_B  : out std_logic_vector(7 downto 0);
 		I_D_B  : in  std_logic_vector(7 downto 0);
 		I_WE_B : in  std_logic;	
-		I_ADDR_B: in std_logic_vector(9 downto 0)
+		I_ADDR_B: in std_logic_vector(10 downto 0)
 	);
 end;
 architecture RTL of MC_CPU_RAM is
@@ -46,7 +46,7 @@ architecture RTL of MC_CPU_RAM is
 begin
 	O_D <= W_D when I_OE ='1' else (others=>'0');
 
-	ram_inst : work.dpram generic map(10,8)
+	ram_inst : work.dpram generic map(11,8)
 	port map
 	(
 		address_a  => I_ADDR,
