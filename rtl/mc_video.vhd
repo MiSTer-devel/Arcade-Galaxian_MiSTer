@@ -37,8 +37,10 @@ entity MC_VIDEO is
 		--
 		mod_mooncr   : in  std_logic;
 		mod_devilfsh : in  std_logic;
-		mod_pisces : in  std_logic;
-		mod_uniwars : in  std_logic;
+		mod_pisces   : in  std_logic;
+		mod_uniwars  : in  std_logic;
+		mod_moonqsr  : in  std_logic;
+		mod_porter   : in  std_logic;
 		--
 		Flip_Vertical : in  std_logic;
 
@@ -103,7 +105,7 @@ architecture RTL of MC_VIDEO is
 	signal W_H_POSI_MODIFIED:std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_OBJ_D      : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_2M_Q       : std_logic_vector( 7 downto 0) := (others => '0');
-	signal W_6K_Q       : std_logic_vector( 2 downto 0) := (others => '0');
+	signal W_6K_Q       : std_logic_vector( 7 downto 0) := (others => '0');
 	signal W_6P_Q       : std_logic_vector( 6 downto 0) := (others => '0');
 	signal W_45T_Q      : std_logic_vector( 7 downto 0) := (others => '0');
 	signal reg_2KL      : std_logic_vector( 7 downto 0) := (others => '0');
@@ -116,6 +118,7 @@ architecture RTL of MC_VIDEO is
 	signal DEVILFSH_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
 	signal UNIPI_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
 	signal GAL_W_O_OBJ_ROM_A  : std_logic_vector(11 downto 0) := (others => '0');
+	signal MQ_W_O_OBJ_ROM_A : std_logic_vector(11 downto 0) := (others => '0');	
 
 	signal W_VID_RAM_A    : std_logic_vector(11 downto 0) := (others => '0');
 	signal W_VID_RAM_AA   : std_logic_vector(11 downto 0) := (others => '0');
@@ -165,16 +168,16 @@ architecture RTL of MC_VIDEO is
 	signal W_SRLD         : std_logic := '0';
 	signal W_VID_RAM_CS   : std_logic := '0';
 
-        type bank_a is array(0 to 3) of std_logic_vector(7 downto 0);
-        signal bank     : bank_a;
-        signal pisces_gfxbank : std_logic;
+	type bank_a is array(0 to 3) of std_logic_vector(7 downto 0);
+	signal bank     : bank_a;
+	signal pisces_gfxbank : std_logic;
 
 	signal gfx1_cs,gfx2_cs: std_logic;
 
 begin
 
-	gfx1_cs  <= '1' when dn_addr(15 downto 12) = X"4" else '0';
-	gfx2_cs  <= '1' when dn_addr(15 downto 12) = X"5" else '0';
+	gfx1_cs  <= '1' when dn_addr(15 downto 12) = X"4" and mod_porter='0' else '1' when dn_addr(15 downto 12) = X"5" and mod_porter='1' else '0';
+	gfx2_cs  <= '1' when dn_addr(15 downto 12) = X"5" and mod_porter='0' else '1' when dn_addr(15 downto 12) = X"6" and mod_porter='1' else '0';
 
 	ld_pls : entity work.MC_LD_PLS
 	port map(
@@ -369,22 +372,29 @@ begin
 	W_SRLD        <= not (W_LDn or W_VID_RAM_A(11));
 	W_OBJ_ROM_AB  <= W_OBJ_D(5 downto 0) & W_1M(3) & (W_OBJ_D(6) xor I_H_CNT(3));
 	W_OBJ_ROM_A   <= W_OBJ_ROM_AB when I_H_CNT(8) = '1' else W_VID_RAM_DOB;
-	--W_O_OBJ_ROM_A <= W_OBJ_ROM_A & W_1M(2 downto 0);
-	-- AJS
 
-        MOONCRE_W_O_OBJ_ROM_A <= '1' & bank(0)(0) & bank(1)(0) & W_OBJ_ROM_A(5 downto 0) & W_1M(2 downto 0)
-                   when (bank(2) /= X"00" and W_OBJ_ROM_A(7 downto 6) = "10") else
-                   '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
-        DEVILFSH_W_O_OBJ_ROM_A <=  not I_H_CNT(8) & W_OBJ_ROM_A & W_1M(2 downto 0);
-        UNIPI_W_O_OBJ_ROM_A <=  pisces_gfxbank & W_OBJ_ROM_A & W_1M(2 downto 0);
-        GAL_W_O_OBJ_ROM_A <= '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
+	-- Graphics Mapping (different methods of graphics banking used)
+	----------------------------------------------------------------
+	
+	-- Galaxian
+	GAL_W_O_OBJ_ROM_A <= '0' & W_OBJ_ROM_A & W_1M(2 downto 0);	  
+	-- Moon Cresta
+	MOONCRE_W_O_OBJ_ROM_A <= '1' & bank(0)(0) & bank(1)(0) & W_OBJ_ROM_A(5 downto 0) & W_1M(2 downto 0)
+				 when (bank(2) /= X"00" and W_OBJ_ROM_A(7 downto 6) = "10") else
+				 '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
+	-- Devil Fish
+	DEVILFSH_W_O_OBJ_ROM_A <=  not I_H_CNT(8) & W_OBJ_ROM_A & W_1M(2 downto 0);
+	-- Uniwars / Pisces / Porter
+	UNIPI_W_O_OBJ_ROM_A <=  pisces_gfxbank & W_OBJ_ROM_A & W_1M(2 downto 0);
+	-- Moon Quasar 
+   MQ_W_O_OBJ_ROM_A <= W_6K_Q(5) & W_OBJ_ROM_A & W_1M(2 downto 0);
 
-
+	-- Use required one for loaded core
 	W_O_OBJ_ROM_A <=  MOONCRE_W_O_OBJ_ROM_A when (mod_mooncr ='1' ) else 
-                            DEVILFSH_W_O_OBJ_ROM_A when (mod_devilfsh='1') else  
-                            UNIPI_W_O_OBJ_ROM_A when (mod_pisces='1' or mod_uniwars='1') else  
-                            GAL_W_O_OBJ_ROM_A;
-	--W_O_OBJ_ROM_A <= '0' & W_OBJ_ROM_A & W_1M(2 downto 0);
+						   DEVILFSH_W_O_OBJ_ROM_A when (mod_devilfsh='1') else  
+						   UNIPI_W_O_OBJ_ROM_A when (mod_pisces='1' or mod_uniwars='1' or mod_porter='1') else
+						   MQ_W_O_OBJ_ROM_A when (mod_moonqsr='1') else
+						   GAL_W_O_OBJ_ROM_A;
 
 -----------------------------------------------------------------------------------
 
@@ -433,7 +443,7 @@ begin
 	process(W_COLLn)
 	begin
 		if rising_edge(W_COLLn) then
-			W_6K_Q <= W_H_POSI(2 downto 0);
+			W_6K_Q <= W_H_POSI;
 		end if;
 	end process;
 
