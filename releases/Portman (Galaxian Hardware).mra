@@ -40,7 +40,7 @@
 		<part>05</part>
 	</rom>
 
-	<rom index="0" md5="none" zip="porter.zip">
+	<rom index="0" md5="none" zip="porter.zip|dockman.zip">
 		<part crc="babaf7fe" name="port1.bin"></part>
 		<part crc="8f7eb0e3" name="port2.bin"></part>
 		<part crc="683939b5" name="port3.bin"></part>
