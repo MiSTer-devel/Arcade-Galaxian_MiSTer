@@ -1,18 +1,18 @@
 <misterromdescription>
-	<name>Portman</name>
+	<name>Port Man (bootleg on Moon Cresta hardware)</name>
 	<region></region>
 	<homebrew>no</homebrew>
-	<bootleg>no</bootleg>
+	<bootleg>yes</bootleg>
 	<version></version>
 	<alternative></alternative>
 	<platform></platform>
 	<series></series>
 	<year>1980</year>
-	<manufacturer>Irem</manufacturer>
+	<manufacturer>bootleg</manufacturer>
 	<category>Dunno</category>
 
-	<setname>Portman</setname>
-	<parent>Portman</parent>
+	<setname>porter</setname>
+	<parent>dockman</parent>
 	<mameversion>0220</mameversion>
 	<rbf>galaxian</rbf>
 	<about></about>
