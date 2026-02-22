@@ -73,7 +73,7 @@ begin
 				-- King and balloon leave out rack noise
 				SDAT <=  (("00" & WAV_D0 & "0") + ("00" & WAV_D1 & "0"));
 			else
-				SDAT <=  ("000" & W_VCO3_OUT) + ( ( ("000" & W_VCO2_OUT) + ("000" & W_VCO1_OUT) ) + ( ("000" & WAV_D0) + ("000" & WAV_D1) ) );
+				SDAT <=  ("000000" & W_VCO3_OUT(7 downto 3)) + ( ( ("000000" & W_VCO2_OUT(7 downto 3)) + ("000000" & W_VCO1_OUT(7 downto 3)) ) + ( ("000" & WAV_D0) + ("000" & WAV_D1) ) );
 			end if;			
 		end if;
 	end process;
