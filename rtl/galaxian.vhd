@@ -572,7 +572,7 @@ begin
 	process(W_CLK_12M, I_RESET)
 	begin
 		if (I_RESET = '1') then
-			W_DAC   <= (others=>'0');
+			W_DAC   <= (others=>'1');  -- hardware pull-ups default all bits high
 		elsif rising_edge(W_CLK_12M) then
 			if (W_DRIVER_WE = '1') then
 				case(W_A(2 downto 0)) is

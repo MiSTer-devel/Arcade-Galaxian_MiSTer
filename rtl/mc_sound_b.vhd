@@ -35,8 +35,8 @@ entity MC_SOUND_B is
 end;
 
 architecture RTL of MC_SOUND_B is
-constant sample_time : integer := 557;    -- sample time : 557 = 11025Hz, 557/2 = 22050Hz
-constant fire_cnt    : std_logic_vector(15 downto 0) := x"2000";
+constant sample_time : integer := 544;    -- sample time : 544 = 11029Hz (~11025Hz), was 557 (10772Hz)
+constant fire_cnt    : std_logic_vector(15 downto 0) := x"1646"; -- 5702 samples @ 11029Hz = 517ms (matches FIRE 555: 1.1*47k*10uF), was x"2000" (760ms)
 constant hit_cnt     : std_logic_vector(15 downto 0) := x"2000";
 
 signal sample     : std_logic_vector(10 downto 0) := (others => '0');
@@ -174,60 +174,62 @@ begin
 
 ---------------  EFFECT SOUND ---------------------------------------
 
---	9R modulator voltage generator based on DAC value
+--	9R modulator: VCO_CTR increments by I_DAC each clock (6MHz).
+
 	process(I_CLK1, I_RSTn)
 	begin
 		if (I_RSTn = '0') then
 		  VCO_CTR <= (others=>'0');
 		elsif rising_edge(I_CLK1) then
-			VCO_CTR <= VCO_CTR + (not I_DAC);
+			VCO_CTR <= VCO_CTR + (("0" & not I_DAC) + 4);
 		end if;
 	end process;
 
 	-- modulator frequency lookup tables for the three VCOs
+
 	process(I_CLK1, I_RSTn)
 	begin
 		if (I_RSTn = '0') then
 		elsif rising_edge(I_CLK1) then
 			case VCO_CTR(23 downto 19) is
-				when "00000" => W_VCO1_STEP <= x"2A"; W_VCO2_STEP <= x"3A"; W_VCO3_STEP <= x"54";
-				when "00001" => W_VCO1_STEP <= x"29"; W_VCO2_STEP <= x"39"; W_VCO3_STEP <= x"53"; 
-				when "00010" => W_VCO1_STEP <= x"29"; W_VCO2_STEP <= x"38"; W_VCO3_STEP <= x"52";
-				when "00011" => W_VCO1_STEP <= x"28"; W_VCO2_STEP <= x"37"; W_VCO3_STEP <= x"50";
-				when "00100" => W_VCO1_STEP <= x"28"; W_VCO2_STEP <= x"37"; W_VCO3_STEP <= x"4F";
-				when "00101" => W_VCO1_STEP <= x"27"; W_VCO2_STEP <= x"36"; W_VCO3_STEP <= x"4E";
-				when "00110" => W_VCO1_STEP <= x"27"; W_VCO2_STEP <= x"35"; W_VCO3_STEP <= x"4D";
-				when "00111" => W_VCO1_STEP <= x"26"; W_VCO2_STEP <= x"34"; W_VCO3_STEP <= x"4C";
-				when "01000" => W_VCO1_STEP <= x"25"; W_VCO2_STEP <= x"33"; W_VCO3_STEP <= x"4A";
-				when "01001" => W_VCO1_STEP <= x"25"; W_VCO2_STEP <= x"33"; W_VCO3_STEP <= x"49";
-				when "01010" => W_VCO1_STEP <= x"24"; W_VCO2_STEP <= x"32"; W_VCO3_STEP <= x"48";
-				when "01011" => W_VCO1_STEP <= x"24"; W_VCO2_STEP <= x"31"; W_VCO3_STEP <= x"47";
-				when "01100" => W_VCO1_STEP <= x"23"; W_VCO2_STEP <= x"30"; W_VCO3_STEP <= x"46";
-				when "01101" => W_VCO1_STEP <= x"23"; W_VCO2_STEP <= x"2F"; W_VCO3_STEP <= x"44";
-				when "01110" => W_VCO1_STEP <= x"22"; W_VCO2_STEP <= x"2F"; W_VCO3_STEP <= x"43";
-				when "01111" => W_VCO1_STEP <= x"21"; W_VCO2_STEP <= x"2E"; W_VCO3_STEP <= x"42";
-				when "10000" => W_VCO1_STEP <= x"21"; W_VCO2_STEP <= x"2D"; W_VCO3_STEP <= x"41";
-				when "10001" => W_VCO1_STEP <= x"20"; W_VCO2_STEP <= x"2C"; W_VCO3_STEP <= x"40"; 
-				when "10010" => W_VCO1_STEP <= x"20"; W_VCO2_STEP <= x"2B"; W_VCO3_STEP <= x"3F";
-				when "10011" => W_VCO1_STEP <= x"1F"; W_VCO2_STEP <= x"2B"; W_VCO3_STEP <= x"3D";
-				when "10100" => W_VCO1_STEP <= x"1F"; W_VCO2_STEP <= x"2A"; W_VCO3_STEP <= x"3C";
-				when "10101" => W_VCO1_STEP <= x"1E"; W_VCO2_STEP <= x"29"; W_VCO3_STEP <= x"3B";
-				when "10110" => W_VCO1_STEP <= x"1E"; W_VCO2_STEP <= x"28"; W_VCO3_STEP <= x"3A";
-				when "10111" => W_VCO1_STEP <= x"1D"; W_VCO2_STEP <= x"28"; W_VCO3_STEP <= x"39";
-				when "11000" => W_VCO1_STEP <= x"1C"; W_VCO2_STEP <= x"27"; W_VCO3_STEP <= x"37";
-				when "11001" => W_VCO1_STEP <= x"1C"; W_VCO2_STEP <= x"26"; W_VCO3_STEP <= x"36";
-				when "11010" => W_VCO1_STEP <= x"1B"; W_VCO2_STEP <= x"25"; W_VCO3_STEP <= x"35";
-				when "11011" => W_VCO1_STEP <= x"1B"; W_VCO2_STEP <= x"24"; W_VCO3_STEP <= x"34";
-				when "11100" => W_VCO1_STEP <= x"1A"; W_VCO2_STEP <= x"24"; W_VCO3_STEP <= x"33";
-				when "11101" => W_VCO1_STEP <= x"1A"; W_VCO2_STEP <= x"23"; W_VCO3_STEP <= x"32";
-				when "11110" => W_VCO1_STEP <= x"19"; W_VCO2_STEP <= x"22"; W_VCO3_STEP <= x"30";
-				when "11111" => W_VCO1_STEP <= x"18"; W_VCO2_STEP <= x"21"; W_VCO3_STEP <= x"2F";
+				when "00000" => W_VCO1_STEP <= x"2E"; W_VCO2_STEP <= x"3E"; W_VCO3_STEP <= x"5D";
+				when "00001" => W_VCO1_STEP <= x"2E"; W_VCO2_STEP <= x"3D"; W_VCO3_STEP <= x"5C";
+				when "00010" => W_VCO1_STEP <= x"2D"; W_VCO2_STEP <= x"3C"; W_VCO3_STEP <= x"5A";
+				when "00011" => W_VCO1_STEP <= x"2D"; W_VCO2_STEP <= x"3B"; W_VCO3_STEP <= x"59";
+				when "00100" => W_VCO1_STEP <= x"2C"; W_VCO2_STEP <= x"3A"; W_VCO3_STEP <= x"58";
+				when "00101" => W_VCO1_STEP <= x"2B"; W_VCO2_STEP <= x"3A"; W_VCO3_STEP <= x"57";
+				when "00110" => W_VCO1_STEP <= x"2B"; W_VCO2_STEP <= x"39"; W_VCO3_STEP <= x"55";
+				when "00111" => W_VCO1_STEP <= x"2A"; W_VCO2_STEP <= x"38"; W_VCO3_STEP <= x"54";
+				when "01000" => W_VCO1_STEP <= x"29"; W_VCO2_STEP <= x"37"; W_VCO3_STEP <= x"53";
+				when "01001" => W_VCO1_STEP <= x"29"; W_VCO2_STEP <= x"36"; W_VCO3_STEP <= x"52";
+				when "01010" => W_VCO1_STEP <= x"28"; W_VCO2_STEP <= x"35"; W_VCO3_STEP <= x"50";
+				when "01011" => W_VCO1_STEP <= x"28"; W_VCO2_STEP <= x"35"; W_VCO3_STEP <= x"4F";
+				when "01100" => W_VCO1_STEP <= x"27"; W_VCO2_STEP <= x"34"; W_VCO3_STEP <= x"4E";
+				when "01101" => W_VCO1_STEP <= x"26"; W_VCO2_STEP <= x"33"; W_VCO3_STEP <= x"4C";
+				when "01110" => W_VCO1_STEP <= x"26"; W_VCO2_STEP <= x"32"; W_VCO3_STEP <= x"4B";
+				when "01111" => W_VCO1_STEP <= x"25"; W_VCO2_STEP <= x"31"; W_VCO3_STEP <= x"4A";
+				when "10000" => W_VCO1_STEP <= x"24"; W_VCO2_STEP <= x"30"; W_VCO3_STEP <= x"49";
+				when "10001" => W_VCO1_STEP <= x"24"; W_VCO2_STEP <= x"30"; W_VCO3_STEP <= x"47";
+				when "10010" => W_VCO1_STEP <= x"23"; W_VCO2_STEP <= x"2F"; W_VCO3_STEP <= x"46";
+				when "10011" => W_VCO1_STEP <= x"22"; W_VCO2_STEP <= x"2E"; W_VCO3_STEP <= x"45";
+				when "10100" => W_VCO1_STEP <= x"22"; W_VCO2_STEP <= x"2D"; W_VCO3_STEP <= x"44";
+				when "10101" => W_VCO1_STEP <= x"21"; W_VCO2_STEP <= x"2C"; W_VCO3_STEP <= x"42";
+				when "10110" => W_VCO1_STEP <= x"21"; W_VCO2_STEP <= x"2B"; W_VCO3_STEP <= x"41";
+				when "10111" => W_VCO1_STEP <= x"20"; W_VCO2_STEP <= x"2B"; W_VCO3_STEP <= x"40";
+				when "11000" => W_VCO1_STEP <= x"1F"; W_VCO2_STEP <= x"2A"; W_VCO3_STEP <= x"3F";
+				when "11001" => W_VCO1_STEP <= x"1F"; W_VCO2_STEP <= x"29"; W_VCO3_STEP <= x"3D";
+				when "11010" => W_VCO1_STEP <= x"1E"; W_VCO2_STEP <= x"28"; W_VCO3_STEP <= x"3C";
+				when "11011" => W_VCO1_STEP <= x"1D"; W_VCO2_STEP <= x"27"; W_VCO3_STEP <= x"3B";
+				when "11100" => W_VCO1_STEP <= x"1D"; W_VCO2_STEP <= x"26"; W_VCO3_STEP <= x"3A";
+				when "11101" => W_VCO1_STEP <= x"1C"; W_VCO2_STEP <= x"26"; W_VCO3_STEP <= x"38";
+				when "11110" => W_VCO1_STEP <= x"1C"; W_VCO2_STEP <= x"25"; W_VCO3_STEP <= x"37";
+				when "11111" => W_VCO1_STEP <= x"1B"; W_VCO2_STEP <= x"24"; W_VCO3_STEP <= x"36";
 				when others => null;
 			end case;
 		end if;     
 	end process;
 
---	8R VCO 240Hz - 140Hz (8)
+--	8R VCO 145Hz - 248Hz
 	mc_vco1 : entity work.MC_SOUND_VCO
 	port map (
 		I_CLK   => I_CLK1,
@@ -237,7 +239,7 @@ begin
 		O_WAV   => W_VCO1_OUT
 	);
 
---	8S VCO 330Hz - 190Hz (11)
+--	8S VCO 194Hz - 334Hz
 	mc_vco2 : entity work.MC_SOUND_VCO
 	port map (
 		I_CLK   => I_CLK1,
@@ -247,7 +249,7 @@ begin
 		O_WAV   => W_VCO2_OUT
 	);
 
---	8T VCO 480Hz - 270Hz (16)
+--	8T VCO 291Hz - 501Hz
 	mc_vco3 : entity work.MC_SOUND_VCO
 	port map (
 		I_CLK   => I_CLK1,
